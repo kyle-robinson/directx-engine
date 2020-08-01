@@ -1,9 +1,6 @@
-#include <Windows.h>
-#include <string>
-#include <tchar.h>
-#include <sstream>
+#include "Window.h"
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+/*LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
@@ -26,7 +23,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_CHAR:
 		{
 			static std::wstring title;
-			title.push_back( (char)wParam );
+			title.push_back( wParam );
 			LPCWSTR sw = title.c_str();
 			SetWindowText( hWnd, sw );
 		}
@@ -43,7 +40,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	}
 	
 	return DefWindowProc( hWnd, msg, wParam, lParam );
-}
+}*/
 
 int CALLBACK WinMain(
 	HINSTANCE	hInstance,
@@ -51,7 +48,7 @@ int CALLBACK WinMain(
 	LPSTR		lpCmdLine,
 	int			mCmdShow )
 {
-	const auto pClassName = L"HWND";
+	/*const auto pClassName = L"HWND";
 	
 	// register window class
 	WNDCLASSEX wc = {0};
@@ -78,7 +75,10 @@ int CALLBACK WinMain(
 		nullptr, nullptr, hInstance, nullptr
 	);
 
-	ShowWindow(hWnd, SW_SHOW);
+	ShowWindow(hWnd, SW_SHOW);*/
+
+	Window wnd( 640, 480, L"DirectX 11 Engine Window" );
+	Window wnd2( 640, 480, L"DirectX 11 Engine Window" );
 
 	// handle messages
 	MSG msg;
@@ -91,6 +91,6 @@ int CALLBACK WinMain(
 
 	if ( gResult == -1 )
 		return -1;
-	else
-		return msg.wParam;
+
+	return msg.wParam;
 }
