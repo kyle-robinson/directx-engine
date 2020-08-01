@@ -24,6 +24,7 @@
     <ProjectGuid>{0b4c422c-9e23-41e3-b833-139888823387}</ProjectGuid>
     <RootNamespace>HWND</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>HW3D</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

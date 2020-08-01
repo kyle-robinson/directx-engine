@@ -7,6 +7,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_CLOSE:
 		PostQuitMessage( 10 );
 		break;
+	case WM_KEYDOWN:
+		if ( wParam == 'F' )
+		{
+			SetWindowText( hWnd, L"It is currently raining!" );
+		}
+		if ( wParam == VK_ESCAPE )
+		{
+			PostQuitMessage( 10 );
+		}
+		break;
+	case WM_KEYUP:
+		if ( wParam == 'F' )
+		{
+			SetWindowText( hWnd, L"ObamaCare" );
+		}
+		break;
 	}
 	
 	return DefWindowProc( hWnd, msg, wParam, lParam );
@@ -47,7 +63,7 @@ int CALLBACK WinMain(
 
 	ShowWindow(hWnd, SW_SHOW);
 
-	// get messages
+	// handle messages
 	MSG msg;
 	BOOL gResult;
 	while ( (gResult = GetMessage(&msg, nullptr, 0, 0)) > 0 )
