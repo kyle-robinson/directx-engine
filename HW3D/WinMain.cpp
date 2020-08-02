@@ -77,20 +77,36 @@ int CALLBACK WinMain(
 
 	ShowWindow(hWnd, SW_SHOW);*/
 
-	Window wnd( 640, 480, L"DirectX 11 Engine Window" );
-	Window wnd2( 640, 480, L"DirectX 11 Engine Window" );
-
-	// handle messages
-	MSG msg;
-	BOOL gResult;
-	while ( (gResult = GetMessage(&msg, nullptr, 0, 0)) > 0 )
+	try
 	{
-		TranslateMessage( &msg );
-		DispatchMessage( &msg );
+		Window wnd( 640, 480, L"DirectX 11 Engine Window" );
+		Window wnd2( 640, 480, L"DirectX 11 Engine Window" );
+
+		// handle messages
+		MSG msg;
+		BOOL gResult;
+		while ( (gResult = GetMessage(&msg, nullptr, 0, 0)) > 0 )
+		{
+			TranslateMessage( &msg );
+			DispatchMessage( &msg );
+		}
+
+		if ( gResult == -1 )
+			return -1;
+
+		return msg.wParam;
 	}
-
-	if ( gResult == -1 )
-		return -1;
-
-	return msg.wParam;
+	catch ( const Exception& e )
+	{
+		MessageBoxA( nullptr, e.what(), e.GetType(), MB_OK | MB_ICONEXCLAMATION );
+	}
+	catch ( const std::exception& e )
+	{
+		MessageBoxA( nullptr, e.what(), "Standard Exception", MB_OK | MB_ICONEXCLAMATION );
+	}
+	catch ( ... )
+	{
+		MessageBoxA( nullptr, "No details available", "Unknown Exception", MB_OK | MB_ICONEXCLAMATION );
+	}
+	return -1;
 }
