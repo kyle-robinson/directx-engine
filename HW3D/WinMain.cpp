@@ -89,6 +89,15 @@ int CALLBACK WinMain(
 		{
 			TranslateMessage( &msg );
 			DispatchMessage( &msg );
+			if ( wnd.kbd.KeyIsPressed( VK_ESCAPE ) )
+			{
+				PostQuitMessage( 0 );
+				return 0;
+			}
+			if ( wnd.kbd.KeyIsPressed( VK_MENU ) )
+			{
+				MessageBoxA( nullptr, "You pressed SPACE!", "A key was pressed.", MB_OK | MB_ICONEXCLAMATION );
+			}
 		}
 
 		if ( gResult == -1 )

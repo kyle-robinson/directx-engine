@@ -1,6 +1,7 @@
 #pragma once
 #include "WindowsInclude.h"
 #include "Exception.h"
+#include "Keyboard.h"
 #include <string>
 #include <optional>
 
@@ -44,6 +45,8 @@ private:
 	static LRESULT WINAPI HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static LRESULT WINAPI HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
+public:
+	Keyboard kbd;
 private:
 	int width;
 	int height;
