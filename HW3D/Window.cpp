@@ -37,7 +37,7 @@ HINSTANCE Window::WindowClass::GetInstance() noexcept
 	return wndClass.hInst;
 }
 
-Window::Window( int width, int height, const wchar_t* name ) noexcept : width( width ), height( height )
+Window::Window( int width, int height, const char* name ) : width( width ), height( height )
 {
 	// calculate window size
 	RECT wr = { 0 };
@@ -45,11 +45,19 @@ Window::Window( int width, int height, const wchar_t* name ) noexcept : width( w
 	wr.right = width + wr.left;
 	wr.top = 100;
 	wr.bottom = height + wr.bottom;
-	AdjustWindowRect( &wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE );
+	if (FAILED(AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)))
+		throw WND_LAST_EXCEPT();
+
+	throw WND_EXCEPT( ERROR_ARENA_TRASHED );
+
+	// convert 'const char*' to 'const wchar_t*'
+	std::wstring w;
+	std::copy(name, name + strlen(name), back_inserter(w));
+	const WCHAR* wChar = w.c_str();
 
 	// create window and get handle
 	hWnd = CreateWindow(
-		WindowClass::GetName(), name,
+		WindowClass::GetName(), wChar,
 		WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU,
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowClass::GetInstance(), this
@@ -122,12 +130,12 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 	return DefWindowProc( hWnd, msg, wParam, lParam );
 }
 
-Window::WindowException::WindowException( int line, const char* file, HRESULT hr ) noexcept: Exception( line, file ), hr( hr )
+Window::WindowException::WindowException( int line, const char* file, HRESULT hr ) : Exception( line, file ), hr( hr )
 {
 }
 
 const char* Window::WindowException::what() const noexcept
-{
+{	
 	std::stringstream oss;
 	oss << GetType() << std::endl
 		<< "[Error Code] " << GetErrorCode() << std::endl

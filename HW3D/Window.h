@@ -9,7 +9,8 @@ class Window
 public:
 	class WindowException : public Exception
 	{
-		WindowException( int line, const char* file, HRESULT hr ) noexcept;
+	public:
+		WindowException( int line, const char* file, HRESULT hr );
 		const char* what() const noexcept override;
 		virtual const char* GetType() const noexcept override;
 		static std::string TranslateErrorCode( HRESULT hr );
@@ -34,7 +35,7 @@ private:
 		HINSTANCE hInst;
 	};
 public:
-	Window( int widht, int height, const wchar_t* name ) noexcept;
+	Window( int width, int height, const char* name );
 	~Window();
 	Window( const Window& ) = delete;
 	Window& operator = ( const Window& ) = delete;
@@ -50,3 +51,4 @@ private:
 };
 
 #define WND_EXCEPT( hr ) Window::WindowException( __LINE__, __FILE__, hr )
+#define WND_LAST_EXCEPT() Window::WindowException( __LINE__, __FILE__, GetLastError() )

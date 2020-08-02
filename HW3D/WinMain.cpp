@@ -79,8 +79,8 @@ int CALLBACK WinMain(
 
 	try
 	{
-		Window wnd( 640, 480, L"DirectX 11 Engine Window" );
-		Window wnd2( 640, 480, L"DirectX 11 Engine Window" );
+		Window wnd( 640, 480, "DirectX 11 Engine Window" );
+		Window wnd2( 640, 480, "DirectX 11 Engine Window" );
 
 		// handle messages
 		MSG msg;
