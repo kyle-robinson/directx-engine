@@ -15,7 +15,7 @@ Window::WindowClass::WindowClass() noexcept : hInst( GetModuleHandle( nullptr ) 
 	wc.cbWndExtra = 0;
 	wc.hInstance = GetInstance();
 	wc.hIcon = static_cast<HICON>(LoadImage( hInst, MAKEINTRESOURCE( IDI_ICON1 ), IMAGE_ICON, 32, 32, 0 ));
-	wc.hCursor = nullptr;
+	wc.hCursor = LoadCursor(Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR1);
 	wc.hbrBackground = CreateSolidBrush(RGB(255, 0, 0));
 	wc.lpszMenuName = nullptr;
 	wc.lpszClassName = GetName();
@@ -126,6 +126,10 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 		break;
 
 	case WM_CHAR:
+		break;
+
+	case WM_LBUTTONDOWN:
+		SetCursor(LoadCursor(Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR2));
 		break;
 	}
 

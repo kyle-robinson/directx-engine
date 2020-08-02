@@ -49,4 +49,12 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="WoW_Normal.ani">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="WoW_Select.ani">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

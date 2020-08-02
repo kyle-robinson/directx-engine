@@ -3,6 +3,8 @@
 // Used by HW3D.rc
 //
 #define IDI_ICON1                       101
+#define IDR_ANICURSOR1					102
+#define IDR_ANICURSOR2					103
 
 // Next default values for new objects
 // 

@@ -176,6 +176,10 @@
   <ItemGroup>
     <Image Include="Directx.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="WoW_Normal.ani" />
+    <None Include="WoW_Select.ani" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
