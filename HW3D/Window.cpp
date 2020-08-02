@@ -45,10 +45,8 @@ Window::Window( int width, int height, const char* name ) : width( width ), heig
 	wr.right = width + wr.left;
 	wr.top = 100;
 	wr.bottom = height + wr.bottom;
-	if (FAILED(AdjustWindowRect(&wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE)))
+	if ( FAILED( AdjustWindowRect( &wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE ) ) )
 		throw WND_LAST_EXCEPT();
-
-	throw WND_EXCEPT( ERROR_ARENA_TRASHED );
 
 	// convert 'const char*' to 'const wchar_t*'
 	std::wstring w;
@@ -62,6 +60,9 @@ Window::Window( int width, int height, const char* name ) : width( width ), heig
 		CW_USEDEFAULT, CW_USEDEFAULT, wr.right - wr.left, wr.bottom - wr.top,
 		nullptr, nullptr, WindowClass::GetInstance(), this
 	);
+
+	if ( hWnd == nullptr )
+		throw WND_LAST_EXCEPT();
 
 	ShowWindow( hWnd, SW_SHOWDEFAULT );
 }
@@ -130,7 +131,7 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 	return DefWindowProc( hWnd, msg, wParam, lParam );
 }
 
-Window::WindowException::WindowException( int line, const char* file, HRESULT hr ) : Exception( line, file ), hr( hr )
+Window::WindowException::WindowException( int line, const char* file, HRESULT hr ) noexcept : Exception( line, file ), hr( hr )
 {
 }
 

@@ -1,7 +1,7 @@
 #include "Exception.h"
 #include <sstream>
 
-Exception::Exception( int line, const char* file ) : line( line ), file( file )
+Exception::Exception( int line, const char* file ) noexcept : line( line ), file( file )
 {
 }
 

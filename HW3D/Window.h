@@ -10,7 +10,7 @@ public:
 	class WindowException : public Exception
 	{
 	public:
-		WindowException( int line, const char* file, HRESULT hr );
+		WindowException( int line, const char* file, HRESULT hr ) noexcept;
 		const char* what() const noexcept override;
 		virtual const char* GetType() const noexcept override;
 		static std::string TranslateErrorCode( HRESULT hr );
