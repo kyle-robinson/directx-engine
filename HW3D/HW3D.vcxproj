@@ -166,8 +166,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsInclude.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HW3D.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Directx.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
