@@ -42,6 +42,7 @@ public:
 	Window( const Window& ) = delete;
 	Window& operator = ( const Window& ) = delete;
 	void SetTitle( const std::wstring& title );
+	static std::optional<int> ProcessMessages();
 private:
 	static LRESULT WINAPI HandleMsgSetup(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 	static LRESULT WINAPI HandleMsgThunk(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;

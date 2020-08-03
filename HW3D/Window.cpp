@@ -78,6 +78,27 @@ void Window::SetTitle( const std::wstring& title )
 		throw WND_LAST_EXCEPT();
 }
 
+std::optional<int> Window::ProcessMessages()
+{
+	MSG msg;
+	
+	// while the queue has messages - remove and dispatch them
+	while ( PeekMessage( &msg, nullptr, 0, 0, PM_REMOVE ) )
+	{
+		if ( msg.message == WM_QUIT )
+		{
+			// return optional wrapping int
+			return msg.wParam;
+		}
+
+		TranslateMessage( &msg );
+		DispatchMessage( &msg );
+	}
+
+	// return empty optional when not quitting app
+	return {};
+}
+
 LRESULT WINAPI Window::HandleMsgSetup( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept
 {
 	if ( msg == WM_NCCREATE )
@@ -181,6 +202,7 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 
 	case WM_LBUTTONUP:
 	{
+		SetCursor(LoadCursor(Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR1));
 		const POINTS pt = MAKEPOINTS( lParam );
 		mouse.OnLeftReleased( pt.x, pt.y );
 		break;
