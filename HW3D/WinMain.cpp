@@ -1,4 +1,5 @@
 #include "Window.h"
+#include <sstream>
 
 /*LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -80,7 +81,6 @@ int CALLBACK WinMain(
 	try
 	{
 		Window wnd( 640, 480, "DirectX 11 Engine Window" );
-		Window wnd2( 640, 480, "DirectX 11 Engine Window" );
 
 		// handle messages
 		MSG msg;
@@ -89,6 +89,8 @@ int CALLBACK WinMain(
 		{
 			TranslateMessage( &msg );
 			DispatchMessage( &msg );
+			
+			// Keyboard input
 			if ( wnd.kbd.KeyIsPressed( VK_ESCAPE ) )
 			{
 				PostQuitMessage( 0 );
@@ -97,6 +99,18 @@ int CALLBACK WinMain(
 			if ( wnd.kbd.KeyIsPressed( VK_MENU ) )
 			{
 				MessageBoxA( nullptr, "You pressed SPACE!", "A key was pressed.", MB_OK | MB_ICONEXCLAMATION );
+			}
+
+			// Mouse input
+			while ( !wnd.mouse.IsEmpty() )
+			{
+				const auto e = wnd.mouse.Read();
+				if ( e.GetType() == Mouse::Event::Type::Move )
+				{
+					std::wostringstream oss;
+					oss << "Mouse Position: (" << e.GetPosX() << "," << e.GetPosY() << ")";
+					wnd.SetTitle( oss.str() );
+				}
 			}
 		}
 

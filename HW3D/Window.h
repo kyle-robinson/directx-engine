@@ -2,6 +2,7 @@
 #include "WindowsInclude.h"
 #include "Exception.h"
 #include "Keyboard.h"
+#include "Mouse.h"
 #include <string>
 #include <optional>
 
@@ -47,6 +48,7 @@ private:
 	LRESULT HandleMsg(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) noexcept;
 public:
 	Keyboard kbd;
+	Mouse mouse;
 private:
 	int width;
 	int height;
