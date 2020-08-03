@@ -111,12 +111,30 @@ int CALLBACK WinMain(
 					{
 						std::wostringstream oss;
 						oss << "Mouse Position: (" << e.GetPosX() << "," << e.GetPosY() << ")";
-						wnd.SetTitle(oss.str());
+						wnd.SetTitle( oss.str() );
 					}
 					break;
 					
 				case Mouse::Event::Type::Leave:
 					wnd.SetTitle( L"Mouse Left Window!" );
+					break;
+
+				case Mouse::Event::Type::WheelUp:
+					{
+						static int up = 0;
+						std::wostringstream oss;
+						oss << "Up: " << up++;
+						wnd.SetTitle( oss.str() );
+					}
+					break;
+
+				case Mouse::Event::Type::WheelDown:
+					{
+						static int down = 0;
+						std::wostringstream oss;
+						oss << "Down: " << down++;
+						wnd.SetTitle( oss.str() );
+					}
 					break;
 				}
 			}

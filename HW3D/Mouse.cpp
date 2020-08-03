@@ -1,4 +1,5 @@
 #include "Mouse.h"
+#include "WindowsInclude.h"
 
 std::pair<int, int> Mouse::GetPos() const noexcept
 {
@@ -121,5 +122,22 @@ void Mouse::TrimBuffer() noexcept
 	while (buffer.size() > bufferSize)
 	{
 		buffer.pop();
+	}
+}
+
+void Mouse::OnWheelDelta( int x, int y, int delta ) noexcept
+{
+	wheelDeltaCarry += delta;
+
+	// generate events for every 120
+	while ( wheelDeltaCarry >= WHEEL_DELTA )
+	{
+		wheelDeltaCarry -= WHEEL_DELTA;
+		OnWheelUp( x, y );
+	}
+	while ( wheelDeltaCarry <= -WHEEL_DELTA )
+	{
+		wheelDeltaCarry += WHEEL_DELTA;
+		OnWheelDown( x, y );
 	}
 }
