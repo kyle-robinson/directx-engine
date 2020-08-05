@@ -8,7 +8,7 @@ public:
 	App();
 	int Init();
 private:
-	void Update();
+	void DoFrame();
 private:
 	Window wnd;
 	Timer timer;

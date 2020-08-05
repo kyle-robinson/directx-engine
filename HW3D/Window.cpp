@@ -15,7 +15,7 @@ Window::WindowClass::WindowClass() noexcept : hInst( GetModuleHandle( nullptr ) 
 	wc.hInstance = GetInstance();
 	wc.hIcon = static_cast<HICON>(LoadImage( hInst, MAKEINTRESOURCE( IDI_ICON1 ), IMAGE_ICON, 32, 32, 0 ));
 	wc.hCursor = LoadCursor( Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR1 );
-	wc.hbrBackground = CreateSolidBrush(RGB(255, 0, 0));
+	wc.hbrBackground = nullptr; // CreateSolidBrush(RGB(255, 0, 0))
 	wc.lpszMenuName = nullptr;
 	wc.lpszClassName = GetName();
 	wc.hIconSm = static_cast<HICON>(LoadImage( hInst, MAKEINTRESOURCE( IDI_ICON1 ), IMAGE_ICON, 16, 16, 0 ));
@@ -65,6 +65,9 @@ Window::Window( int width, int height, const char* name ) : width( width ), heig
 		throw WND_LAST_EXCEPT();
 
 	ShowWindow( hWnd, SW_SHOWDEFAULT );
+
+	// create graphics object
+	pGfx = std::make_unique<Graphics>( hWnd );
 }
 
 Window::~Window()
@@ -78,7 +81,7 @@ void Window::SetTitle( const std::wstring& title )
 		throw WND_LAST_EXCEPT();
 }
 
-std::optional<int> Window::ProcessMessages()
+std::optional<int> Window::ProcessMessages() noexcept
 {
 	MSG msg;
 	
@@ -88,7 +91,7 @@ std::optional<int> Window::ProcessMessages()
 		if ( msg.message == WM_QUIT )
 		{
 			// return optional wrapping int
-			return msg.wParam;
+			return ( int )msg.wParam;
 		}
 
 		TranslateMessage( &msg );
@@ -97,6 +100,11 @@ std::optional<int> Window::ProcessMessages()
 
 	// return empty optional when not quitting app
 	return {};
+}
+
+Graphics& Window::Gfx()
+{
+	return *pGfx;
 }
 
 LRESULT WINAPI Window::HandleMsgSetup( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept
