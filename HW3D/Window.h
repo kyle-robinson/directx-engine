@@ -31,8 +31,8 @@ public:
 	};
 	class NoGfxException : public WindowException
 	{
-	public:
 		using WindowException::WindowException;
+	public:
 		const char* GetType() const noexcept override;
 	};
 	/*class WindowException : public Exception
