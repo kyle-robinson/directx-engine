@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\DirectX">
+      <UniqueIdentifier>{e9d9150b-9396-449c-b6ef-0425d6f68040}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Resources">
+      <UniqueIdentifier>{ef2c65f7-41b2-43e1-9b98-763a8423a982}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -37,6 +43,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Graphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dxerr.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,23 +77,35 @@
     <ClInclude Include="Graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="dxerr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="HW3D.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
+    <None Include="DXGetErrorDescription.inl">
+      <Filter>Resource Files\DirectX</Filter>
+    </None>
+    <None Include="WoW_Select.ani">
+      <Filter>Resource Files\Resources</Filter>
+    </None>
+    <None Include="WoW_Normal.ani">
+      <Filter>Resource Files\Resources</Filter>
+    </None>
+    <None Include="DXGetErrorString.inl">
+      <Filter>Resource Files\DirectX</Filter>
+    </None>
+    <None Include="DXTrace.inl">
+      <Filter>Resource Files\DirectX</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Directx.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Resources</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="WoW_Normal.ani">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="WoW_Select.ani">
-      <Filter>Resource Files</Filter>
-    </None>
+    <ResourceCompile Include="HW3D.rc">
+      <Filter>Resource Files\Resources</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

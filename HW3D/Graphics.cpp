@@ -1,6 +1,11 @@
 #include "Graphics.h"
+#include "dxerr.h"
+#include <sstream>
 
 #pragma comment(lib, "d3d11.lib")
+
+#define GFX_THROW_FAILED( hrcall ) if( FAILED( hr == hrcall ) ) throw Graphics::HrException( __LINE__, __FILE__, hr )
+#define GFX_DEVICE_REMOVED_EXCEPT( hr ) Graphics::DeviceRemovedException( __LINE__, __FILE__, ( hr ) );
 
 Graphics::Graphics( HWND hWnd )
 {
@@ -21,8 +26,10 @@ Graphics::Graphics( HWND hWnd )
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	sd.Flags = 0;
 
+	HRESULT hr;
+
 	// create device, front/back buffers, swap chain and rendering context
-	D3D11CreateDeviceAndSwapChain(
+	GFX_THROW_FAILED(D3D11CreateDeviceAndSwapChain(
 		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
 		nullptr,
@@ -35,31 +42,11 @@ Graphics::Graphics( HWND hWnd )
 		&pDevice,
 		nullptr,
 		&pContext
-	);
+	));
 
 	// gain access to back buffer (sub-resource)
 	ID3D11Resource* pBackBuffer = nullptr;
-	pSwap->GetBuffer( 0, __uuidof( ID3D11Resource ), reinterpret_cast<void**>( &pBackBuffer ) );
-	pDevice->CreateRenderTargetView( pBackBuffer, nullptr, &pTarget );
+	GFX_THROW_FAILED( pSwap->GetBuffer( 0, __uuidof( ID3D11Resource ), reinterpret_cast<void**>( &pBackBuffer ) ) );
+	GFX_THROW_FAILED( pDevice->CreateRenderTargetView( pBackBuffer, nullptr, &pTarget ) ) ;
 	pBackBuffer->Release();
-}
-
-Graphics::~Graphics()
-{
-	if ( pContext != nullptr )
-		pContext->Release();
-
-	if ( pSwap != nullptr )
-		pSwap->Release();
-
-	if ( pDevice != nullptr )
-		pDevice->Release();
-
-	if ( pTarget != nullptr )
-		pTarget->Release();
-}
-
-void Graphics::EndFrame()
-{
-	pSwap->Present( 1u, 0u );
 }
