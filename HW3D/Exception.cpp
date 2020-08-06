@@ -10,6 +10,7 @@ const char* Exception::what() const noexcept
 	std::ostringstream oss;
 	oss << GetType() << std::endl << GetOriginString();
 	whatBuffer = oss.str();
+
 	return whatBuffer.c_str();
 }
 
