@@ -19,6 +19,9 @@
     <Filter Include="Resource Files\Resources">
       <UniqueIdentifier>{ef2c65f7-41b2-43e1-9b98-763a8423a982}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders">
+      <UniqueIdentifier>{219be665-8f2c-4f10-8c48-24d82d9e7483}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -113,5 +116,10 @@
     <ResourceCompile Include="HW3D.rc">
       <Filter>Resource Files\Resources</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="VertexShader.hlsl">
+      <Filter>Resource Files\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
