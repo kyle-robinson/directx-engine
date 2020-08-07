@@ -47,14 +47,18 @@ public:
 		std::string reason;
 	};
 public:
-	Graphics( HWND hWnd );
+	Graphics( HWND hWnd, int width, int height );
 	Graphics( const Graphics&  ) = delete;
 	Graphics& operator = ( const Graphics& ) = delete;
 	~Graphics() = default;
 	void EndFrame();
 	void ClearBuffer( float red, float green, float blue ) noexcept;
 	void DrawTriangle();
+	UINT GetWidth() const noexcept;
+	UINT GetHeight() const noexcept;
 private:
+	UINT width;
+	UINT height;
 #ifndef NDEBUG
 	DxgiInfoManager infoManager;
 #endif
