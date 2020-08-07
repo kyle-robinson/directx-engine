@@ -1,7 +1,6 @@
 #include "DxgiInfoManager.h"
 #include "Window.h"
 #include "Graphics.h"
-#include <dxgidebug.h>
 #include <memory>
 
 #pragma comment( lib, "dxguid.lib" )
@@ -26,13 +25,7 @@ DxgiInfoManager::DxgiInfoManager()
 		throw WND_LAST_EXCEPT();
 
 	HRESULT hr;
-	GFX_THROW_NOINFO( DxgiGetDebugInterface( __uuidof(IDXGIInfoQueue), &pDxgiInfoQueue ) );
-}
-
-DxgiInfoManager::~DxgiInfoManager()
-{
-	if ( pDxgiInfoQueue != nullptr )
-		pDxgiInfoQueue->Release();
+	GFX_THROW_NOINFO( DxgiGetDebugInterface( __uuidof(IDXGIInfoQueue), pDxgiInfoQueue.GetAddressOf() ) );
 }
 
 void DxgiInfoManager::Set() noexcept
