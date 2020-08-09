@@ -2,6 +2,7 @@
 #include "dxerr.h"
 #include <sstream>
 #include <d3dcompiler.h>
+#include <DirectXMath.h>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
@@ -63,11 +64,6 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 		nullptr,
 		&pContext
 	) );
-
-	// gain access to back buffer (sub-resource)
-	Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
-	GFX_THROW_INFO( pSwap->GetBuffer( 0, __uuidof( ID3D11Resource ), &pBackBuffer ) );
-	GFX_THROW_INFO( pDevice->CreateRenderTargetView( pBackBuffer.Get(), nullptr, pTarget.GetAddressOf() ) ) ;
 }
 
 void Graphics::EndFrame()
@@ -95,7 +91,7 @@ void Graphics::ClearBuffer(float red, float green, float blue) noexcept
 	pContext->ClearRenderTargetView( pTarget.Get(), color );
 }
 
-void Graphics::DrawTriangle( float angle )
+void Graphics::DrawTriangle( float angle, float x, float y )
 {
 	HRESULT hr;
 	
@@ -133,7 +129,7 @@ void Graphics::DrawTriangle( float angle )
 	bd.StructureByteStride = sizeof( Vertex );
 
 	D3D11_SUBRESOURCE_DATA sd = { 0 };
-	sd.pSysMem = vertices;
+	sd.pSysMem = &vertices;
 
 	GFX_THROW_INFO( pDevice->CreateBuffer( &bd, &sd, &pVertexBuffer ) );
 
@@ -159,7 +155,7 @@ void Graphics::DrawTriangle( float angle )
 	ibd.StructureByteStride = sizeof( unsigned short );
 
 	D3D11_SUBRESOURCE_DATA isd = { 0 };
-	isd.pSysMem = indices;
+	isd.pSysMem = &indices;
 	GFX_THROW_INFO(pDevice->CreateBuffer(&ibd, &isd, &pIndexBuffer));
 
 	// bind index buffer
@@ -168,19 +164,17 @@ void Graphics::DrawTriangle( float angle )
 	// create constant buffer for matrix transformation
 	struct ConstantBuffer
 	{
-		struct
-		{
-			float element[4][4];
-		} transformation;
+		DirectX::XMMATRIX transform;
 	};
 
 	const ConstantBuffer cb =
 	{
 		{
-			std::cos( angle ), std::sin( angle ), 0.0f, 0.0f,
-			-std::sin( angle ), std::cos( angle ), 0.0f, 0.0f,
-			0.0f, 0.0f, 1.0f, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f
+			DirectX::XMMatrixTranspose(
+				DirectX::XMMatrixRotationZ( angle ) *
+				DirectX::XMMatrixScaling( 3.0f / 4.0f, 1.0f, 1.0f ) *
+				DirectX::XMMatrixTranslation( x, y, 0.0f )
+			)
 		}
 	};
 
@@ -202,7 +196,7 @@ void Graphics::DrawTriangle( float angle )
 	// create pixel shader
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pPixelShader;
 	Microsoft::WRL::ComPtr<ID3DBlob> pBlob;
-	GFX_THROW_INFO( D3DReadFileToBlob( L"PixelShader.cso", &pBlob ) );
+	GFX_THROW_INFO( D3DReadFileToBlob( L"PixelShaderTri.cso", &pBlob ) );
 	GFX_THROW_INFO( pDevice->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader ) );
 
 	// bind pixel shader
@@ -210,7 +204,7 @@ void Graphics::DrawTriangle( float angle )
 
 	// create vertex shader
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> pVertexShader;
-	GFX_THROW_INFO( D3DReadFileToBlob( L"VertexShader.cso", &pBlob ) );
+	GFX_THROW_INFO( D3DReadFileToBlob( L"VertexShaderTri.cso", &pBlob ) );
 	GFX_THROW_INFO( pDevice->CreateVertexShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVertexShader ) );
 
 	// bind vertex shader
@@ -244,6 +238,186 @@ void Graphics::DrawTriangle( float angle )
 	vp.TopLeftY = 0;
 	pContext->RSSetViewports( 1u, &vp );
 
+	GFX_THROW_INFO_ONLY( pContext->DrawIndexed( (UINT)std::size( indices ), 0u, 0u ) );
+}
+
+void Graphics::DrawCube( float angle, float x, float z )
+{
+	HRESULT hr;
+
+	struct Vertex
+	{
+		struct
+		{
+			float x, y, z;
+		} pos;
+	};
+
+	const Vertex vertices[] =
+	{
+		// positions
+		{ -1.0f, -1.0f, -1.0f },
+		{  1.0f, -1.0f, -1.0f },
+		{ -1.0f,  1.0f, -1.0f },
+		{  1.0f,  1.0f, -1.0f },
+		{ -1.0f, -1.0f,  1.0f },
+		{  1.0f, -1.0f,  1.0f },
+		{ -1.0f,  1.0f,  1.0f },
+		{  1.0f,  1.0f,  1.0f }
+	};
+
+	// create and bind vertex buffer
+	Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
+	D3D11_BUFFER_DESC bd = { 0 };
+	bd.ByteWidth = sizeof( vertices );
+	bd.Usage = D3D11_USAGE_DEFAULT;
+	bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+	bd.CPUAccessFlags = 0u;
+	bd.MiscFlags = 0u;
+	bd.StructureByteStride = sizeof( Vertex );
+	
+	D3D11_SUBRESOURCE_DATA bsd = { 0 };
+	bsd.pSysMem = &vertices;
+	GFX_THROW_INFO( pDevice->CreateBuffer( &bd, &bsd, &pVertexBuffer ) );
+
+	const UINT stride = sizeof( Vertex );
+	const UINT offset = 0u;
+	pContext->IASetVertexBuffers( 0u, 1u, pVertexBuffer.GetAddressOf(), &stride, &offset );
+
+	// create and bind index buffer
+	const unsigned short indices[] =
+	{
+		0, 2, 1,	2, 3, 1,
+		1, 3, 5,	3, 7, 5,
+		2, 6, 3,	3, 6, 7,
+		4, 5, 7,	4, 7, 6,
+		0, 4, 2,	2, 4, 6,
+		0, 1, 4,	1, 5, 4
+	};
+
+	Microsoft::WRL::ComPtr<ID3D11Buffer> pIndexBuffer;
+	D3D11_BUFFER_DESC ibd = { 0 };
+	ibd.ByteWidth = sizeof( indices );
+	ibd.Usage = D3D11_USAGE_DEFAULT;
+	ibd.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	ibd.CPUAccessFlags = 0u;
+	ibd.MiscFlags = 0u;
+	ibd.StructureByteStride = sizeof( unsigned short );
+	
+	D3D11_SUBRESOURCE_DATA isd = { 0 };
+	isd.pSysMem = &indices;
+
+	GFX_THROW_INFO( pDevice->CreateBuffer( &ibd, &isd, &pIndexBuffer ) );
+	pContext->IASetIndexBuffer( pIndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0u );
+
+	// create and bind constant buffer
+	struct ConstantBuffer
+	{
+		DirectX::XMMATRIX transform;
+	};
+
+	const ConstantBuffer cb =
+	{
+		{
+			DirectX::XMMatrixTranspose(
+				DirectX::XMMatrixRotationZ( angle ) *
+				DirectX::XMMatrixRotationX( angle ) *
+				DirectX::XMMatrixTranslation( x, 0.0f, z + 4.0f ) *
+				DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 10.0f )
+			)
+		}
+	};
+
+	Microsoft::WRL::ComPtr<ID3D11Buffer> pConstantBuffer;
+	D3D11_BUFFER_DESC cbd = { 0 };
+	cbd.ByteWidth = sizeof( cb );
+	cbd.Usage = D3D11_USAGE_DYNAMIC;
+	cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	cbd.MiscFlags = 0u;
+	cbd.StructureByteStride = 0u;
+
+	D3D11_SUBRESOURCE_DATA csd = { 0 };
+	csd.pSysMem = &cb;
+
+	GFX_THROW_INFO( pDevice->CreateBuffer( &cbd, &csd, &pConstantBuffer ) );
+	pContext->VSSetConstantBuffers( 0u, 1u, pConstantBuffer.GetAddressOf() );
+
+	// create and bind constant color buffer
+	struct ConstantBuffer2
+	{
+		struct
+		{
+			float r, g, b, a;
+		} face_colors[6];
+	};
+
+	const ConstantBuffer2 cb2 =
+	{
+		{
+			{ 1.0f, 0.0f, 1.0f },
+			{ 1.0f, 0.0f, 0.0f },
+			{ 0.0f, 1.0f, 0.0f },
+			{ 0.0f, 0.0f, 1.0f },
+			{ 1.0f, 1.0f, 0.0f },
+			{ 0.0f, 1.0f, 1.0f }
+		}
+	};
+
+	Microsoft::WRL::ComPtr<ID3D11Buffer> pConstantBuffer2;
+	D3D11_BUFFER_DESC cbd2 = { 0 };
+	cbd2.ByteWidth = sizeof( cb2 );
+	cbd2.Usage = D3D11_USAGE_DEFAULT;
+	cbd2.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	cbd2.CPUAccessFlags = 0u;
+	cbd2.MiscFlags = 0u;
+	cbd2.StructureByteStride = 0u;
+
+	D3D11_SUBRESOURCE_DATA csd2 = { 0 };
+	csd2.pSysMem = &cb2;
+	
+	GFX_THROW_INFO( pDevice->CreateBuffer( &cbd2, &csd2, &pConstantBuffer2 ) );
+	pContext->PSSetConstantBuffers( 0u, 1u, pConstantBuffer2.GetAddressOf() );
+
+	// create and bind pixel shader
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> pPixelShader;
+	Microsoft::WRL::ComPtr<ID3DBlob> pBlob;
+	GFX_THROW_INFO( D3DReadFileToBlob( L"PixelShaderCube.cso", &pBlob ) );
+	GFX_THROW_INFO( pDevice->CreatePixelShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pPixelShader ) );
+	pContext->PSSetShader( pPixelShader.Get(), nullptr, 0u );
+
+	// create and bind vertex shader
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> pVertexShader;
+	GFX_THROW_INFO( D3DReadFileToBlob( L"VertexShaderCube.cso", &pBlob ) );
+	GFX_THROW_INFO( pDevice->CreateVertexShader( pBlob->GetBufferPointer(), pBlob->GetBufferSize(), nullptr, &pVertexShader ) );
+	pContext->VSSetShader( pVertexShader.Get(), nullptr, 0u );
+
+	// input layout
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> pInputLayout;
+	const D3D11_INPUT_ELEMENT_DESC ied[] =
+	{
+		{ "Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+	GFX_THROW_INFO( pDevice->CreateInputLayout( ied, (UINT)std::size( ied ), pBlob->GetBufferPointer(), pBlob->GetBufferSize(), &pInputLayout ) );
+	pContext->IASetInputLayout( pInputLayout.Get() );
+
+	// bind render target
+	pContext->OMSetRenderTargets( 1u, pTarget.GetAddressOf(), nullptr );
+
+	// set topology
+	pContext->IASetPrimitiveTopology( D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
+
+	// configure viewport
+	D3D11_VIEWPORT vp;
+	vp.Width = GetWidth();
+	vp.Height = GetHeight();
+	vp.MinDepth = 0;
+	vp.MaxDepth = 1;
+	vp.TopLeftX = 0;
+	vp.TopLeftY = 0;
+	pContext->RSSetViewports( 1u, &vp );
+
+	// draw cube
 	GFX_THROW_INFO_ONLY( pContext->DrawIndexed( (UINT)std::size( indices ), 0u, 0u ) );
 }
 

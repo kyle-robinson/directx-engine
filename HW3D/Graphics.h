@@ -53,7 +53,8 @@ public:
 	~Graphics() = default;
 	void EndFrame();
 	void ClearBuffer( float red, float green, float blue ) noexcept;
-	void DrawTriangle( float angle );
+	void DrawTriangle( float angle, float x, float y );
+	void DrawCube( float angle, float x, float z );
 	UINT GetWidth() const noexcept;
 	UINT GetHeight() const noexcept;
 private:
