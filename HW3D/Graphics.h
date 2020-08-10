@@ -60,7 +60,7 @@ public:
 	void ClearBuffer( float red, float green, float blue ) noexcept;
 	void DrawTriangle( float angle, float x, float y );
 	void DrawCube( float angle, float x, float z );
-	void DrawIndexed( UINT count ) noexcept;
+	void DrawIndexed( UINT count ) noexcept(!IS_DEBUG);
 	void SetProjection( DirectX::FXMMATRIX proj ) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
 	UINT GetWidth() const noexcept;
