@@ -1,4 +1,5 @@
 #include "Graphics.h"
+#include "GraphicsThrowMacros.h"
 #include "dxerr.h"
 #include <sstream>
 #include <d3dcompiler.h>
@@ -6,22 +7,6 @@
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
-
-#define GFX_EXCEPT_NOINFO( hr ) Graphics::HrException( __LINE__, __FILE__, ( hr ) )
-#define GFX_THROW_NOINFO( hrcall ) if( FAILED( hr = hrcall ) ) throw Graphics::HrException( __LINE__, __FILE__, hr )
-//#define GFX_THROW_FAILED( hrcall ) if( FAILED( hr == hrcall ) ) throw Graphics::HrException( __LINE__, __FILE__, hr )
-
-#ifndef NDEBUG
-#define GFX_EXCEPT( hr ) Graphics::HrException( __LINE__, FILE__, ( hr ), infoManager.GetMessages )
-#define GFX_THROW_INFO( hrcall ) infoManager.Set(); if( FAILED( hr = ( hrcall ) ) ) throw GFX_EXCEPT( hr )
-#define GFX_DEVICE_REMOVED_EXCEPT( hr ) Graphics::DeviceRemovedException( __LINE__, __FILE__, ( hr ), infoManager.GetMessages() )
-#define GFX_THROW_INFO_ONLY( call ) infoManager.Set(); { auto v = infoManager.GetMessages(); if ( !v.empty() ) { throw Graphics::InfoException( __LINE__, __FILE__, v ) } }
-
-#define GFX_EXCEPT( hr ) Graphics::HrException( __LINE__, __FILE__, ( hr ) )
-#define GFX_THROW_INFO( hrcall ) GFX_THROW_NOINFO( hrcall )
-#define GFX_DEVICE_REMOVED_EXCEPT( hr ) Graphics::DeviceRemovedException( __LINE__, __FILE__, ( hr ) );
-#define GFX_THROW_INFO_ONLY( call ) ( call )
-#endif
 
 Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height( height )
 {
@@ -103,6 +88,16 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 
 	GFX_THROW_INFO( pDevice->CreateDepthStencilView( pDepthStencil.Get(), &descDSV, &pDSV ) );
 	pContext->OMSetRenderTargets( 1u, pTarget.GetAddressOf(), pDSV.Get() );
+
+	// configure viewports
+	D3D11_VIEWPORT vp;
+	vp.Width = (UINT)GetWidth();
+	vp.Height = (UINT)GetHeight();
+	vp.MinDepth = 0.0f;
+	vp.MaxDepth = 1.0f;
+	vp.TopLeftX = 0.0f;
+	vp.TopLeftY = 0.0f;
+	pContext->RSSetViewports( 1u, &vp );
 }
 
 void Graphics::EndFrame()
@@ -458,6 +453,21 @@ void Graphics::DrawCube( float angle, float x, float z )
 	GFX_THROW_INFO_ONLY( pContext->DrawIndexed( (UINT)std::size( indices ), 0u, 0u ) );
 }
 
+void Graphics::DrawIndexed( UINT count ) noexcept
+{
+	GFX_THROW_INFO_ONLY( pContext->DrawIndexed( count, 0u, 0u ) );
+}
+
+void Graphics::SetProjection( DirectX::FXMMATRIX proj ) noexcept
+{
+	projection = proj;
+}
+
+DirectX::XMMATRIX Graphics::GetProjection() const noexcept
+{
+	return projection;
+}
+
 UINT Graphics::GetWidth() const noexcept
 {
 	return width;
@@ -516,8 +526,8 @@ std::string Graphics::HrException::GetErrorDescription() const noexcept
 	WCHAR buf[512];
 	DXGetErrorDescription( hr, buf, sizeof( buf ) );
 
-	std::wstring ws(buf);
-	std::string str(ws.begin(), ws.end());
+	std::wstring ws( buf );
+	std::string str( ws.begin(), ws.end() );
 
 	return str;
 }

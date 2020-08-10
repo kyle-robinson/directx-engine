@@ -3,6 +3,10 @@
 #include "Exception.h"
 #include <d3d11.h>
 #include <wrl.h>
+#include <d3dcompiler.h>
+#include <DirectXMath.h>
+#include <memory>
+#include <random>
 
 #include "DxgiInfoManager.h"
 #include <vector>
@@ -10,6 +14,7 @@
 
 class Graphics
 {
+	friend class Bindable;
 public:
 	class GfxException : public Exception
 	{
@@ -55,9 +60,13 @@ public:
 	void ClearBuffer( float red, float green, float blue ) noexcept;
 	void DrawTriangle( float angle, float x, float y );
 	void DrawCube( float angle, float x, float z );
+	void DrawIndexed( UINT count ) noexcept;
+	void SetProjection( DirectX::FXMMATRIX proj ) noexcept;
+	DirectX::XMMATRIX GetProjection() const noexcept;
 	UINT GetWidth() const noexcept;
 	UINT GetHeight() const noexcept;
 private:
+	DirectX::XMMATRIX projection;
 	UINT width;
 	UINT height;
 #ifndef NDEBUG

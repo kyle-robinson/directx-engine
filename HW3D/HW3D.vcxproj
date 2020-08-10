@@ -161,28 +161,52 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="Bindable.cpp" />
+    <ClCompile Include="Box.cpp" />
+    <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="dxerr.cpp" />
     <ClCompile Include="DxgiInfoManager.cpp" />
     <ClCompile Include="Exception.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="IndexBuffer.cpp" />
+    <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Topology.cpp" />
+    <ClCompile Include="TransformCbuf.cpp" />
+    <ClCompile Include="VertexBuffer.cpp" />
+    <ClCompile Include="VertexShader.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="Bindable.h" />
+    <ClInclude Include="BindableBase.h" />
+    <ClInclude Include="Box.h" />
+    <ClInclude Include="ConstantBuffers.h" />
+    <ClInclude Include="Drawable.h" />
     <ClInclude Include="dxerr.h" />
     <ClInclude Include="DxgiInfoManager.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="Graphics.h" />
+    <ClInclude Include="GraphicsThrowMacros.h" />
+    <ClInclude Include="IndexBuffer.h" />
+    <ClInclude Include="InputLayout.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="PixelShader.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Topology.h" />
+    <ClInclude Include="TransformCbuf.h" />
+    <ClInclude Include="VertexBuffer.h" />
+    <ClInclude Include="VertexShader.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsInclude.h" />
+    <ClInclude Include="WindowsThrowMacros.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HW3D.rc" />
