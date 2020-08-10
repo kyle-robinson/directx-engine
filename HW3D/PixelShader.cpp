@@ -25,10 +25,3 @@ ID3DBlob* PixelShader::GetByteCode() const noexcept
 {
 	return pBytecodeBlob.Get();
 }
-
-std::wstring PixelShader::ToWide( const std::string& narrow )
-{
-	wchar_t wide[512];
-	mbstowcs_s( nullptr, wide, narrow.c_str(), _TRUNCATE );
-	return wide;
-}

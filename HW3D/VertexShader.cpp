@@ -25,10 +25,3 @@ ID3DBlob* VertexShader::GetByteCode() const noexcept
 {
 	return pBytecodeBlob.Get();
 }
-
-std::wstring VertexShader::ToWide( const std::string& narrow )
-{
-	wchar_t wide[512];
-	mbstowcs_s( nullptr, wide, narrow.c_str(), _TRUNCATE );
-	return wide;
-}
