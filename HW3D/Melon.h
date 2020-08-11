@@ -1,16 +1,17 @@
 #pragma once
 #include "DrawableBase.h"
 
-class Box : public DrawableBase<Box>
+class Melon : public DrawableBase<Melon>
 {
 public:
-	Box( Graphics& gfx, std::mt19937& rng,
+	Melon(Graphics& gfx, std::mt19937& rng,
 		std::uniform_real_distribution<float>& adist,
 		std::uniform_real_distribution<float>& ddist,
 		std::uniform_real_distribution<float>& odist,
 		std::uniform_real_distribution<float>& rdist,
-		std::uniform_real_distribution<float>& bdist );
-	void Update( float dt ) noexcept override;
+		std::uniform_int_distribution<int>& longdist,
+		std::uniform_int_distribution<int>& latdist);
+	void Update(float dt) noexcept override;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 private:
 	// positional
@@ -20,6 +21,4 @@ private:
 	// speed (delta/s)
 	float droll, dpitch, dyaw;
 	float dtheta, dphi, dchi;
-	// model transform
-	DirectX::XMFLOAT3X3 mt;
 };
