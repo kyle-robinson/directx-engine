@@ -16,9 +16,6 @@
     <Filter Include="Resource Files\DirectX">
       <UniqueIdentifier>{e9d9150b-9396-449c-b6ef-0425d6f68040}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Resources">
-      <UniqueIdentifier>{ef2c65f7-41b2-43e1-9b98-763a8423a982}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{219be665-8f2c-4f10-8c48-24d82d9e7483}</UniqueIdentifier>
     </Filter>
@@ -37,8 +34,29 @@
     <Filter Include="Source Files\Drawables">
       <UniqueIdentifier>{b413e64f-b54d-4b16-b8c0-01f0e69b7a9c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Shaders\Old">
+    <Filter Include="Resource Files\Textures">
+      <UniqueIdentifier>{62552bf7-c498-4fbe-8e27-58dd9414eb44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Cursors">
+      <UniqueIdentifier>{966292aa-632b-461c-a420-d8352e8de9e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Icons">
+      <UniqueIdentifier>{ef2c65f7-41b2-43e1-9b98-763a8423a982}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Textures">
+      <UniqueIdentifier>{a0ed0aa8-5098-49f6-a304-afaaa9231b91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Textures">
+      <UniqueIdentifier>{e50df6bf-020b-4037-93e1-08b64139cb37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Cube/Tri">
       <UniqueIdentifier>{7ad41d48-2d62-4c9b-9371-7102f9f89b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Primitives">
+      <UniqueIdentifier>{3a3c6aa7-ca9b-44f3-87f2-46ffd1b6557e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Textures">
+      <UniqueIdentifier>{768a9847-7119-4670-910f-7ea110429b6d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -108,6 +126,21 @@
     <ClCompile Include="Melon.cpp">
       <Filter>Source Files\Drawables</Filter>
     </ClCompile>
+    <ClCompile Include="Surface.cpp">
+      <Filter>Source Files\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="GDIPlusManager.cpp">
+      <Filter>Source Files\Textures</Filter>
+    </ClCompile>
+    <ClCompile Include="Sheet.cpp">
+      <Filter>Source Files\Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>Source Files\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="Sampler.cpp">
+      <Filter>Source Files\Bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsInclude.h">
@@ -117,9 +150,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Exception.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Keyboard.h">
@@ -215,16 +245,28 @@
     <ClInclude Include="Cube.h">
       <Filter>Header Files\Drawables</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Surface.h">
+      <Filter>Header Files\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="GDIPlusManager.h">
+      <Filter>Header Files\Textures</Filter>
+    </ClInclude>
+    <ClInclude Include="Sheet.h">
+      <Filter>Header Files\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Sampler.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
       <Filter>Resource Files\DirectX</Filter>
-    </None>
-    <None Include="WoW_Select.ani">
-      <Filter>Resource Files\Resources</Filter>
-    </None>
-    <None Include="WoW_Normal.ani">
-      <Filter>Resource Files\Resources</Filter>
     </None>
     <None Include="DXGetErrorString.inl">
       <Filter>Resource Files\DirectX</Filter>
@@ -232,41 +274,59 @@
     <None Include="DXTrace.inl">
       <Filter>Resource Files\DirectX</Filter>
     </None>
+    <None Include="res\cursors\WoW_Normal.ani">
+      <Filter>Resource Files\Cursors</Filter>
+    </None>
+    <None Include="res\cursors\WoW_Select.ani">
+      <Filter>Resource Files\Cursors</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Directx.ico">
-      <Filter>Resource Files\Resources</Filter>
+      <Filter>Resource Files\Icons</Filter>
+    </Image>
+    <Image Include="res\textures\neptune.jpg">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="res\textures\purpleheart.png">
+      <Filter>Resource Files\Textures</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="HW3D.rc">
-      <Filter>Resource Files\Resources</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="ColorBlendVS.hlsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </FxCompile>
     <FxCompile Include="VertexShaderTri.hlsl">
-      <Filter>Resource Files\Shaders\Old</Filter>
+      <Filter>Resource Files\Shaders\Cube/Tri</Filter>
     </FxCompile>
     <FxCompile Include="PixelShaderCube.hlsl">
-      <Filter>Resource Files\Shaders\Old</Filter>
+      <Filter>Resource Files\Shaders\Cube/Tri</Filter>
     </FxCompile>
     <FxCompile Include="PixelShaderTri.hlsl">
-      <Filter>Resource Files\Shaders\Old</Filter>
+      <Filter>Resource Files\Shaders\Cube/Tri</Filter>
     </FxCompile>
     <FxCompile Include="VertexShaderCube.hlsl">
-      <Filter>Resource Files\Shaders\Old</Filter>
-    </FxCompile>
-    <FxCompile Include="ColorBlendPS.hlsl">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\Shaders\Cube/Tri</Filter>
     </FxCompile>
     <FxCompile Include="ColorIndexVS.hlsl">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\Shaders\Primitives</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorBlendPS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorBlendVS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives</Filter>
     </FxCompile>
     <FxCompile Include="ColorIndexPS.hlsl">
-      <Filter>Resource Files\Shaders</Filter>
+      <Filter>Resource Files\Shaders\Primitives</Filter>
     </FxCompile>
+    <FxCompile Include="TexturePS.hlsl">
+      <Filter>Resource Files\Shaders\Textures</Filter>
+    </FxCompile>
+    <FxCompile Include="TextureVS.hlsl">
+      <Filter>Resource Files\Shaders\Textures</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="HW3D.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
