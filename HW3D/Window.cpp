@@ -156,16 +156,22 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 	/* Keyboard Messages */
 	case WM_SYSKEYDOWN:
 	case WM_KEYDOWN:
+		if ( ImGui::GetIO().WantCaptureKeyboard )
+			break;
 		if ( !( lParam & 0x40000000 ) || kbd.AutorepeatIsEnabled() )
 			kbd.OnKeyPressed( static_cast<unsigned char>(wParam) );
 		break;
 
 	case WM_SYSKEYUP:
 	case WM_KEYUP:
+		if ( ImGui::GetIO().WantCaptureKeyboard )
+			break;
 		kbd.OnKeyReleased( static_cast<unsigned char>(wParam) );
 		break;
 
 	case WM_CHAR:
+		if ( ImGui::GetIO().WantCaptureKeyboard )
+			break;
 		kbd.OnChar( static_cast<unsigned char>(wParam) );
 		break;
 	/* End Keyboard Messages */
@@ -173,6 +179,8 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 	/* Mouse Messages */
 	case WM_MOUSEMOVE:
 	{
+		if ( ImGui::GetIO().WantCaptureMouse )
+			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		// in client region
 		if ( pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height )
@@ -202,6 +210,8 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 
 	case WM_LBUTTONDOWN:
 	{
+		if ( ImGui::GetIO().WantCaptureMouse )
+			break;
 		SetCursor(LoadCursor( Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR2 ));
 		const POINTS pt = MAKEPOINTS( lParam );
 		mouse.OnLeftPressed( pt.x, pt.y );
@@ -210,6 +220,8 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 
 	case WM_RBUTTONDOWN:
 	{
+		if ( ImGui::GetIO().WantCaptureMouse )
+			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		mouse.OnRightPressed( pt.x, pt.y );
 		break;
@@ -217,6 +229,8 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 
 	case WM_LBUTTONUP:
 	{
+		if ( ImGui::GetIO().WantCaptureMouse )
+			break;
 		SetCursor(LoadCursor(Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR1));
 		const POINTS pt = MAKEPOINTS( lParam );
 		mouse.OnLeftReleased( pt.x, pt.y );
@@ -225,6 +239,8 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 
 	case WM_RBUTTONUP:
 	{
+		if ( ImGui::GetIO().WantCaptureMouse )
+			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		mouse.OnRightReleased( pt.x, pt.y );
 		break;
@@ -232,6 +248,8 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 
 	case WM_MOUSEWHEEL:
 	{
+		if ( ImGui::GetIO().WantCaptureMouse )
+			break;
 		const POINTS pt = MAKEPOINTS( lParam );
 		const int delta = GET_WHEEL_DELTA_WPARAM( wParam );
 		mouse.OnWheelDelta( pt.x, pt.y, delta );
