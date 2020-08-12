@@ -9,14 +9,14 @@
 
 #include "imgui.h"
 #include "imgui_impl_win32.h"
-#ifndef WIN32_LEAN_AND_MEAN
+/*#ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
 #endif
-#include <windows.h>
+#include <windows.h>*/
 #include <tchar.h>
 
 // Using XInput library for gamepad (with recent Windows SDK this may leads to executables which won't run on Windows 7)
-#ifndef IMGUI_IMPL_WIN32_DISABLE_GAMEPAD
+/*#ifndef IMGUI_IMPL_WIN32_DISABLE_GAMEPAD
 #include <XInput.h>
 #else
 #define IMGUI_IMPL_WIN32_DISABLE_LINKING_XINPUT
@@ -24,7 +24,7 @@
 #if defined(_MSC_VER) && !defined(IMGUI_IMPL_WIN32_DISABLE_LINKING_XINPUT)
 #pragma comment(lib, "xinput")
 //#pragma comment(lib, "Xinput9_1_0")
-#endif
+#endif*/
 
 // CHANGELOG
 // (minor and older changes stripped away, please see git history for details)
@@ -61,7 +61,7 @@ static bool                 g_HasGamepad = false;
 static bool                 g_WantUpdateHasGamepad = true;
 
 // Functions
-bool    ImGui_ImplWin32_Init(void* hwnd)
+bool    ImGui_ImplWin32_Init(HWND hwnd)
 {
     if (!::QueryPerformanceFrequency((LARGE_INTEGER*)&g_TicksPerSecond))
         return false;
@@ -69,7 +69,7 @@ bool    ImGui_ImplWin32_Init(void* hwnd)
         return false;
 
     // Setup back-end capabilities flags
-    g_hWnd = (HWND)hwnd;
+    g_hWnd = hwnd;
     ImGuiIO& io = ImGui::GetIO();
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;         // We can honor GetMouseCursor() values (optional)
     io.BackendFlags |= ImGuiBackendFlags_HasSetMousePos;          // We can honor io.WantSetMousePos requests (optional, rarely used)
@@ -118,7 +118,7 @@ static bool ImGui_ImplWin32_UpdateMouseCursor()
     if (imgui_cursor == ImGuiMouseCursor_None || io.MouseDrawCursor)
     {
         // Hide OS mouse cursor if imgui is drawing it or if it wants no cursor
-        ::SetCursor(NULL);
+        //::SetCursor(NULL);
     }
     else
     {
@@ -136,7 +136,7 @@ static bool ImGui_ImplWin32_UpdateMouseCursor()
         case ImGuiMouseCursor_Hand:         win32_cursor = IDC_HAND; break;
         case ImGuiMouseCursor_NotAllowed:   win32_cursor = IDC_NO; break;
         }
-        ::SetCursor(::LoadCursor(NULL, win32_cursor));
+        //::SetCursor(::LoadCursor(NULL, win32_cursor));
     }
     return true;
 }
@@ -163,7 +163,7 @@ static void ImGui_ImplWin32_UpdateMousePos()
 }
 
 // Gamepad navigation mapping
-static void ImGui_ImplWin32_UpdateGamepads()
+/*static void ImGui_ImplWin32_UpdateGamepads()
 {
 #ifndef IMGUI_IMPL_WIN32_DISABLE_GAMEPAD
     ImGuiIO& io = ImGui::GetIO();
@@ -209,7 +209,7 @@ static void ImGui_ImplWin32_UpdateGamepads()
         #undef MAP_ANALOG
     }
 #endif // #ifndef IMGUI_IMPL_WIN32_DISABLE_GAMEPAD
-}
+}*/
 
 void    ImGui_ImplWin32_NewFrame()
 {
@@ -246,7 +246,7 @@ void    ImGui_ImplWin32_NewFrame()
     }
 
     // Update game controllers (if enabled and available)
-    ImGui_ImplWin32_UpdateGamepads();
+    //ImGui_ImplWin32_UpdateGamepads();
 }
 
 // Allow compilation with old Windows SDK. MinGW doesn't have default _WIN32_WINNT/WINVER versions.
@@ -437,9 +437,9 @@ float ImGui_ImplWin32_GetDpiScaleForMonitor(void* monitor)
     return xdpi / 96.0f;
 }
 
-float ImGui_ImplWin32_GetDpiScaleForHwnd(void* hwnd)
+float ImGui_ImplWin32_GetDpiScaleForHwnd(HWND hwnd)
 {
-    HMONITOR monitor = ::MonitorFromWindow((HWND)hwnd, MONITOR_DEFAULTTONEAREST);
+    HMONITOR monitor = ::MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
     return ImGui_ImplWin32_GetDpiScaleForMonitor(monitor);
 }
 

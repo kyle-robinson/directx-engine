@@ -165,6 +165,9 @@
     <ClCompile Include="res\imgui\imgui_widgets.cpp">
       <Filter>Resource Files\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="ImGuiManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsInclude.h">
@@ -313,6 +316,9 @@
     </ClInclude>
     <ClInclude Include="res\imgui\imstb_truetype.h">
       <Filter>Resource Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuiManager.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

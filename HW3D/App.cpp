@@ -9,11 +9,15 @@
 #include <algorithm>
 #include <sstream>
 
+#include "res/imgui/imgui.h"
+#include "res/imgui/imgui_impl_win32.h"
+#include "res/imgui/imgui_impl_dx11.h"
+
 #include "Surface.h"
 #include "GDIPlusManager.h"
 GDIPlusManager gdipm;
 
-App::App() : wnd( 800, 600, "DirectX 11 Engine Window" )
+App::App() : wnd( 1000, 800, "DirectX 11 Engine Window" )
 {
 	class Factory
 	{
@@ -86,11 +90,24 @@ void App::DoFrame()
 	auto dt = timer.Mark();
 	wnd.Gfx().ClearBuffer( 0.07f, 0.0f, 0.12f );
 
+	// objects
 	for ( auto& d : drawables )
 	{
 		d->Update( wnd.kbd.KeyIsPressed( VK_ESCAPE ) ? 0.0f : dt );
 		d->Draw( wnd.Gfx() );
 	}
+
+	// imgui
+	ImGui_ImplDX11_NewFrame();
+	ImGui_ImplWin32_NewFrame();
+	ImGui::NewFrame();
+
+	static bool show_demo_window = true;
+	if ( show_demo_window )
+		ImGui::ShowDemoWindow( &show_demo_window );
+
+	ImGui::Render();
+	ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
 	
 	wnd.Gfx().EndFrame();
 }

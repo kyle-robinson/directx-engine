@@ -177,6 +177,7 @@
     <ClCompile Include="Exception.cpp" />
     <ClCompile Include="GDIPlusManager.cpp" />
     <ClCompile Include="Graphics.cpp" />
+    <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="Keyboard.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="GDIPlusManager.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsThrowMacros.h" />
+    <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="IndexedTriangleList.h" />
     <ClInclude Include="InputLayout.h" />

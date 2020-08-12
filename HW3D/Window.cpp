@@ -1,6 +1,7 @@
 #include "Window.h"
 #include "resource.h"
 #include <sstream>
+#include "res/imgui/imgui_impl_win32.h"
 
 Window::WindowClass Window::WindowClass::wndClass;
 
@@ -41,9 +42,7 @@ Window::Window( int width, int height, const char* name ) : width( width ), heig
 {
 	// calculate window size
 	RECT wr = { 0 };
-	wr.left = 100;
 	wr.right = width + wr.left;
-	wr.top = 100;
 	wr.bottom = height + wr.bottom;
 	if ( AdjustWindowRect( &wr, WS_CAPTION | WS_MINIMIZEBOX | WS_SYSMENU, FALSE ) == 0 )
 		throw WND_LAST_EXCEPT();
@@ -66,12 +65,15 @@ Window::Window( int width, int height, const char* name ) : width( width ), heig
 
 	ShowWindow( hWnd, SW_SHOWDEFAULT );
 
+	ImGui_ImplWin32_Init( hWnd );
+
 	// create graphics object
 	pGfx = std::make_unique<Graphics>( hWnd, this->width, this->height );
 }
 
 Window::~Window()
 {
+	ImGui_ImplWin32_Shutdown();
 	DestroyWindow( hWnd );
 }
 
@@ -138,6 +140,9 @@ LRESULT WINAPI Window::HandleMsgThunk( HWND hWnd, UINT msg, WPARAM wParam, LPARA
 
 LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept
 {
+	if ( ImGui_ImplWin32_WndProcHandler( hWnd, msg, wParam, lParam ) )
+		return true;
+
 	switch ( msg )
 	{
 	case WM_CLOSE:
