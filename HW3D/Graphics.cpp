@@ -4,7 +4,9 @@
 #include <sstream>
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
-#include "res/imgui//imgui_impl_dx11.h"
+
+#include "res/imgui/imgui_impl_dx11.h"
+#include "res/imgui/imgui_impl_win32.h"
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
@@ -103,8 +105,28 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 	ImGui_ImplDX11_Init( pDevice.Get(), pContext.Get() );
 }
 
+void Graphics::BeginFrame( float red, float green, float blue ) noexcept
+{
+	if ( imguiEnabled )
+	{
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
+
+	const float color[] = { red, green, blue };
+	pContext->ClearRenderTargetView( pTarget.Get(), color );
+	pContext->ClearDepthStencilView( pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u );
+}
+
 void Graphics::EndFrame()
 {
+	if ( imguiEnabled )
+	{
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+	}
+	
 	HRESULT hr;
 #ifndef NDEBUG
 	infoManager.Set();
@@ -120,13 +142,6 @@ void Graphics::EndFrame()
 			throw GFX_EXCEPT( hr );
 		}
 	}
-}
-
-void Graphics::ClearBuffer(float red, float green, float blue) noexcept
-{
-	const float color[] = { red, green, blue };
-	pContext->ClearRenderTargetView( pTarget.Get(), color );
-	pContext->ClearDepthStencilView( pDSV.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u );
 }
 
 void Graphics::DrawTriangle( float angle, float x, float y )
@@ -469,6 +484,21 @@ void Graphics::SetProjection( DirectX::FXMMATRIX proj ) noexcept
 DirectX::XMMATRIX Graphics::GetProjection() const noexcept
 {
 	return projection;
+}
+
+void Graphics::EnableImGui() noexcept
+{
+	imguiEnabled = true;
+}
+
+void Graphics::DisableImGui() noexcept
+{
+	imguiEnabled = false;
+}
+
+bool Graphics::IsImGuiEnabled() const noexcept
+{
+	return imguiEnabled;
 }
 
 UINT Graphics::GetWidth() const noexcept

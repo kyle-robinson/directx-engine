@@ -87,27 +87,50 @@ App::~App() { }
 
 void App::DoFrame()
 {
-	auto dt = timer.Mark();
-	wnd.Gfx().ClearBuffer( 0.07f, 0.0f, 0.12f );
+	const auto dt = timer.Mark() * speed_factor;
+
+	// imgui setup
+	if ( wnd.kbd.KeyIsPressed( VK_F2 ) )
+		wnd.Gfx().DisableImGui();
+	else
+		wnd.Gfx().EnableImGui();
+
+	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
 
 	// objects
 	for ( auto& d : drawables )
 	{
-		d->Update( wnd.kbd.KeyIsPressed( VK_ESCAPE ) ? 0.0f : dt );
+		d->Update( wnd.kbd.KeyIsPressed( VK_F1 ) ? 0.0f : dt );
 		d->Draw( wnd.Gfx() );
 	}
 
 	// imgui
-	ImGui_ImplDX11_NewFrame();
-	ImGui_ImplWin32_NewFrame();
-	ImGui::NewFrame();
+	if ( wnd.Gfx().IsImGuiEnabled() )
+	{
+		if ( ImGui::Begin( "Debug Window", FALSE, ImGuiWindowFlags_AlwaysAutoResize  ) )
+		{
+			if ( ImGui::CollapsingHeader( "Simulation Speed" ) )
+			{
+				ImGui::SliderFloat( "Speed Factor", &speed_factor, 0.0f, 4.0f );
+				static char char_buffer[512];
+				ImGui::InputText( "Hammerlock", char_buffer, sizeof( char_buffer ) );
+			}
 
-	static bool show_demo_window = true;
-	if ( show_demo_window )
-		ImGui::ShowDemoWindow( &show_demo_window );
+			if ( ImGui::CollapsingHeader( "Application Info" ) )
+			{
+				ImGui::Text( "Frametime: %.3f / Framerate: (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate );
+			}
 
-	ImGui::Render();
-	ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+			if ( ImGui::CollapsingHeader( "About" ) )
+			{
+				ImGui::Text( "DirectX Project Demo by Kyle Robinson" );
+				ImGui::NewLine();
+				ImGui::Text( "Email: kylerobinson456@outlook.com" );
+				ImGui::Text( "Twitter: @KyleRobinson42" );
+			}
+		}
+		ImGui::End();
+	}
 	
 	wnd.Gfx().EndFrame();
 }
