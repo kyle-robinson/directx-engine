@@ -96,6 +96,7 @@ void App::DoFrame()
 		wnd.Gfx().EnableImGui();
 
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
+	wnd.Gfx().SetCamera( camera.GetMatrix() );
 
 	// objects
 	for ( auto& d : drawables )
@@ -107,7 +108,7 @@ void App::DoFrame()
 	// imgui
 	if ( wnd.Gfx().IsImGuiEnabled() )
 	{
-		if ( ImGui::Begin( "Debug Window", FALSE, ImGuiWindowFlags_AlwaysAutoResize  ) )
+		if ( ImGui::Begin( "Main Debug Window", FALSE, ImGuiWindowFlags_AlwaysAutoResize  ) )
 		{
 			if ( ImGui::CollapsingHeader( "Simulation Speed" ) )
 			{
@@ -130,6 +131,8 @@ void App::DoFrame()
 			}
 		}
 		ImGui::End();
+
+		camera.SpawnControlWindow();
 	}
 	
 	wnd.Gfx().EndFrame();
