@@ -141,6 +141,9 @@
     <ClCompile Include="Sampler.cpp">
       <Filter>Source Files\Bindables</Filter>
     </ClCompile>
+    <ClCompile Include="SkinnedCube.cpp">
+      <Filter>Source Files\Drawables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsInclude.h">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="Sampler.h">
       <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinnedCube.h">
+      <Filter>Header Files\Drawables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

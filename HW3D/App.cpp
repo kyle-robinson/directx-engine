@@ -4,6 +4,7 @@
 #include "Pyramid.h"
 #include "Math.h"
 #include "Sheet.h"
+#include "SkinnedCube.h"
 #include <memory>
 #include <algorithm>
 #include <sstream>
@@ -38,6 +39,10 @@ App::App() : wnd( 800, 600, "DirectX 11 Engine Window" )
 				return std::make_unique<Sheet>(
 					gfx, rng, adist, ddist, odist, rdist
 				);
+			case 4:
+				return std::make_unique<SkinnedCube>(
+					gfx, rng, adist, ddist, odist, rdist
+				);
 			default:
 				assert( false && "Bad drawable type in Factory!" );
 				return {};
@@ -53,12 +58,11 @@ App::App() : wnd( 800, 600, "DirectX 11 Engine Window" )
 		std::uniform_real_distribution<float> bdist{ 0.4f, 3.0f };
 		std::uniform_int_distribution<int> latdist{ 5, 20 };
 		std::uniform_int_distribution<int> longdist{ 10, 40 };
-		std::uniform_int_distribution<int> typedist{ 0, 3 };
+		std::uniform_int_distribution<int> typedist{ 0, 4 };
 	};
 
-	Factory f( wnd.Gfx() );
 	drawables.reserve( nDrawables );
-	std::generate_n( std::back_inserter( drawables ), nDrawables, f );
+	std::generate_n( std::back_inserter( drawables ), nDrawables, Factory( wnd.Gfx() ) );
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 40.0f ) );
 }
