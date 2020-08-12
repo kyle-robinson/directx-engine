@@ -115,6 +115,7 @@ void App::DoFrame()
 				ImGui::SliderFloat( "Speed Factor", &speed_factor, 0.0f, 4.0f );
 				static char char_buffer[512];
 				ImGui::InputText( "Hammerlock", char_buffer, sizeof( char_buffer ) );
+				ImGui::Text( "Status: %s", wnd.kbd.KeyIsPressed( VK_F1 ) ? "PAUSED" : "RUNNING" );
 			}
 
 			if ( ImGui::CollapsingHeader( "Application Info" ) )
