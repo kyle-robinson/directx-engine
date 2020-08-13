@@ -7,7 +7,12 @@ class TransformCbuf : public Bindable
 public:
 	TransformCbuf( Graphics& gfx, const Drawable& parent );
 	void Bind( Graphics& gfx ) noexcept override;
-protected:
-	static std::unique_ptr<VertexConstantBuffer<DirectX::XMMATRIX>> pVcbuf;
+private:
+	struct Transforms
+	{
+		DirectX::XMMATRIX modelViewProj;
+		DirectX::XMMATRIX model;
+	};
+	static std::unique_ptr<VertexConstantBuffer<Transforms>> pVcbuf;
 	const Drawable& parent;
 };

@@ -61,6 +61,9 @@
     <Filter Include="Resource Files\ImGui">
       <UniqueIdentifier>{f9f38beb-add7-4293-bc61-a5b62c25ab01}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Lighting">
+      <UniqueIdentifier>{73da49c3-9833-4da3-a93a-0f9ac6b04125}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="WinMain.cpp">
@@ -169,6 +172,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SolidSphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -326,6 +335,12 @@
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SolidSphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -385,6 +400,18 @@
     </FxCompile>
     <FxCompile Include="TextureVS.hlsl">
       <Filter>Resource Files\Shaders\Textures</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongVS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongPS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting</Filter>
+    </FxCompile>
+    <FxCompile Include="SolidVS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives</Filter>
+    </FxCompile>
+    <FxCompile Include="SolidPS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

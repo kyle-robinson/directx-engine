@@ -17,7 +17,7 @@
 #include "GDIPlusManager.h"
 GDIPlusManager gdipm;
 
-App::App() : wnd( 1000, 800, "DirectX 11 Engine Window" )
+App::App() : wnd( 1000, 800, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
 	class Factory
 	{
@@ -25,7 +25,10 @@ App::App() : wnd( 1000, 800, "DirectX 11 Engine Window" )
 		Factory( Graphics& gfx ) : gfx( gfx ) {}
 		std::unique_ptr<Drawable> operator()()
 		{
-			switch ( typedist( rng ) )
+			return std::make_unique<Box>(
+				gfx, rng, adist, ddist, odist, rdist, bdist
+			);
+			/*switch ( typedist( rng ) )
 			{
 			case 0:
 				return std::make_unique<Pyramid>(
@@ -50,7 +53,7 @@ App::App() : wnd( 1000, 800, "DirectX 11 Engine Window" )
 			default:
 				assert( false && "Bad drawable type in Factory!" );
 				return {};
-			}
+			}*/
 		}
 	private:
 		Graphics& gfx;
@@ -97,6 +100,7 @@ void App::DoFrame()
 
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
 	wnd.Gfx().SetCamera( camera.GetMatrix() );
+	light.Bind( wnd.Gfx() );
 
 	// objects
 	for ( auto& d : drawables )
@@ -104,6 +108,7 @@ void App::DoFrame()
 		d->Update( wnd.kbd.KeyIsPressed( VK_F1 ) ? 0.0f : dt );
 		d->Draw( wnd.Gfx() );
 	}
+	light.Draw( wnd.Gfx() );
 
 	// imgui
 	if ( wnd.Gfx().IsImGuiEnabled() )
@@ -134,6 +139,7 @@ void App::DoFrame()
 		ImGui::End();
 
 		camera.SpawnControlWindow();
+		light.SpawnControlWindow();
 	}
 	
 	wnd.Gfx().EndFrame();
