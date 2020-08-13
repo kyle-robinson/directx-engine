@@ -40,9 +40,6 @@
     <Filter Include="Resource Files\Cursors">
       <UniqueIdentifier>{966292aa-632b-461c-a420-d8352e8de9e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Icons">
-      <UniqueIdentifier>{ef2c65f7-41b2-43e1-9b98-763a8423a982}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Textures">
       <UniqueIdentifier>{a0ed0aa8-5098-49f6-a304-afaaa9231b91}</UniqueIdentifier>
     </Filter>
@@ -63,6 +60,9 @@
     </Filter>
     <Filter Include="Resource Files\Shaders\Lighting">
       <UniqueIdentifier>{73da49c3-9833-4da3-a93a-0f9ac6b04125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Resource Items">
+      <UniqueIdentifier>{ef2c65f7-41b2-43e1-9b98-763a8423a982}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -178,7 +178,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolidSphere.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Drawables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -284,9 +284,6 @@
     <ClInclude Include="Cube.h">
       <Filter>Header Files\Drawables</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Resource Files</Filter>
-    </ClInclude>
     <ClInclude Include="Surface.h">
       <Filter>Header Files\Textures</Filter>
     </ClInclude>
@@ -338,8 +335,11 @@
     <ClInclude Include="PointLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resource Files\Resource Items</Filter>
+    </ClInclude>
     <ClInclude Include="SolidSphere.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Drawables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -361,7 +361,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Directx.ico">
-      <Filter>Resource Files\Icons</Filter>
+      <Filter>Resource Files\Resource Items</Filter>
     </Image>
     <Image Include="res\textures\neptune.jpg">
       <Filter>Resource Files\Textures</Filter>
@@ -416,7 +416,7 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HW3D.rc">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Resource Items</Filter>
     </ResourceCompile>
   </ItemGroup>
 </Project>

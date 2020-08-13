@@ -60,7 +60,7 @@ public:
 	void EndFrame();
 	void DrawTriangle( float angle, float x, float y );
 	void DrawCube( float angle, float x, float z );
-	void DrawIndexedPrim( UINT count ) noexcept(IS_DEBUG);
+	void DrawIndexed( UINT count ) noexcept(!IS_DEBUG);
 	void SetProjection( DirectX::FXMMATRIX proj ) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
 	void SetCamera( DirectX::FXMMATRIX cam ) noexcept;

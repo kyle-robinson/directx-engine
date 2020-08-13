@@ -471,7 +471,7 @@ void Graphics::DrawCube( float angle, float x, float z )
 	GFX_THROW_INFO_ONLY( pContext->DrawIndexed( (UINT)std::size( indices ), 0u, 0u ) );
 }
 
-void Graphics::DrawIndexedPrim( UINT count ) noexcept(IS_DEBUG)
+void Graphics::DrawIndexed( UINT count ) noexcept(!IS_DEBUG)
 {
 	GFX_THROW_INFO_ONLY( pContext->DrawIndexed( count, 0u, 0u ) );
 }

@@ -14,7 +14,7 @@ void Drawable::Draw( Graphics& gfx ) const noexcept(!IS_DEBUG)
 	{
 		b->Bind( gfx );
 	}
-	gfx.DrawIndexedPrim( pIndexBuffer->GetCount() );
+	gfx.DrawIndexed( pIndexBuffer->GetCount() );
 }
 
 void Drawable::AddBind( std::unique_ptr<Bindable> bind ) noexcept(!IS_DEBUG)
