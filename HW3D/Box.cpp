@@ -40,12 +40,6 @@ Box::Box( Graphics& gfx,
 		AddStaticBind( std::make_unique<PixelShader>( gfx, L"PhongPS.cso" ) );
 		AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx, model.indices ) );
 
-		struct PSLightConstants
-		{
-			DirectX::XMVECTOR pos;
-		};
-		AddStaticBind( std::make_unique<PixelConstantBuffer<PSLightConstants>>( gfx ) );
-
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
 			{ "Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
