@@ -11,7 +11,7 @@ static const float attConst = 1.0f;
 static const float attLin = 1.0f;
 static const float attQuad = 1.0f;
 
-float4 main(float4 worldPos : POSITION, float3 n : Normal) : SV_Target
+float4 main( float3 worldPos : Position, float3 n : Normal ) : SV_Target
 {
 	// fragment to light
 	const float3 vToL = lightPos - worldPos;
