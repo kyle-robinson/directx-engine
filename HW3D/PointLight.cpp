@@ -19,7 +19,7 @@ void PointLight::SpawnControlWindow() noexcept
 		{
 			ImGui::SliderFloat("Intensity", &cbData.diffuseIntensity, 0.0f, 2.0f, "%.2f");
 			ImGui::ColorEdit3( "Diffuse", &cbData.diffuseColor.x );
-			ImGui::ColorEdit3( "Material", &cbData.materialColor.x );
+			//ImGui::ColorEdit3( "Material", &cbData.materialColor.x );
 			ImGui::ColorEdit3( "Ambient", &cbData.ambient.x );
 
 			ImGui::Text( "Attenuation" );
@@ -38,7 +38,7 @@ void PointLight::Reset() noexcept
 {
 	cbData = {
 		{ 0.0f, 0.0f, 0.0f },
-		{ 0.7f, 0.7f, 0.9f },
+		//{ 0.7f, 0.7f, 0.9f },
 		{ 0.05f, 0.05f, 0.05f },
 		{ 1.0f, 1.0f, 1.0f },
 		1.0f,
