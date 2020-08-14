@@ -425,6 +425,12 @@
     <FxCompile Include="IndexedPhongPS.hlsl">
       <Filter>Resource Files\Shaders\Lighting</Filter>
     </FxCompile>
+    <FxCompile Include="BlendedPhongPS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives</Filter>
+    </FxCompile>
+    <FxCompile Include="BlendedPhongVS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HW3D.rc">
