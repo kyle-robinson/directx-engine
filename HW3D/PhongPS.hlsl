@@ -34,7 +34,7 @@ float4 main( float3 cameraPos : Position, float3 n : Normal ) : SV_Target
 	const float3 r = w * 2.0f - vToL;
 	
 	// specular intensity
-	const float3 specular = ( diffuseColor * diffuseIntensity ) * specularIntensity * pow( max( 0.0f, dot( normalize( -r ), normalize( cameraPos ) ) ), specularPower );
+	const float3 specular = diffuse * specularIntensity * att * pow( max( 0.0f, dot( normalize( -r ), normalize( cameraPos ) ) ), specularPower );
 	
 	// final color
 	return float4( saturate( ( ambient + diffuse + specular ) * materialColor), 1.0f);
