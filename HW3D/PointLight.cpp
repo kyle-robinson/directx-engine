@@ -13,6 +13,13 @@ void PointLight::SpawnControlWindow() noexcept
 			ImGui::SliderFloat( "Y", &pos.y, -60.0f, 60.0f, "%.1f" );
 			ImGui::SliderFloat( "Z", &pos.z, -60.0f, 60.0f, "%.1f" );
 		}
+
+		if ( ImGui::CollapsingHeader( "Color" ) )
+		{
+			ImGui::SliderFloat( "R", &color.x, 0.0f, 1.0f, "%.1f" );
+			ImGui::SliderFloat( "G", &color.y, 0.0f, 1.0f, "%.1f" );
+			ImGui::SliderFloat( "B", &color.z, 0.0f, 1.0f, "%.1f" );
+		}
 		
 		if ( ImGui::Button( "Reset" ) )
 			Reset();
@@ -23,6 +30,7 @@ void PointLight::SpawnControlWindow() noexcept
 void PointLight::Reset() noexcept
 {
 	pos = { 0.0f, 0.0f, 0.0f };
+	color = { 1.0f, 0.0f, 0.5f };
 }
 
 void PointLight::Draw( Graphics& gfx ) const noexcept(!IS_DEBUG)
@@ -33,6 +41,6 @@ void PointLight::Draw( Graphics& gfx ) const noexcept(!IS_DEBUG)
 
 void PointLight::Bind( Graphics& gfx ) const noexcept
 {
-	cbuf.Update(gfx, PointLightCBuf{ pos });
+	cbuf.Update( gfx, PointLightCBuf{ { pos }, { color } } );
 	cbuf.Bind( gfx );
 }

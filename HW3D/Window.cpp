@@ -101,7 +101,7 @@ std::optional<int> Window::ProcessMessages() noexcept
 	}
 
 	// return empty optional when not quitting app
-	return {};
+	return { };
 }
 
 Graphics& Window::Gfx()
