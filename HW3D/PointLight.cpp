@@ -10,38 +10,22 @@ void PointLight::SpawnControlWindow() noexcept
 {
 	if ( ImGui::Begin( "Light", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
 	{
-		ImGui::PushItemWidth(75);
+		//ImGui::PushItemWidth( 75 );
 
-		if ( ImGui::CollapsingHeader( "Position" ) )
-		{
-			ImGui::SliderFloat( "X", &cbData.lightPos.x, -30.0f, 30.0f, "%1.f" ); ImGui::SameLine();
-			ImGui::SliderFloat( "Y", &cbData.lightPos.y, -30.0f, 30.0f, "%1.f" ); ImGui::SameLine();
-			ImGui::SliderFloat( "Z", &cbData.lightPos.z, -30.0f, 30.0f, "%1.f" );
-		}
+		if ( ImGui::CollapsingHeader( "Light" ) )
+			ImGui::SliderFloat3( "Position", &cbData.lightPos.x, -30.0f, 30.0f, "%1.f" );
 
 		if ( ImGui::CollapsingHeader( "Color" ) )
 		{
-			ImGui::Text( "Diffuse" );
-			ImGui::SliderFloat( "R###Diffuse", &cbData.diffuseColor.x, 0.0f, 1.0f, "%.1f" ); ImGui::SameLine();
-			ImGui::SliderFloat( "G###Diffuse", &cbData.diffuseColor.y, 0.0f, 1.0f, "%.1f" ); ImGui::SameLine();
-			ImGui::SliderFloat( "B###Diffuse", &cbData.diffuseColor.z, 0.0f, 1.0f, "%.1f" );
+			ImGui::SliderFloat("Intensity", &cbData.diffuseIntensity, 0.0f, 2.0f, "%.2f");
+			ImGui::ColorEdit3( "Diffuse", &cbData.diffuseColor.x );
+			ImGui::ColorEdit3( "Material", &cbData.materialColor.x );
+			ImGui::ColorEdit3( "Ambient", &cbData.ambient.x );
 
-			ImGui::Text( "Material" );
-			ImGui::SliderFloat( "R###Material", &cbData.materialColor.x, 0.0f, 1.0f, "%.1f" ); ImGui::SameLine();
-			ImGui::SliderFloat( "G###Material", &cbData.materialColor.y, 0.0f, 1.0f, "%.1f" ); ImGui::SameLine();
-			ImGui::SliderFloat( "B###Material", &cbData.materialColor.z, 0.0f, 1.0f, "%.1f" );
-
-			ImGui::Text("Ambient");
-			ImGui::SliderFloat("R###Ambient", &cbData.ambient.x, 0.0f, 1.0f, "%.1f"); ImGui::SameLine();
-			ImGui::SliderFloat("G###Ambient", &cbData.ambient.y, 0.0f, 1.0f, "%.1f"); ImGui::SameLine();
-			ImGui::SliderFloat("B###Ambient", &cbData.ambient.z, 0.0f, 1.0f, "%.1f");
-
-			ImGui::NewLine();
-
-			ImGui::SliderFloat("Diffuse Intensity", &cbData.diffuseIntensity, 0.0f, 1.0f, "%.1f");
-			ImGui::SliderFloat("Att. Const", &cbData.attConst, 0.0f, 1.0f, "%.1f");
-			ImGui::SliderFloat("Att. Linear", &cbData.attLin, 0.0f, 1.0f, "%.1f");
-			ImGui::SliderFloat("Att. Quadratic", &cbData.attQuad, 0.0f, 1.0f, "%.1f");
+			ImGui::Text( "Attenuation" );
+			ImGui::SliderFloat( "Constant", &cbData.attConst, 0.05f, 10.0f, "%.2f", 4 );
+			ImGui::SliderFloat( "Linear", &cbData.attLin, 0.0001f, 4.0f, "%.4f", 8 );
+			ImGui::SliderFloat( "Quadratic", &cbData.attQuad, 0.0000001f, 1.0f, "%.7f", 10 );
 		}
 		
 		if ( ImGui::Button( "Reset" ) )
