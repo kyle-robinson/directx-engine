@@ -10,14 +10,13 @@ public:
 	void SpawnControlWindow() noexcept;
 	void Reset() noexcept;
 	void Draw( Graphics& gfx ) const noexcept(!IS_DEBUG);
-	void Bind( Graphics& gfx ) const noexcept;
+	void Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept;
 private:
 	struct PointLightCBuf
 	{
-		alignas(16) DirectX::XMFLOAT3 lightPos;
-		//alignas(16) DirectX::XMFLOAT3 materialColor;
-		alignas(16) DirectX::XMFLOAT3 ambient;
-		alignas(16) DirectX::XMFLOAT3 diffuseColor;
+		alignas( 16 ) DirectX::XMFLOAT3 lightPos;
+		alignas( 16 ) DirectX::XMFLOAT3 ambient;
+		alignas( 16 ) DirectX::XMFLOAT3 diffuseColor;
 		float diffuseIntensity;
 		float attConst;
 		float attLin;

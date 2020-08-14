@@ -102,7 +102,7 @@ void App::DoFrame()
 
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
 	wnd.Gfx().SetCamera( camera.GetMatrix() );
-	light.Bind( wnd.Gfx() );
+	light.Bind( wnd.Gfx(), camera.GetMatrix() );
 
 	// objects
 	for ( auto& d : drawables )
