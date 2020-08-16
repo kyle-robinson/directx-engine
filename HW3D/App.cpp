@@ -6,6 +6,7 @@
 #include "Sheet.h"
 #include "SkinnedCube.h"
 #include "Cylinder.h"
+#include "AssimpObject.h"
 #include <memory>
 #include <algorithm>
 #include <sstream>
@@ -13,6 +14,10 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_win32.h"
 #include "imgui/imgui_impl_dx11.h"
+
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 #include "Surface.h"
 #include "GDIPlusManager.h"
@@ -40,6 +45,10 @@ App::App() : wnd( 1000, 800, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 			case 2:
 				return std::make_unique<Pyramid>(
 					gfx, rng, adist, ddist, odist, rdist, tdist	
+				);
+			case 3:
+				return std::make_unique<AssimpObject>(
+					gfx, rng, adist, ddist, odist, rdist, mat, 1.5f
 				);
 			default:
 				assert( false && "Impossible drawable option in factory!" );
@@ -75,7 +84,7 @@ App::App() : wnd( 1000, 800, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 	private:
 		Graphics& gfx;
 		std::mt19937 rng{ std::random_device{}() };
-		std::uniform_int_distribution<int> sdist{ 0, 2 };
+		std::uniform_int_distribution<int> sdist{ 0, 3 };
 		std::uniform_real_distribution<float> adist{ 0.0f, PI * 2.0f };
 		std::uniform_real_distribution<float> ddist{ 0.0f, PI * 1.0f };
 		std::uniform_real_distribution<float> odist{ 0.0f, PI * 0.08f };

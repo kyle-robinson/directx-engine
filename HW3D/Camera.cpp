@@ -19,7 +19,7 @@ void Camera::SpawnControlWindow() noexcept
 	{
 		if ( ImGui::CollapsingHeader( "Position" ) )
 		{
-			ImGui::SliderFloat( "R", &r, 0.0f, 80.0f, "%1.f" );
+			ImGui::SliderFloat( "R", &r, 1.0f, 60.0f, "%1.f" );
 			ImGui::SliderAngle( "Theta", &theta, -180.0f, 180.0f );
 			ImGui::SliderAngle( "Phi", &phi, -89.0f, 89.0f );
 		}

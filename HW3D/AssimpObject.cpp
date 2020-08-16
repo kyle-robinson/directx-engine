@@ -5,7 +5,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-AssimpObject::AssimpObject( Graphics& gfx, std::mt19937 rng,
+AssimpObject::AssimpObject( Graphics& gfx, std::mt19937& rng,
 	std::uniform_real_distribution<float>& adist,
 	std::uniform_real_distribution<float>& ddist,
 	std::uniform_real_distribution<float>& odist,
@@ -25,9 +25,13 @@ AssimpObject::AssimpObject( Graphics& gfx, std::mt19937 rng,
 		// setup importer and load model scene
 		Assimp::Importer asmpImporter;
 		const auto pModel = asmpImporter.ReadFile(
-			"res/models/backpack.obj",
+			"res\\models\\backpack\\backpack.obj",
 			aiProcess_Triangulate | aiProcess_JoinIdenticalVertices
 		);
+
+		if ( !pModel || pModel->mFlags == AI_SCENE_FLAGS_INCOMPLETE || pModel->mRootNode )
+			assert( "ERROR::ASSIMP:: " && asmpImporter.GetErrorString() );
+		
 		const auto pMesh = pModel->mMeshes[0];
 
 		// load model vertices
