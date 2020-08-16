@@ -25,7 +25,7 @@ AssimpObject::AssimpObject( Graphics& gfx, std::mt19937& rng,
 		// setup importer and load model scene
 		Assimp::Importer asmpImporter;
 		const auto pModel = asmpImporter.ReadFile(
-			"res\\models\\backpack\\backpack.obj",
+			"res\\models\\suzanne.obj",
 			aiProcess_Triangulate | aiProcess_JoinIdenticalVertices
 		);
 

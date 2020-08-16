@@ -48,7 +48,7 @@ App::App() : wnd( 1000, 800, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 				);
 			case 3:
 				return std::make_unique<AssimpObject>(
-					gfx, rng, adist, ddist, odist, rdist, mat, 1.5f
+					gfx, rng, adist, ddist, odist, rdist, mat, 0.5f
 				);
 			default:
 				assert( false && "Impossible drawable option in factory!" );
