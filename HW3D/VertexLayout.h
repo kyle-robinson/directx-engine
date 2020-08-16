@@ -56,7 +56,7 @@ public:
 			case Float3Color:
 				return sizeof( DirectX::XMFLOAT3 );
 			case Float4Color:
-				return sizeof( DirectX::XMFLOAT3 );
+				return sizeof( DirectX::XMFLOAT4 );
 			case BGRAColor:
 				return sizeof( unsigned int );
 			default:
@@ -102,11 +102,93 @@ class Vertex
 {
 	friend class VertexBuffer;
 public:
-
+	template<VertexLayout::ElementType Type>
+	auto& Attr() noexcept(!IS_DEBUG)
+	{
+		const auto& element = layout.Resolve<Type>();
+		auto pAttribute = pData + element.GetOffset();
+		if ( Type == VertexLayout::Position2D )
+			return *reinterpret_cast<DirectX::XMFLOAT2*>( pAttribute );
+		else if ( Type == VertexLayout::Position3D )
+			return *reinterpret_cast<DirectX::XMFLOAT3*>( pAttribute );
+		else if ( Type == VertexLayout::Texture2D )
+			return *reinterpret_cast<DirectX::XMFLOAT2*>( pAttribute );
+		else if ( Type == VertexLayout::Normal )
+			return *reinterpret_cast<DirectX::XMFLOAT3*>( pAttribute );
+		else if ( Type == VertexLayout::Float3Color )
+			return *reinterpret_cast<DirectX::XMFLOAT3*>( pAttribute );
+		else if ( Type == VertexLayout::Float4Color )
+			return *reinterpret_cast<DirectX::XMFLOAT4*>( pAttribute );
+		else if ( Type == VertexLayout::BGRAColor )
+			return *reinterpret_cast<BGRAColor*>( pAttribute );
+		else
+		{
+			assert( "Bad element type!" && false );
+			return *reinterpret_cast<char*>( pAttribute );
+		}
+	}
+	template<typename T>
+	void SetAttributeByIndex( size_t i, T&& value ) noexcept(!IS_DEBUG)
+	{
+		const auto& element = layout.ResolveByIndex();
+		auto pAttribute = pData + element.GetOffset();
+		switch ( element.GetType() )
+		{
+		case VertexLayout::Position2D:
+			SetAttribute<DirectX::XMFLOAT2>( pAttribute, std::forward<T>( val ) );
+			break;
+		case VertexLayout::Position3D:
+			SetAttribute<DirectX::XMFLOAT3>( pAttribute, std::forward<T>( val ) );
+			break;
+		case VertexLayout::Texture2D:
+			SetAttribute<DirectX::XMFLOAT2>( pAttribute, std::forward<T>( val ) );
+			break;
+		case VertexLayout::Normal:
+			SetAttribute<DirectX::XMFLOAT3>( pAttribute, std::forward<T>( val ) );
+			break;
+		case VertexLayout::Float3Color:
+			SetAttribute<DirectX::XMFLOAT3>( pAttribute, std::forward<T>( val ) );
+			break;
+		case VertexLayout::Float4Color:
+			SetAttribute<DirectX::XMFLOAT4>( pAttribute, std::forward<T>( val ) );
+			break;
+		case VertexLayout::BGRAColor:
+			SetAttribute<BGRAColor>( pAttribute, std::forward<T>( val ) );
+			break;
+		default:
+			assert( "Bad element type!"  && false );
+		}
+	}
+private:
+	Vertex( char* pData, const VertexLayout& layout ) noexcept(!IS_DEBUG) : pData( pData ), layout( layout )
+	{
+		assert( pData != nullptr );
+	}
+	// enables setting of multiple parameters in the parameter pack via element index
+	template<typename First, typename ...Rest>
+	void SetAttributeByIndex( size_t i, First&& first, Rest&&... rest ) noexcept(!IS_DEBUG)
+	{
+		SetAttributeByIndex( i, std::forward<First>( first ) );
+		SetAttributeByIndex( i, std::forward<Rest>( rest )... );
+	}
+	// helper function to reduce code duplication in SetIndexByAttribute
+	template<typename Dest, typename Src>
+	void SetAttribute( char* pAttribute, Src&& value ) noexcept(!IS_DEBUG)
+	{
+		if constexpr( std::is_assignable<Dest, Src>::value )
+			*reinterpret_cast<Dest*>( pAttribute ) = val;
+		else
+			assert( "Parameter attribute type mismatch!" && false );
+	}
+private:
+	char* pData = nullptr;
+	const VertexLayout& layout;
 };
 
 class VertexBuffer
 {
 public:
+
+private:
 
 };
