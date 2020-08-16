@@ -7,6 +7,7 @@
 #include "SkinnedCube.h"
 #include "Cylinder.h"
 #include "AssimpObject.h"
+
 #include <memory>
 #include <algorithm>
 #include <sstream>
@@ -47,6 +48,10 @@ App::App() : wnd( 1000, 800, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 					gfx, rng, adist, ddist, odist, rdist, tdist	
 				);
 			case 3:
+				return std::make_unique<SkinnedCube>(
+					gfx, rng, adist, ddist, odist, rdist
+				);
+			case 4:
 				return std::make_unique<AssimpObject>(
 					gfx, rng, adist, ddist, odist, rdist, mat, 0.5f
 				);
@@ -58,11 +63,11 @@ App::App() : wnd( 1000, 800, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 			{
 			case 0:
 				return std::make_unique<Pyramid>(
-					gfx, rng, adist, ddist, odist, rdist
+					gfx, rng, adist, ddist, odist, rdist, tdist
 				);
 			case 1:
 				return std::make_unique<Box>(
-					gfx, rng, adist, ddist, odist, rdist, bdist
+					gfx, rng, adist, ddist, odist, rdist, bdist, mat
 				);
 			case 2:
 				return std::make_unique<Melon>(
@@ -84,7 +89,7 @@ App::App() : wnd( 1000, 800, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 	private:
 		Graphics& gfx;
 		std::mt19937 rng{ std::random_device{}() };
-		std::uniform_int_distribution<int> sdist{ 0, 3 };
+		std::uniform_int_distribution<int> sdist{ 0, 4 };
 		std::uniform_real_distribution<float> adist{ 0.0f, PI * 2.0f };
 		std::uniform_real_distribution<float> ddist{ 0.0f, PI * 1.0f };
 		std::uniform_real_distribution<float> odist{ 0.0f, PI * 0.08f };

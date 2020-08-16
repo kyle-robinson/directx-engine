@@ -4,6 +4,7 @@
 #include "Cube.h"
 #include "Surface.h"
 #include "Texture.h"
+#include "Sampler.h"
 
 SkinnedCube::SkinnedCube( Graphics& gfx, std::mt19937& rng,
 	std::uniform_real_distribution<float>& adist,
@@ -11,45 +12,45 @@ SkinnedCube::SkinnedCube( Graphics& gfx, std::mt19937& rng,
 	std::uniform_real_distribution<float>& odist,
 	std::uniform_real_distribution<float>& rdist )
 	:
-	r( rdist( rng ) ),
-	droll( ddist( rng ) ),
-	dpitch( ddist( rng ) ),
-	dyaw( ddist( rng ) ),
-	dtheta( odist( rng ) ),
-	dphi( odist( rng ) ),
-	dchi( odist( rng ) ),
-	theta( adist( rng ) ),
-	phi( adist( rng ) ),
-	chi( adist( rng ) )
+	PrimitiveObject( gfx, rng, adist, ddist, odist, rdist )
 {
 	if ( !IsStaticInitialised() )
 	{
 		struct Vertex
 		{
 			DirectX::XMFLOAT3 pos;
-			struct
-			{
-				float u, v;
-			} tex;
+			DirectX::XMFLOAT3 n;
+			DirectX::XMFLOAT2 tc;
 		};
-		const auto model = Cube::MakeSkinned<Vertex>();
+		auto model = Cube::MakeIndependentTextured<Vertex>();
+		model.SetNormalsIndependentFlat();
 		AddStaticBind( std::make_unique<VertexBuffer>( gfx, model.vertices ) );
-		AddStaticBind( std::make_unique<Texture>( gfx, Surface::FromFile( "res\\textures\\companion-cube.png" ) ) );
+		AddStaticBind( std::make_unique<Texture>( gfx, Surface::FromFile( "res\\textures\\purpleheart.png" ) ) );
+		AddStaticBind( std::make_unique<Sampler>( gfx ) );
 
-		auto pvs = std::make_unique<VertexShader>( gfx, L"TextureVS.cso" );
+		auto pvs = std::make_unique<VertexShader>( gfx, L"TexturedPhongVS.cso" );
 		auto pvsbc = pvs->GetByteCode();
 		AddStaticBind( std::move( pvs ) );
-		AddStaticBind( std::make_unique<PixelShader>( gfx, L"TexturePS.cso" ) );
+		AddStaticBind( std::make_unique<PixelShader>( gfx, L"TexturedPhongPS.cso" ) );
 
 		AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx, model.indices ) );
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
 			{ "Position", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-			{ "TexCoord", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 }
+			{ "Normal", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+			{ "TexCoord", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
 		AddStaticBind( std::make_unique<InputLayout>( gfx, ied, pvsbc ) );
 		AddStaticBind( std::make_unique<Topology>( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+
+		struct PSMaterialConstant
+		{
+			float specularIntensity = 0.6f;
+			float specularPower = 30.0f;
+			float padding[2];
+		} colorConst;
+		AddStaticBind( std::make_unique<PixelConstantBuffer<PSMaterialConstant>>( gfx, colorConst, 1u ) );
 	}
 	else
 	{
@@ -57,21 +58,4 @@ SkinnedCube::SkinnedCube( Graphics& gfx, std::mt19937& rng,
 	}
 
 	AddBind( std::make_unique<TransformCbuf>( gfx, *this ) );
-}
-
-void SkinnedCube::Update( float dt ) noexcept
-{
-	roll += droll * dt;
-	pitch += dpitch * dt;
-	yaw += dyaw * dt;
-	theta += dtheta * dt;
-	phi += dphi * dt;
-	chi += dchi * dt;
-}
-
-DirectX::XMMATRIX SkinnedCube::GetTransformXM() const noexcept
-{
-	return DirectX::XMMatrixRotationRollPitchYaw( pitch, yaw, roll ) *
-		DirectX::XMMatrixTranslation( r, 0.0f, 0.0f ) *
-		DirectX::XMMatrixRotationRollPitchYaw( theta, phi, chi );
 }
