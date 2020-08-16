@@ -67,6 +67,7 @@ StyleCopReport.xml
 *.meta
 *.obj
 !HW3D/res/models/*.obj
+!HW3D/res/models/backpack/*.obj
 *.iobj
 *.pch
 *.pdb
