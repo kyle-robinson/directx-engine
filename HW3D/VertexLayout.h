@@ -188,7 +188,37 @@ private:
 class VertexBuffer
 {
 public:
-
+	VertexBuffer( VertexLayout layout ) noexcept(!IS_DEBUG) : layout( std::move( layout ) ) { }
+	const VertexLayout& GetLayout() const noexcept
+	{
+		return layout;
+	}
+	size_t Size() const noexcept(!IS_DEBUG)
+	{
+		return buffer.size() / layout.Size();
+	}
+	template<typename ...Params>
+	void EmplaceBack( Params&&... params ) noexcept(!IS_DEBUG)
+	{
+		buffer.resize( buffer.size() + layout.Size() );
+		
+	}
+	Vertex Back() noexcept(!IS_DEBUG)
+	{
+		assert( buffer.size() != 0u );
+		return Vertex{ buffer.data() + buffer.size() - layout.Size(), layout };
+	}
+	Vertex Front() noexcept(!IS_DEBUG)
+	{
+		assert( buffer.size() != 0u );
+		return Vertex{ buffer.data(), layout };
+	}
+	Vertex operator[]( size_t i ) noexcept(!IS_DEBUG)
+	{
+		assert( i < Size() );
+		return Vertex{ buffer.data() + layout.Size() * i, layout };
+	}
 private:
-
+	std::vector<char> buffer;
+	VertexLayout layout;
 };
