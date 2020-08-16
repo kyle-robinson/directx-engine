@@ -1,5 +1,5 @@
 #include "ImGuiManager.h"
-#include "res/imgui/imgui.h"
+#include "imgui/imgui.h"
 
 ImGuiManager::ImGuiManager()
 {

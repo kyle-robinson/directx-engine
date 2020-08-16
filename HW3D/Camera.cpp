@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "res/imgui/imgui.h"
+#include "imgui/imgui.h"
 
 DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 {

@@ -6,6 +6,7 @@ class Window
 public:
 	Window( int width, int height, const wchar_t* name );
 	~Window() noexcept;
+	void ProcessMessages() noexcept;
 	HINSTANCE GetInstance() noexcept;
 	const wchar_t* GetName() noexcept;
 	int GetWidth() const noexcept;
@@ -20,16 +21,8 @@ private:
 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR lpCmdLine, int nShowCmd )
 {
-	Window wnd(1000, 800, L"DirectX 11 Engine Window");
-
-	// process messages
-	MSG msg = { 0 };
-	while ( GetMessage( &msg, nullptr, 0, 0 ) )
-	{
-		TranslateMessage( &msg );
-		DispatchMessage( &msg );
-	}
-	
+	Window wnd( 1000, 800, L"DirectX 11 Engine Window" );
+	wnd.ProcessMessages();
 	return 0;
 }
 
@@ -68,6 +61,16 @@ Window::Window(int width, int height, const wchar_t* name) : width( width ), hei
 Window::~Window()
 {
 	DestroyWindow(hWindow);
+}
+
+void Window::ProcessMessages() noexcept
+{
+	MSG msg = { 0 };
+	while (GetMessage(&msg, nullptr, 0, 0))
+	{
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
 }
 
 HINSTANCE Window::GetInstance() noexcept

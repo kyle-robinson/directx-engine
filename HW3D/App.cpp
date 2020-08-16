@@ -10,9 +10,9 @@
 #include <algorithm>
 #include <sstream>
 
-#include "res/imgui/imgui.h"
-#include "res/imgui/imgui_impl_win32.h"
-#include "res/imgui/imgui_impl_dx11.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_dx11.h"
 
 #include "Surface.h"
 #include "GDIPlusManager.h"

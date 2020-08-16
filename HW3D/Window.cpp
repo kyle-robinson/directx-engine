@@ -1,7 +1,7 @@
 #include "Window.h"
 #include "resource.h"
 #include <sstream>
-#include "res/imgui/imgui_impl_win32.h"
+#include "imgui/imgui_impl_win32.h"
 
 Window::WindowClass Window::WindowClass::wndClass;
 

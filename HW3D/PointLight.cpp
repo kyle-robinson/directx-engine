@@ -1,5 +1,5 @@
 #include "PointLight.h"
-#include "res/imgui/imgui.h"
+#include "imgui/imgui.h"
 
 PointLight::PointLight( Graphics& gfx, float radius ) : mesh( gfx, radius ), cbuf( gfx )
 {
