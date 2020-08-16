@@ -191,6 +191,7 @@
     <ClCompile Include="..\External\imgui\imgui_impl_win32.cpp" />
     <ClCompile Include="..\External\imgui\imgui_widgets.cpp" />
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="AssimpObject.cpp" />
     <ClCompile Include="Bindable.cpp" />
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="..\External\imgui\imstb_textedit.h" />
     <ClInclude Include="..\External\imgui\imstb_truetype.h" />
     <ClInclude Include="App.h" />
+    <ClInclude Include="AssimpObject.h" />
     <ClInclude Include="Bindable.h" />
     <ClInclude Include="BindableBase.h" />
     <ClInclude Include="Box.h" />

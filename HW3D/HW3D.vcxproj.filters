@@ -183,6 +183,9 @@
     <ClCompile Include="..\External\imgui\imgui_widgets.cpp">
       <Filter>Resource Files\ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="AssimpObject.cpp">
+      <Filter>Source Files\Drawables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsInclude.h">
@@ -349,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="..\External\imgui\imstb_truetype.h">
       <Filter>Resource Files\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="AssimpObject.h">
+      <Filter>Header Files\Drawables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
