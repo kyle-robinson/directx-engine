@@ -42,3 +42,40 @@ public:
 private:
 	mutable DirectX::XMFLOAT4X4 transform;
 };
+
+class Node
+{
+	friend class Model;
+public:
+	Node( std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform ) noexcept(!IS_DEBUG) : meshPtrs( std::move( meshPtrs ) )
+	{
+		DirectX::XMStoreFloat4x4( &this->transform, transform );
+	}
+	void Draw( Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG)
+	{
+		const auto built = DirectX::XMLoadFloat4x4( &transform ) * accumulatedTransform;
+		for ( const auto pm : meshPtrs )
+		{
+			pm->Draw( gfx, built );
+		}
+		for ( const auto& pc : childPtrs )
+		{
+			pc->Draw( gfx, built );
+		}
+	}
+private:
+	void AddChild( std::unique_ptr<Node> pChild ) noexcept(!IS_DEBUG)
+	{
+		assert( pChild );
+		childPtrs.push_back( std::move( pChild ) );
+	}
+private:
+	std::vector<std::unique_ptr<Node>> childPtrs;
+	std::vector<Mesh*> meshPtrs;
+	DirectX::XMFLOAT4X4 transform;
+};
+
+class Model
+{
+
+};
