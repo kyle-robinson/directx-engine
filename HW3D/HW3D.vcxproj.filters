@@ -356,7 +356,7 @@
     <ClInclude Include="AssimpObject.h">
       <Filter>Header Files\Drawables</Filter>
     </ClInclude>
-    <ClInclude Include="VertexLayout.h">
+    <ClInclude Include="Vertex.h">
       <Filter>Header Files\Drawables</Filter>
     </ClInclude>
   </ItemGroup>

@@ -58,7 +58,7 @@ public:
 			case Float4Color:
 				return sizeof( DirectX::XMFLOAT3 );
 			case BGRAColor:
-				return sizeof( unsigned int );
+				return sizeof( ::BGRAColor );
 			default:
 				assert( "Invalid element type!" && false );
 			}
@@ -177,11 +177,12 @@ public:
 			assert( "Bad element type!"  && false );
 		}
 	}
-private:
+protected:
 	Vertex( char* pData, const VertexLayout& layout ) noexcept(!IS_DEBUG) : pData( pData ), layout( layout )
 	{
 		assert( pData != nullptr );
 	}
+private:
 	// enables setting of multiple parameters in the parameter pack via element index
 	template<typename First, typename ...Rest>
 	void SetAttributeByIndex( size_t i, First&& first, Rest&&... rest ) noexcept(!IS_DEBUG)
@@ -201,6 +202,19 @@ private:
 private:
 	char* pData = nullptr;
 	const VertexLayout& layout;
+};
+
+class ConstVertex
+{
+public:
+	ConstVertex( const Vertex& v ) noexcept(!IS_DEBUG) : vertex( v ) { }
+	template<VertexLayout::ElementType Type>
+	const auto& Attr() const noexcept(!IS_DEBUG)
+	{
+		return const_cast<Vertex&>( vertex ).Attr<Type>();
+	}
+private:
+	Vertex vertex;
 };
 
 class VertexBuffer
@@ -236,6 +250,18 @@ public:
 	{
 		assert( i < Size() );
 		return Vertex{ buffer.data() + layout.Size() * i, layout };
+	}
+	ConstVertex Back() const noexcept(!IS_DEBUG)
+	{
+		return const_cast<VertexBuffer*>( this )->Back();
+	}
+	ConstVertex Front() const noexcept(!IS_DEBUG)
+	{
+		return const_cast<VertexBuffer*>( this )->Front();
+	}
+	ConstVertex operator[]( size_t i  ) const noexcept(!IS_DEBUG)
+	{
+		return const_cast<VertexBuffer&>( *this )[i];
 	}
 private:
 	std::vector<char> buffer;
