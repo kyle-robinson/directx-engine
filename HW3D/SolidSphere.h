@@ -5,7 +5,7 @@ class SolidSphere : public DrawableBase<SolidSphere>
 {
 public:
 	SolidSphere( Graphics& gfx, float radius );
-	void Update( float dt ) noexcept override;
+	void Update( float dt ) noexcept;
 	void SetPos( DirectX::XMFLOAT3 pos ) noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
 private:

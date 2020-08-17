@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "PointLight.h"
 #include "ImGuiManager.h"
+#include "Model.h"
 
 class App
 {
@@ -13,6 +14,7 @@ public:
 	int Init();
 private:
 	void DoFrame();
+	void ShowModelWindow();
 private:
 	ImGuiManager imgui;
 	Window wnd;
@@ -20,7 +22,12 @@ private:
 	Camera camera;
 	PointLight light;
 
-	std::vector<std::unique_ptr<class Drawable>> drawables;
-	static constexpr size_t nDrawables = 180;
 	float speed_factor = 1.0f;
+	Model nanosuit{ wnd.Gfx(), "res\\models\\nanosuit.obj" };
+
+	struct
+	{
+		float roll = 0.0f, pitch = 0.0f, yaw = 0.0f;
+		float x = 0.0f, y = 0.0f, z = 0.0f;
+	} pos;
 };
