@@ -7,6 +7,7 @@
 #include "SkinnedCube.h"
 #include "Cylinder.h"
 #include "AssimpObject.h"
+#include "VertexLayout.h"
 
 #include <memory>
 #include <algorithm>
@@ -24,8 +25,19 @@
 #include "GDIPlusManager.h"
 GDIPlusManager gdipm;
 
+void LoadVertex()
+{
+	VertexLayout v1;
+	v1.Append<VertexLayout::Position3D>().Append<VertexLayout::Normal>();
+	VertexBuffer vb( std::move( v1 ) );
+	vb.EmplaceBack( DirectX::XMFLOAT3{ 1.0f, 1.0f, 5.0f }, DirectX::XMFLOAT3{ 2.0f, 1.0f, 4.0f } );
+	auto pos = vb[0].Attr<VertexLayout::Position3D>();
+}
+
 App::App() : wnd( 1000, 800, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
+	LoadVertex();
+
 	class Factory
 	{
 	public:
