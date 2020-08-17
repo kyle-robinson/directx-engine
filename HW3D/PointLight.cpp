@@ -15,7 +15,7 @@ void PointLight::SpawnControlWindow() noexcept
 
 		if ( ImGui::CollapsingHeader( "Color" ) )
 		{
-			ImGui::SliderFloat("Intensity", &cbData.diffuseIntensity, 0.0f, 2.0f, "%.2f");
+			ImGui::SliderFloat( "Intensity", &cbData.diffuseIntensity, 0.0f, 2.0f, "%.2f" );
 			ImGui::ColorEdit3( "Diffuse", &cbData.diffuseColor.x );
 			ImGui::ColorEdit3( "Ambient", &cbData.ambient.x );
 

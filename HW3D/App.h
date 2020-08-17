@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "PointLight.h"
 #include "ImGuiManager.h"
+#include "Mesh.h"
 
 class App
 {
@@ -20,7 +21,6 @@ private:
 	Camera camera;
 	PointLight light;
 
-	std::vector<std::unique_ptr<class Drawable>> drawables;
-	static constexpr size_t nDrawables = 180;
 	float speed_factor = 1.0f;
+	Model nanosuit{ wnd.Gfx(), "res\\models\\nanosuit.obj" };
 };
