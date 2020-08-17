@@ -1,11 +1,5 @@
 #include "App.h"
-#include "Box.h"
-#include "Melon.h"
-#include "Pyramid.h"
 #include "Math.h"
-#include "Sheet.h"
-#include "SkinnedCube.h"
-#include "Cylinder.h"
 #include "AssimpObject.h"
 
 #include <memory>
@@ -13,8 +7,6 @@
 #include <sstream>
 
 #include "imgui/imgui.h"
-#include "imgui/imgui_impl_win32.h"
-#include "imgui/imgui_impl_dx11.h"
 
 #include "Surface.h"
 #include "GDIPlusManager.h"
@@ -55,36 +47,13 @@ void App::DoFrame()
 	light.Bind( wnd.Gfx(), camera.GetMatrix() );
 
 	// objects
-	const auto transform = DirectX::XMMatrixRotationRollPitchYaw( pos.roll, pos.pitch, pos.yaw ) *
-		DirectX::XMMatrixTranslation( pos.x, pos.y, pos.z );
-	nanosuit.Draw( wnd.Gfx(), transform );
+	nanosuit.Draw( wnd.Gfx() );
 	light.Draw( wnd.Gfx() );
 
 	// imgui
 	camera.SpawnControlWindow();
 	light.SpawnControlWindow();
-	ShowModelWindow();
+	nanosuit.ShowControlWindow();
 	
 	wnd.Gfx().EndFrame();
-}
-
-void App::ShowModelWindow()
-{
-	if ( ImGui::Begin( "Model", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
-	{
-		if ( ImGui::CollapsingHeader( "Orientation" ) )
-		{
-			ImGui::SliderAngle( "Roll", &pos.roll, -180.0f, 180.0f );
-			ImGui::SliderAngle( "Pitch", &pos.pitch, -180.0f, 180.0f );
-			ImGui::SliderAngle( "Yaw", &pos.yaw, -180.0f, 180.0f );
-		}
-
-		if ( ImGui::CollapsingHeader( "Position" ) )
-		{
-			ImGui::SliderFloat( "X", &pos.x, -20.0f, 20.0f );
-			ImGui::SliderFloat( "Y", &pos.y, -20.0f, 20.0f );
-			ImGui::SliderFloat( "Z", &pos.z, -20.0f, 20.0f );
-		}
-	}
-	ImGui::End();
 }

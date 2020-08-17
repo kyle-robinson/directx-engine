@@ -1,5 +1,5 @@
 #include "Pyramid.h"
-#include "BindableBase.h"
+#include "BindableCommon.h"
 #include "GraphicsThrowMacros.h"
 #include "Cone.h"
 #include <array>
@@ -33,13 +33,13 @@ Pyramid::Pyramid( Graphics& gfx,std::mt19937& rng,
 
 		model.Transform( DirectX::XMMatrixScaling( 1.0f, 1.0f, 0.7f ) ); // deform mesh linearly - squash mesh slightly in z direction
 		model.SetNormalsIndependentFlat();
-		AddStaticBind( std::make_unique<VertexBuffer>( gfx, model.vertices ) );
+		AddStaticBind( std::make_unique<Bind::VertexBuffer>( gfx, model.vertices ) );
 
-		auto pvs = std::make_unique<VertexShader>( gfx, L"BlendedPhongVS.cso" );
+		auto pvs = std::make_unique<Bind::VertexShader>( gfx, L"BlendedPhongVS.cso" );
 		auto pvsbc = pvs->GetByteCode();
 		AddStaticBind( std::move( pvs ) );
-		AddStaticBind( std::make_unique<PixelShader>( gfx, L"BlendedPhongPS.cso" ) );
-		AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx, model.indices ) );
+		AddStaticBind( std::make_unique<Bind::PixelShader>( gfx, L"BlendedPhongPS.cso" ) );
+		AddStaticIndexBuffer( std::make_unique<Bind::IndexBuffer>( gfx, model.indices ) );
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
 		{
@@ -47,8 +47,8 @@ Pyramid::Pyramid( Graphics& gfx,std::mt19937& rng,
 			{ "Normal", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 			{ "Color", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, 24, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 		};
-		AddStaticBind( std::make_unique<InputLayout>( gfx, ied, pvsbc ) );
-		AddStaticBind( std::make_unique<Topology>( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
+		AddStaticBind( std::make_unique<Bind::InputLayout>( gfx, ied, pvsbc ) );
+		AddStaticBind( std::make_unique<Bind::Topology>( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
 		struct PSMaterialConstant
 		{
@@ -56,12 +56,12 @@ Pyramid::Pyramid( Graphics& gfx,std::mt19937& rng,
 			float specularPower = 30.0f;
 			float padding[2];
 		} colorConst;
-		AddStaticBind( std::make_unique<PixelConstantBuffer<PSMaterialConstant>>( gfx, colorConst, 1u ) );
+		AddStaticBind( std::make_unique<Bind::PixelConstantBuffer<PSMaterialConstant>>( gfx, colorConst, 1u ) );
 	}
 	else
 	{
 		SetIndexFromStatic();
 	}
 
-	AddBind( std::make_unique<TransformCbuf>( gfx, *this ) );
+	AddBind( std::make_unique<Bind::TransformCbuf>( gfx, *this ) );
 }

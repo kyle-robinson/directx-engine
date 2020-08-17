@@ -186,6 +186,12 @@
     <ClCompile Include="AssimpObject.cpp">
       <Filter>Source Files\Drawables</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>Source Files\Drawables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsInclude.h">
@@ -256,9 +262,6 @@
     </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>Header Files\Drawables</Filter>
-    </ClInclude>
-    <ClInclude Include="BindableBase.h">
-      <Filter>Header Files\Bindables</Filter>
     </ClInclude>
     <ClInclude Include="DrawableBase.h">
       <Filter>Header Files\Drawables</Filter>
@@ -359,8 +362,14 @@
     <ClInclude Include="Vertex.h">
       <Filter>Header Files\Drawables</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
+    <ClInclude Include="BindableCommon.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
       <Filter>Header Files\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Header Files\Bindables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
