@@ -1,6 +1,8 @@
 #include "AssimpObject.h"
 #include "BindableBase.h"
 #include "GraphicsThrowMacros.h"
+#include "Vertex.h"
+
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -16,11 +18,14 @@ AssimpObject::AssimpObject( Graphics& gfx, std::mt19937& rng,
 {
 	if ( !IsStaticInitialised() )
 	{
-		struct Vertex
-		{
-			DirectX::XMFLOAT3 pos;
-			DirectX::XMFLOAT3 n;
-		};
+		using VertexMeta::VertexLayout;
+		VertexMeta::VertexBuffer vbuf(
+			std::move(
+				VertexLayout{}
+				.Append<VertexLayout::Position3D>()
+				.Append<VertexLayout::Normal>()
+			)
+		);
 
 		// setup importer and load model scene
 		Assimp::Importer asmpImporter;
@@ -35,13 +40,11 @@ AssimpObject::AssimpObject( Graphics& gfx, std::mt19937& rng,
 		const auto pMesh = pModel->mMeshes[0];
 
 		// load model vertices
-		std::vector<Vertex> vertices;
-		vertices.reserve( pMesh->mNumVertices );
 		for ( unsigned int i = 0; i < pMesh->mNumVertices; i++ )
 		{
-			vertices.push_back(
-				{ { pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale, pMesh->mVertices[i].z * scale },
-				*reinterpret_cast<DirectX::XMFLOAT3*>( &pMesh->mNormals[i] ) }
+			vbuf.EmplaceBack(
+				DirectX::XMFLOAT3{ pMesh->mVertices[i].x * scale, pMesh->mVertices[i].y * scale, pMesh->mVertices[i].z * scale },
+				*reinterpret_cast<DirectX::XMFLOAT3*>( &pMesh->mNormals[i] )
 			);
 		}
 
@@ -58,7 +61,7 @@ AssimpObject::AssimpObject( Graphics& gfx, std::mt19937& rng,
 		}
 
 		// Add static bindables
-		AddStaticBind( std::make_unique<VertexBuffer>( gfx, vertices ) );
+		AddStaticBind( std::make_unique<VertexBuffer>( gfx, vbuf ) );
 		AddStaticIndexBuffer( std::make_unique<IndexBuffer>( gfx, indices ) );
 
 		auto pvs = std::make_unique<VertexShader>( gfx, L"PhongVS.cso" );
