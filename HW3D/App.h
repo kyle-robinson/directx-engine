@@ -26,5 +26,4 @@ private:
 	Model nanosuit{ wnd.Gfx(), "res\\models\\nanosuit.gltf" };
 	
 	int x = 0, y = 0;
-	bool cursorEnabled = true;
 };
