@@ -15,7 +15,6 @@ GDIPlusManager gdipm;
 App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 40.0f ) );
-	wnd.DisableCursor();
 }
 
 int App::Init()
@@ -51,13 +50,47 @@ void App::DoFrame()
 	nanosuit.Draw( wnd.Gfx() );
 	light.Draw( wnd.Gfx() );
 
+	// raw mouse input
+	while ( const auto& e = wnd.kbd.ReadKey() )
+	{
+		if ( e->IsPress() && e->GetCode() == VK_INSERT )
+		{
+			if ( cursorEnabled )
+			{
+				wnd.DisableCursor();
+				cursorEnabled = false;
+			}
+			else
+			{
+				wnd.EnableCursor();
+				cursorEnabled = true;
+			}
+		}
+	}
+
 	// imgui
 	if ( wnd.Gfx().IsImGuiEnabled() )
 	{
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
 		nanosuit.ShowControlWindow();
+		ShowRawInputWindow();
 	}
 	
 	wnd.Gfx().EndFrame();
+}
+
+void App::ShowRawInputWindow()
+{
+	while ( const auto d = wnd.mouse.ReadRawDelta() )
+	{
+		x += d->x;
+		y += d->y;
+	}
+	if ( ImGui::Begin( "Raw Input" ) )
+	{
+		ImGui::Text( "Tally: (%d,%d)", x, y );
+		ImGui::Text( "Cursor: %s", cursorEnabled ? "Enabled" : "Disabled" );
+	}
+	ImGui::End();
 }

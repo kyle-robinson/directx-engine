@@ -45,7 +45,7 @@ public:
 	Keyboard& operator = ( const Keyboard& ) = delete;
 	// key events
 	bool KeyIsPressed( unsigned int keycode ) const noexcept;
-	Event ReadKey() noexcept;
+	std::optional<Event> ReadKey() noexcept;
 	bool KeyIsEmpty() const noexcept;
 	void FlushKey() noexcept;
 	// char events
