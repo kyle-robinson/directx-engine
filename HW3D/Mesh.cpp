@@ -1,6 +1,29 @@
 #include "Mesh.h"
 #include "imgui/imgui.h"
 #include <unordered_map>
+#include <sstream>
+
+// ModelException
+ModelException::ModelException( int line, const char* file, std::string note ) noexcept : Exception( line, file ), note( note ) { }
+
+const char* ModelException::what() const noexcept
+{
+	std::ostringstream oss;
+	oss << Exception::what() << std::endl
+		<< "[Note] " << GetNote();
+	whatBuffer = oss.str();
+	return whatBuffer.c_str();
+}
+
+const char* ModelException::GetType() const noexcept
+{
+	return "Model Exception";
+}
+
+const std::string& ModelException::GetNote() const noexcept
+{
+	return note;
+}
 
 // Mesh
 Mesh::Mesh( Graphics& gfx, std::vector<std::unique_ptr<Bind::Bindable>> bindPtrs )
@@ -70,8 +93,20 @@ void Node::RenderTree( int& nodeIndexTracked, std::optional<int>& selectedIndex,
 		| (( currentNodeIndex == selectedIndex.value_or( -1 ) ) ? ImGuiTreeNodeFlags_Selected : 0 )
 		| (( childPtrs.empty() ) ? ImGuiTreeNodeFlags_Leaf : 0 );
 
+	// render current node
+	const auto expanded = ImGui::TreeNodeEx(
+		(void*)(intptr_t)currentNodeIndex, node_flags, name.c_str()
+	);
+
+	// for selecting nodes
+	if ( ImGui::IsItemClicked() )
+	{
+		selectedIndex = currentNodeIndex;
+		pSelectedNode = const_cast<Node*>(this);
+	}
+
 	// if node is expanded, recursively render all children
-	if ( ImGui::TreeNodeEx( (void*)(intptr_t)currentNodeIndex, node_flags, name.c_str() ) )
+	if ( expanded )
 	{
 		selectedIndex = ImGui::IsItemClicked() ? currentNodeIndex : selectedIndex;
 		for ( const auto& pChild : childPtrs )
@@ -79,12 +114,6 @@ void Node::RenderTree( int& nodeIndexTracked, std::optional<int>& selectedIndex,
 			pChild->RenderTree( nodeIndexTracked, selectedIndex, pSelectedNode );
 		}
 		ImGui::TreePop();
-	}
-
-	if (ImGui::IsItemClicked())
-	{
-		selectedIndex = currentNodeIndex;
-		pSelectedNode = const_cast<Node*>(this);
 	}
 }
 
