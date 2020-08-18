@@ -69,8 +69,8 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 
 	// create and bind depth stencil texture
 	D3D11_TEXTURE2D_DESC descDepth = { 0 };
-	descDepth.Width = (UINT)GetWidth();
-	descDepth.Height = (UINT)GetHeight();
+	descDepth.Width = (UINT)width;
+	descDepth.Height = (UINT)height;
 	descDepth.MipLevels = 1u;
 	descDepth.ArraySize = 1u;
 	descDepth.Format = DXGI_FORMAT_D32_FLOAT;
@@ -93,8 +93,8 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 
 	// configure viewports
 	D3D11_VIEWPORT vp;
-	vp.Width = (UINT)GetWidth();
-	vp.Height = (UINT)GetHeight();
+	vp.Width = (UINT)width;
+	vp.Height = (UINT)height;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = 0.0f;
