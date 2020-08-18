@@ -21,8 +21,9 @@ class Node
 {
 	friend class Model;
 public:
-	Node( std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform ) noexcept(!IS_DEBUG);
+	Node( const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform ) noexcept(!IS_DEBUG);
 	void Draw( Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG);
+	void RenderTree() const noexcept(!IS_DEBUG);
 private:
 	void AddChild( std::unique_ptr<Node> pChild ) noexcept(!IS_DEBUG);
 private:

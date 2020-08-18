@@ -36,12 +36,12 @@ DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
 }
 
 // Node
-Node::Node(std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) noexcept(!IS_DEBUG) : meshPtrs(std::move(meshPtrs))
+Node::Node( const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform ) noexcept(!IS_DEBUG) : meshPtrs( std::move( meshPtrs ) ), name( name )
 {
 	DirectX::XMStoreFloat4x4(&this->transform, transform);
 }
 
-void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept(!IS_DEBUG)
+void Node::Draw( Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG)
 {
 	const auto built = DirectX::XMLoadFloat4x4(&transform) * accumulatedTransform;
 	for (const auto pm : meshPtrs)
@@ -51,6 +51,18 @@ void Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const no
 	for (const auto& pc : childPtrs)
 	{
 		pc->Draw(gfx, built);
+	}
+}
+
+void Node::RenderTree() const noexcept(!IS_DEBUG)
+{
+	if ( ImGui::TreeNode( name.c_str() ) )
+	{
+		for ( const auto& pChild : childPtrs )
+		{
+			pChild->RenderTree();
+		}
+		ImGui::TreePop();
 	}
 }
 
@@ -86,8 +98,12 @@ void Model::Draw( Graphics& gfx ) const noexcept(!IS_DEBUG)
 
 void Model::ShowControlWindow( const char* windowName ) noexcept
 {
-	if ( ImGui::Begin( "Model", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
+	if ( ImGui::Begin( "Model" ) )
 	{
+		ImGui::Columns( 2, nullptr, true );
+		pRoot->RenderTree();
+
+		ImGui::NextColumn();
 		if ( ImGui::CollapsingHeader( "Orientation" ) )
 		{
 			ImGui::SliderAngle( "Roll", &pos.roll, -180.0f, 180.0f );
@@ -175,7 +191,7 @@ std::unique_ptr<Node> Model::ParseNode( const aiNode& node ) noexcept
 		curMeshPtrs.push_back(meshPtrs.at(meshIdx).get());
 	}
 
-	auto pNode = std::make_unique<Node>(std::move(curMeshPtrs), transform);
+	auto pNode = std::make_unique<Node>( node.mName.C_Str(), std::move( curMeshPtrs ), transform );
 	for (size_t i = 0; i < node.mNumChildren; i++)
 	{
 		pNode->AddChild(ParseNode(*node.mChildren[i]));
