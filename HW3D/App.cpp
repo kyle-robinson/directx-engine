@@ -15,6 +15,7 @@ GDIPlusManager gdipm;
 App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 40.0f ) );
+	wnd.DisableCursor();
 }
 
 int App::Init()
@@ -36,7 +37,7 @@ void App::DoFrame()
 	const auto dt = timer.Mark() * speed_factor;
 
 	// imgui setup
-	if ( wnd.kbd.KeyIsPressed( VK_F2 ) )
+	if ( wnd.kbd.KeyIsPressed( VK_F1 ) )
 		wnd.Gfx().DisableImGui();
 	else
 		wnd.Gfx().EnableImGui();
@@ -51,9 +52,12 @@ void App::DoFrame()
 	light.Draw( wnd.Gfx() );
 
 	// imgui
-	camera.SpawnControlWindow();
-	light.SpawnControlWindow();
-	nanosuit.ShowControlWindow();
+	if ( wnd.Gfx().IsImGuiEnabled() )
+	{
+		camera.SpawnControlWindow();
+		light.SpawnControlWindow();
+		nanosuit.ShowControlWindow();
+	}
 	
 	wnd.Gfx().EndFrame();
 }

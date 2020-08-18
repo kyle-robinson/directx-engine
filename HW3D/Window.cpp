@@ -83,6 +83,18 @@ void Window::SetTitle( const std::wstring& title )
 		throw WND_LAST_EXCEPT();
 }
 
+void Window::EnableCursor() noexcept
+{
+	cursorEnabled = true;
+	ShowCursor();
+}
+
+void Window::DisableCursor() noexcept
+{
+	cursorEnabled = false;
+	HideCursor();
+}
+
 std::optional<int> Window::ProcessMessages() noexcept
 {
 	MSG msg;
@@ -109,6 +121,39 @@ Graphics& Window::Gfx()
 	if ( !pGfx )
 		throw WND_NOGFX_EXCEPT();
 	return *pGfx;
+}
+
+void Window::ConfineCursor() noexcept
+{
+	RECT rect;
+	GetClientRect( hWnd, &rect );
+	MapWindowPoints( hWnd, nullptr, reinterpret_cast<POINT*>(&rect), 2 );
+	ClipCursor( &rect );
+}
+
+void Window::FreeCursor() noexcept
+{
+	ClipCursor( nullptr );
+}
+
+void Window::ShowCursor() noexcept
+{
+	while ( ::ShowCursor( TRUE ) < 0 );
+}
+
+void Window::HideCursor() noexcept
+{
+	while ( ::ShowCursor( FALSE ) >= 0 );
+}
+
+void Window::EnableImGuiMouse() noexcept
+{
+	ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+}
+
+void Window::DisableImGuiMouse() noexcept
+{
+	ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
 }
 
 LRESULT WINAPI Window::HandleMsgSetup( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) noexcept
@@ -153,6 +198,22 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 		kbd.ClearState();
 		break;
 
+	case WM_ACTIVATE:
+		if ( !cursorEnabled )
+		{
+			if ( wParam & WA_ACTIVE || wParam & WA_CLICKACTIVE )
+			{
+				ConfineCursor();
+				HideCursor();
+			}
+			else
+			{
+				FreeCursor();
+				ShowCursor();
+			}
+		}
+		break;
+
 	/* Keyboard Messages */
 	case WM_SYSKEYDOWN:
 	case WM_KEYDOWN:
@@ -179,8 +240,20 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 	/* Mouse Messages */
 	case WM_MOUSEMOVE:
 	{
+		if ( !cursorEnabled )
+		{
+			if ( !mouse.IsInWindow() )
+			{
+				SetCapture( hWnd );
+				mouse.OnMouseEnter();
+				HideCursor();
+			}
+		}
+
+		// stifle mouse message if imgui wants to capture mouse
 		if ( ImGui::GetIO().WantCaptureMouse )
 			break;
+
 		const POINTS pt = MAKEPOINTS( lParam );
 		// in client region
 		if ( pt.x >= 0 && pt.x < width && pt.y >= 0 && pt.y < height )
@@ -208,11 +281,25 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 		break;
 	}
 
+	case WM_MOUSEHOVER:
+	{
+		SetCursor( LoadCursor( Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR1 ) );
+		break;
+	}
+
 	case WM_LBUTTONDOWN:
 	{
+		SetForegroundWindow( hWnd );
+		if ( !cursorEnabled )
+		{
+			ConfineCursor();
+			HideCursor();
+		}
+
+		SetCursor(LoadCursor( Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR2 ));
+
 		if ( ImGui::GetIO().WantCaptureMouse )
 			break;
-		SetCursor(LoadCursor( Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR2 ));
 		const POINTS pt = MAKEPOINTS( lParam );
 		mouse.OnLeftPressed( pt.x, pt.y );
 		break;
@@ -229,9 +316,10 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 
 	case WM_LBUTTONUP:
 	{
+		SetCursor(LoadCursor(Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR1));
+		
 		if ( ImGui::GetIO().WantCaptureMouse )
 			break;
-		SetCursor(LoadCursor(Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR1));
 		const POINTS pt = MAKEPOINTS( lParam );
 		mouse.OnLeftReleased( pt.x, pt.y );
 		break;
