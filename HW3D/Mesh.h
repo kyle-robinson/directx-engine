@@ -39,19 +39,12 @@ public:
 	Model( Graphics& gfx, const std::string fileName );
 	void Draw( Graphics& gfx ) const noexcept(!IS_DEBUG);
 	void ShowControlWindow( const char* windowName = nullptr ) noexcept;
+	~Model() noexcept;
 private:
 	static std::unique_ptr<Mesh> ParseMesh( Graphics& gfx, const aiMesh& mesh );
 	std::unique_ptr<Node> ParseNode( const aiNode& node ) noexcept;
 private:
 	std::unique_ptr<Node> pRoot;
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;
-	struct
-	{
-		float roll = 0.0f;
-		float pitch = 0.0f;
-		float yaw = 0.0f;
-		float x = 0.0f;
-		float y = 0.0f;
-		float z = 0.0f;
-	} pos;
+	std::unique_ptr<class ModelWindow> pWindow;
 };
