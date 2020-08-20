@@ -68,6 +68,7 @@ public:
 	~Window();
 	Window( const Window& ) = delete;
 	Window& operator = ( const Window& ) = delete;
+	void EndWindow() const noexcept;
 	void SetTitle( const std::wstring& title );
 	void EnableCursor() noexcept;
 	void DisableCursor() noexcept;

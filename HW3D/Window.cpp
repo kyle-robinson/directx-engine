@@ -85,6 +85,14 @@ Window::~Window()
 {
 	ImGui_ImplWin32_Shutdown();
 	DestroyWindow( hWnd );
+	PostQuitMessage( 0 );
+}
+
+void Window::EndWindow() const noexcept
+{
+	ImGui_ImplWin32_Shutdown();
+	DestroyWindow( hWnd );
+	PostQuitMessage( 0 );
 }
 
 void Window::SetTitle( const std::wstring& title )
@@ -210,7 +218,7 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 	switch ( msg )
 	{
 	case WM_CLOSE:
-		PostQuitMessage( 0 );
+		EndWindow();
 		return 0;
 
 	case WM_KILLFOCUS:
@@ -315,7 +323,7 @@ LRESULT Window::HandleMsg( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam ) n
 			HideCursor();
 		}
 
-		SetCursor(LoadCursor( Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR2 ));
+		SetCursor( LoadCursor( Window::WindowClass::GetInstance(), (LPCWSTR)IDR_ANICURSOR2 ));
 
 		if ( ImGui::GetIO().WantCaptureMouse )
 			break;

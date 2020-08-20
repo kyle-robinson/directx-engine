@@ -35,6 +35,9 @@ void App::DoFrame()
 {
 	const auto dt = timer.Mark() * speed_factor;
 
+	if ( wnd.kbd.KeyIsPressed( VK_ESCAPE ) )
+		wnd.EndWindow();
+
 	// imgui setup
 	if ( wnd.kbd.KeyIsPressed( VK_F1 ) )
 		wnd.Gfx().DisableImGui();
