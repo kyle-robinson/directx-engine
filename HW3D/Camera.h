@@ -13,5 +13,5 @@ public:
 private:
 	DirectX::XMFLOAT3 pos;
 	float pitch, yaw;
-	float travelSpeed = 12.0f, rotationSpeed = 0.004f;
+	float travelSpeed = 12.0f, rotationSpeed = 0.002f;
 };
