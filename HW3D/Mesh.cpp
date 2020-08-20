@@ -83,11 +83,14 @@ void Node::Draw( Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform ) const 
 	}
 }
 
-void Node::RenderTree( std::optional<int>& selectedIndex, Node*& pSelectedNode ) const noexcept
+void Node::RenderTree( Node*& pSelectedNode ) const noexcept
 {
+	// set id to impossible value, if no node is selected
+	const int selectedID = ( pSelectedNode == nullptr ) ? -1 : pSelectedNode->GetID();
+
 	// build flags for current node
 	const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
-		| (( GetID() == selectedIndex.value_or( -1 ) ) ? ImGuiTreeNodeFlags_Selected : 0 )
+		| (( GetID() == selectedID ) ? ImGuiTreeNodeFlags_Selected : 0 )
 		| (( childPtrs.empty() ) ? ImGuiTreeNodeFlags_Leaf : 0 );
 
 	// render current node
@@ -98,7 +101,6 @@ void Node::RenderTree( std::optional<int>& selectedIndex, Node*& pSelectedNode )
 	// for selecting nodes
 	if ( ImGui::IsItemClicked() )
 	{
-		selectedIndex = GetID();
 		pSelectedNode = const_cast<Node*>(this);
 	}
 
@@ -107,7 +109,7 @@ void Node::RenderTree( std::optional<int>& selectedIndex, Node*& pSelectedNode )
 	{
 		for ( const auto& pChild : childPtrs )
 		{
-			pChild->RenderTree( selectedIndex, pSelectedNode );
+			pChild->RenderTree( pSelectedNode );
 		}
 		ImGui::TreePop();
 	}
@@ -141,12 +143,12 @@ public:
 		if ( ImGui::Begin( windowName ) )
 		{
 			ImGui::Columns( 2, nullptr, true );
-			root.RenderTree( selectedIndex, pSelectedNode );
+			root.RenderTree( pSelectedNode );
 
 			ImGui::NextColumn();
 			if ( pSelectedNode != nullptr )
 			{
-				auto& transform = transforms[*selectedIndex];
+				auto& transform = transforms[pSelectedNode->GetID()];
 
 				if ( ImGui::CollapsingHeader( "Orientation" ) )
 				{
@@ -170,7 +172,7 @@ public:
 	}
 	void ResetMesh() noexcept
 	{
-		auto& transform = transforms.at( *selectedIndex );
+		auto& transform = transforms.at( pSelectedNode->GetID() );
 		transform.roll = 0.0f;
 		transform.pitch = 0.0f;
 		transform.yaw = 0.0f;
@@ -178,15 +180,10 @@ public:
 		transform.y = 0.0f;
 		transform.z = 0.0f;
 	}
-	DirectX::XMMATRIX GetTransform() noexcept
+	DirectX::XMMATRIX GetTransform() const noexcept
 	{
-		const auto& transform = transforms.at( *selectedIndex );
-		
-		if ( !meshInitialized )
-		{
-			meshInitialized = true;
-			ResetMesh();
-		}
+		assert( pSelectedNode != nullptr );
+		const auto& transform = transforms.at( pSelectedNode->GetID() );
 
 		return
 			DirectX::XMMatrixRotationRollPitchYaw( transform.roll, transform.pitch, transform.yaw ) *
@@ -197,13 +194,16 @@ public:
 		return pSelectedNode;
 	}
 private:
-	std::optional<int> selectedIndex;
 	Node* pSelectedNode;
 	struct TransformParameters
 	{
-		float roll, pitch, yaw, x, y, z;
+		float roll = 0.0f;
+		float pitch = 0.0f;
+		float yaw = 0.0f;
+		float x = 0.0f;
+		float y = 0.0f;
+		float z = 0.0f;
 	};
-	bool meshInitialized = false;
 	std::unordered_map<int, TransformParameters> transforms;
 };
 
