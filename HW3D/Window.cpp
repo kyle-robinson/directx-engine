@@ -97,12 +97,16 @@ void Window::EnableCursor() noexcept
 {
 	cursorEnabled = true;
 	ShowCursor();
+	EnableImGuiMouse();
+	FreeCursor();
 }
 
 void Window::DisableCursor() noexcept
 {
 	cursorEnabled = false;
 	HideCursor();
+	DisableImGuiMouse();
+	ConfineCursor();
 }
 
 bool Window::CursorEnabled() const noexcept
