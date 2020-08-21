@@ -34,6 +34,7 @@ namespace Bind
 
 	std::shared_ptr<VertexBuffer> VertexBuffer::Resolve( Graphics& gfx, const std::string& tag, const VertexMeta::VertexBuffer& vbuf )
 	{
+		assert( tag != "?" );
 		return Codex::Resolve<VertexBuffer>( gfx, tag, vbuf );
 	}
 
