@@ -59,7 +59,7 @@ public:
 private:
 	static std::unique_ptr<Mesh> ParseMesh( Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials );
 	std::unique_ptr<Node> ParseNode( int& nextID, const aiNode& node ) noexcept;
-private:
+public:
 	std::unique_ptr<Node> pRoot;
 	std::vector<std::unique_ptr<Mesh>> meshPtrs;
 	std::unique_ptr<class ModelWindow> pWindow;

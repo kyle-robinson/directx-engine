@@ -3,6 +3,7 @@
 #include "imgui/imgui.h"
 #include <unordered_map>
 #include <sstream>
+#include <iostream>
 
 // ModelException
 ModelException::ModelException( int line, const char* file, std::string note ) noexcept : Exception( line, file ), note( note ) { }
@@ -280,14 +281,37 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 	
 	if ( mesh.mMaterialIndex >= 0 )
 	{
-		using namespace std::string_literals;
+		//using namespace std::string_literals;
+
 		auto& material = *pMaterials[mesh.mMaterialIndex];
+		
+		//const auto base = "res\\models\\nanosuit\\"s;
+		//aiString texFileName;
+		//if ( material.GetTexture( typeDiffuse, 3, &texFileName ) == aiReturn_SUCCESS )
+		//	bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( base + texFileName.C_Str() ) ) );
 
-		aiString texFileName;
-		material.GetTexture( aiTextureType_DIFFUSE, 0, &texFileName );
+		switch ( mesh.mMaterialIndex )
+		{
+		case 0:
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\arm_dif.png" ) ) );
+			break;
+		case 1:
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\body_dif.png" ) ) );
+			break;
+		case 2:
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\glass_dif.png" ) ) );
+			break;
+		case 3:
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\hand_dif.png" ) ) );
+			break;
+		case 4:
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\helmet_diff.png" ) ) );
+			break;
+		case 5:
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\leg_dif.png" ) ) );
+			break;
+		}
 
-		//bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\arm_dif.png" ) ) );
-		bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\"s + texFileName.C_Str() ) ) );
 		bindablePtrs.push_back( std::make_unique<Bind::Sampler>( gfx ) );
 	}
 
