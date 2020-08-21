@@ -1,13 +1,14 @@
 #pragma once
 #include "IndexedTriangleList.h"
+#include "Vertex.h"
 #include "Math.h"
 #include <DirectXMath.h>
+#include <optional>
 
 class Sphere
 {
 public:
-	template<class V>
-	static IndexedTriangleList<V> MakeTesselated( int latDiv, int longDiv )
+	static IndexedTriangleList MakeTesselated( VertexMeta::VertexLayout layout, int latDiv, int longDiv )
 	{
 		assert( latDiv >= 3 );
 		assert( longDiv >= 3 );
@@ -17,7 +18,7 @@ public:
 		const float lattitudeAngle = PI / latDiv;
 		const float longitudeAngle = 2.0f * PI / longDiv;
 
-		std::vector<V> vertices;
+		VertexMeta::VertexBuffer vb{ std::move( layout ) };
 		for ( int iLat = 1; iLat < latDiv; iLat++ )
 		{
 			const auto latBase = DirectX::XMVector3Transform(
@@ -25,21 +26,28 @@ public:
 			);
 			for ( int iLong = 0; iLong < longDiv; iLong++ )
 			{
-				vertices.emplace_back();
+				DirectX::XMFLOAT3 calculatedPos;
 				auto v = DirectX::XMVector3Transform(
 					latBase, DirectX::XMMatrixRotationZ( longitudeAngle * iLong )
 				);
-				DirectX::XMStoreFloat3( &vertices.back().pos, v );
+				DirectX::XMStoreFloat3( &calculatedPos, v );
+				vb.EmplaceBack( calculatedPos );
 			}
 		}
 
 		// add cap vertices
-		const auto iNorthPole = (unsigned short)vertices.size();
-		vertices.emplace_back();
-		DirectX::XMStoreFloat3( &vertices.back().pos, base );
-		const auto iSouthPole = (unsigned short)vertices.size();
-		vertices.emplace_back();
-		DirectX::XMStoreFloat3( &vertices.back().pos, DirectX::XMVectorNegate( base ) );
+		const auto iNorthPole = (unsigned short)vb.Size();
+		{
+			DirectX::XMFLOAT3 northPos;
+			DirectX::XMStoreFloat3( &northPos, base );
+			vb.EmplaceBack( northPos );
+		}
+		const auto iSouthPole = (unsigned short)vb.Size();
+		{
+			DirectX::XMFLOAT3 southPos;
+			DirectX::XMStoreFloat3( &southPos, DirectX::XMVectorNegate( base ) );
+			vb.EmplaceBack( southPos );
+		}
 
 		const auto calcIdx = [latDiv, longDiv](unsigned short iLat, unsigned short iLong)
 		{ return iLat * longDiv + iLong; };
@@ -86,11 +94,14 @@ public:
 		indices.push_back(calcIdx(latDiv - 2, longDiv - 1));
 		indices.push_back(iSouthPole);
 
-		return { std::move(vertices),std::move(indices) };
+		return { std::move( vb ), std::move( indices ) };
 	}
-	template<class V>
-	static IndexedTriangleList<V> Make()
+	static IndexedTriangleList Make( std::optional<VertexMeta::VertexLayout> layout = std::nullopt )
 	{
-		return MakeTesselated<V>(12, 24);
+		if ( !layout )
+		{
+			layout = VertexMeta::VertexLayout{}.Append( VertexMeta::VertexLayout::ElementType::Position3D );
+		}
+		return MakeTesselated( std::move( *layout ), 12, 24 );
 	}
 };

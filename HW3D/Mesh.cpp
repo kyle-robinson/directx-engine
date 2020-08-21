@@ -28,27 +28,16 @@ const std::string& ModelException::GetNote() const noexcept
 }
 
 // Mesh
-Mesh::Mesh( Graphics& gfx, std::vector<std::unique_ptr<Bind::Bindable>> bindPtrs )
+Mesh::Mesh( Graphics& gfx, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs )
 {
-	if (!IsStaticInitialised())
-	{
-		AddStaticBind(std::make_unique<Bind::Topology>(gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-	}
+	AddBind( std::make_shared<Bind::Topology>( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
 	for (auto& pb : bindPtrs)
 	{
-		if ( auto pi = dynamic_cast<Bind::IndexBuffer*>( pb.get() ) )
-		{
-			AddIndexBuffer(std::unique_ptr<Bind::IndexBuffer>{ pi });
-			pb.release();
-		}
-		else
-		{
-			AddBind( std::move( pb ) );
-		}
+		AddBind( std::move( pb ) );
 	}
 
-	AddBind( std::make_unique<Bind::TransformCbuf>( gfx, *this ) );
+	AddBind( std::make_shared<Bind::TransformCbuf>( gfx, *this ) );
 }
 
 void Mesh::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept(!IS_DEBUG)
@@ -277,61 +266,88 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 		indices.push_back( face.mIndices[2] );
 	}
 
-	std::vector<std::unique_ptr<Bind::Bindable>> bindablePtrs;
+	std::vector<std::shared_ptr<Bind::Bindable>> bindablePtrs;
 	
+	bool hasSpecularMap = false;
+	float shininess = 35.0f;
 	if ( mesh.mMaterialIndex >= 0 )
 	{
-		//using namespace std::string_literals;
-
+		using namespace std::string_literals;
 		auto& material = *pMaterials[mesh.mMaterialIndex];
 		
-		//const auto base = "res\\models\\nanosuit\\"s;
-		//aiString texFileName;
-		//if ( material.GetTexture( typeDiffuse, 3, &texFileName ) == aiReturn_SUCCESS )
-		//	bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( base + texFileName.C_Str() ) ) );
+		aiString texFileName;
+		const auto base = "res\\models\\nanosuit\\"s;
+		if ( material.GetTexture( aiTextureType_DIFFUSE, 0, &texFileName ) == aiReturn_SUCCESS )
+		{
+			bindablePtrs.push_back( std::make_shared<Bind::Texture>( gfx, Surface::FromFile( base + texFileName.C_Str() ) ) );
+		}
 
-		switch ( mesh.mMaterialIndex )
+		if ( material.GetTexture( aiTextureType_SPECULAR, 0, &texFileName ) == aiReturn_SUCCESS )
+		{
+			bindablePtrs.push_back( std::make_shared<Bind::Texture>( gfx, Surface::FromFile( base + texFileName.C_Str() ), 1 ) );
+			hasSpecularMap = true;
+		}
+		else
+		{
+			material.Get( AI_MATKEY_SHININESS, shininess );
+		}
+
+		/*switch ( mesh.mMaterialIndex )
 		{
 		case 0:
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\arm_dif.png" ) ) );
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\hand_dif.png" ) ) );
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\hand_showroom_spec.png" ) ) );
 			break;
 		case 1:
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\body_dif.png" ) ) );
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\arm_dif.png" ) ) );
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\arm_showroom_spec.png" ) ) );
 			break;
 		case 2:
 			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\glass_dif.png" ) ) );
 			break;
 		case 3:
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\hand_dif.png" ) ) );
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\helmet_diff.png" ) ) );
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\helmet_showroom_spec.png" ) ) );
 			break;
 		case 4:
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\helmet_diff.png" ) ) );
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\leg_dif.png" ) ) );
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\leg_showroom_spec.png" ) ) );
 			break;
 		case 5:
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\leg_dif.png" ) ) );
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\body_dif.png" ) ) );
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\body_showroom_spec.png" ) ) );
 			break;
-		}
+		}*/
 
-		bindablePtrs.push_back( std::make_unique<Bind::Sampler>( gfx ) );
+		bindablePtrs.push_back( std::make_shared<Bind::Sampler>( gfx ) );
 	}
 
-	bindablePtrs.push_back( std::make_unique<Bind::VertexBuffer>( gfx, vbuf ) );
-	bindablePtrs.push_back( std::make_unique<Bind::IndexBuffer>( gfx, indices ) );
+	bindablePtrs.push_back( std::make_shared<Bind::VertexBuffer>( gfx, vbuf ) );
+	bindablePtrs.push_back( std::make_shared<Bind::IndexBuffer>( gfx, indices ) );
 
-	auto pvs = std::make_unique<Bind::VertexShader>( gfx, L"PhongVS.cso" );
+	auto pvs = std::make_shared<Bind::VertexShader>( gfx, "PhongVS.cso" );
 	auto pvsbc = pvs->GetByteCode();
 	bindablePtrs.push_back( std::move( pvs ) );
-	bindablePtrs.push_back( std::make_unique<Bind::PixelShader>( gfx, L"PhongPS.cso" ) );
 
-	bindablePtrs.push_back( std::make_unique<Bind::InputLayout>( gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc ) );
+	bindablePtrs.push_back( std::make_shared<Bind::InputLayout>( gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc ) );
 
-	struct PSMaterialCount
+	if ( hasSpecularMap )
 	{
-		float speuclarIntensity = 0.6f;
-		float specularPower = 30.0f;
-		float padding[2];
-	} pmc;
-	bindablePtrs.push_back( std::make_unique<Bind::PixelConstantBuffer<PSMaterialCount>>( gfx, pmc, 1u ) );
+		bindablePtrs.push_back( std::make_shared<Bind::PixelShader>( gfx, L"PhongPSSpec.cso" ) );
+	}
+	else
+	{
+		bindablePtrs.push_back( std::make_shared<Bind::PixelShader>( gfx, L"PhongPS.cso" ) );
+
+		struct PSMaterialCount
+		{
+			float speuclarIntensity = 1.6f;
+			float specularPower;
+			float padding[2];
+		} pmc;
+		pmc.specularPower = shininess;
+		bindablePtrs.push_back( std::make_shared<Bind::PixelConstantBuffer<PSMaterialCount>>( gfx, pmc, 1u ) );
+	}
 
 	return std::make_unique<Mesh>( gfx, std::move( bindablePtrs ) );
 }

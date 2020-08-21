@@ -4,7 +4,7 @@
 
 namespace Bind
 {
-	Texture::Texture( Graphics& gfx, const Surface& s )
+	Texture::Texture( Graphics& gfx, const Surface& s, unsigned int slot ) : slot( slot )
 	{
 		INFOMANAGER( gfx );
 
@@ -40,6 +40,6 @@ namespace Bind
 
 	void Texture::Bind( Graphics& gfx ) noexcept
 	{
-		GFX_THROW_INFO_ONLY( GetContext( gfx )->PSSetShaderResources( 0u, 1u, pTextureView.GetAddressOf() ) );
+		GFX_THROW_INFO_ONLY( GetContext( gfx )->PSSetShaderResources( slot, 1u, pTextureView.GetAddressOf() ) );
 	}
 }
