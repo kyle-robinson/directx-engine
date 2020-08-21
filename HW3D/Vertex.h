@@ -36,7 +36,7 @@ namespace VertexMeta
 		};
 		template<> struct Map<Texture2D>
 		{
-			using VertexType = DirectX::XMFLOAT3;
+			using VertexType = DirectX::XMFLOAT2;
 			static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32_FLOAT;
 			static constexpr const char* semantic = "Texcoord";
 		};

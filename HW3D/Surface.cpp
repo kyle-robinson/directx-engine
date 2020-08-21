@@ -97,7 +97,7 @@ Surface Surface::FromFile(const std::string& name)
 	std::unique_ptr<Color[]> pBuffer = nullptr;
 
 	{
-		// convert filenam to wide string (for Gdiplus)
+		// convert filename to wide string (for Gdiplus)
 		wchar_t wideName[512];
 		mbstowcs_s(nullptr, wideName, name.c_str(), _TRUNCATE);
 

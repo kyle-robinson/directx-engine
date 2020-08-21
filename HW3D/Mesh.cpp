@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "Surface.h"
 #include "imgui/imgui.h"
 #include <unordered_map>
 #include <sstream>
@@ -212,13 +213,17 @@ Model::Model( Graphics& gfx, const std::string fileName ) : pWindow( std::make_u
 	Assimp::Importer importer;
 	const auto pScene = importer.ReadFile(
 		fileName.c_str(),
-		aiProcess_Triangulate | aiProcess_JoinIdenticalVertices
+		aiProcess_Triangulate |
+		aiProcess_JoinIdenticalVertices |
+		aiProcess_ConvertToLeftHanded |
+		aiProcess_GenNormals
 	);
 
-	for (size_t i = 0; i < pScene->mNumMeshes; i++)
-	{
-		meshPtrs.push_back(ParseMesh(gfx, *pScene->mMeshes[i]));
-	}
+	if ( pScene == nullptr )
+		throw ModelException( __LINE__, __FILE__, importer.GetErrorString() );
+
+	for ( size_t i = 0; i < pScene->mNumMeshes; i++ )
+		meshPtrs.push_back( ParseMesh( gfx, *pScene->mMeshes[i], pScene->mMaterials ) );
 
 	int nextID = 0;
 	pRoot = ParseNode( nextID, *pScene->mRootNode );
@@ -238,74 +243,89 @@ void Model::ShowControlWindow( const char* windowName ) noexcept
 	pWindow->Show( windowName, *pRoot );
 }
 
-std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh)
+std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials )
 {
 	using VertexMeta::VertexLayout;
 
 	VertexMeta::VertexBuffer vbuf(
 		std::move(
 			VertexLayout{}
-			.Append(VertexLayout::Position3D)
-			.Append(VertexLayout::Normal)
+			.Append( VertexLayout::Position3D )
+			.Append( VertexLayout::Normal )
+			.Append( VertexLayout::Texture2D )
 		)
 	);
 
-	for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+	for ( unsigned int i = 0; i < mesh.mNumVertices; i++ )
 	{
 		vbuf.EmplaceBack(
-			*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mVertices[i]),
-			*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mNormals[i])
+			*reinterpret_cast<DirectX::XMFLOAT3*>( &mesh.mVertices[i] ),
+			*reinterpret_cast<DirectX::XMFLOAT3*>( &mesh.mNormals[i] ),
+			*reinterpret_cast<DirectX::XMFLOAT2*>( &mesh.mTextureCoords[0][i] )
 		);
 	}
 
 	std::vector<unsigned short> indices;
-	indices.reserve(mesh.mNumFaces * 3);
-	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+	indices.reserve( mesh.mNumFaces * 3 );
+	for ( unsigned int i = 0; i < mesh.mNumFaces; i++ )
 	{
 		const auto& face = mesh.mFaces[i];
-		assert(face.mNumIndices == 3);
-		indices.push_back(face.mIndices[0]);
-		indices.push_back(face.mIndices[1]);
-		indices.push_back(face.mIndices[2]);
+		assert( face.mNumIndices == 3 );
+		indices.push_back( face.mIndices[0] );
+		indices.push_back( face.mIndices[1] );
+		indices.push_back( face.mIndices[2] );
 	}
 
 	std::vector<std::unique_ptr<Bind::Bindable>> bindablePtrs;
-	bindablePtrs.push_back(std::make_unique<Bind::VertexBuffer>(gfx, vbuf));
-	bindablePtrs.push_back(std::make_unique<Bind::IndexBuffer>(gfx, indices));
+	
+	if ( mesh.mMaterialIndex >= 0 )
+	{
+		using namespace std::string_literals;
+		auto& material = *pMaterials[mesh.mMaterialIndex];
 
-	auto pvs = std::make_unique<Bind::VertexShader>(gfx, L"PhongVS.cso");
+		aiString texFileName;
+		material.GetTexture( aiTextureType_DIFFUSE, 0, &texFileName );
+
+		//bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\arm_dif.png" ) ) );
+		bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, Surface::FromFile( "res\\models\\nanosuit\\"s + texFileName.C_Str() ) ) );
+		bindablePtrs.push_back( std::make_unique<Bind::Sampler>( gfx ) );
+	}
+
+	bindablePtrs.push_back( std::make_unique<Bind::VertexBuffer>( gfx, vbuf ) );
+	bindablePtrs.push_back( std::make_unique<Bind::IndexBuffer>( gfx, indices ) );
+
+	auto pvs = std::make_unique<Bind::VertexShader>( gfx, L"PhongVS.cso" );
 	auto pvsbc = pvs->GetByteCode();
-	bindablePtrs.push_back(std::move(pvs));
-	bindablePtrs.push_back(std::make_unique<Bind::PixelShader>(gfx, L"PhongPS.cso"));
+	bindablePtrs.push_back( std::move( pvs ) );
+	bindablePtrs.push_back( std::make_unique<Bind::PixelShader>( gfx, L"PhongPS.cso" ) );
 
-	bindablePtrs.push_back(std::make_unique<Bind::InputLayout>(gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc));
+	bindablePtrs.push_back( std::make_unique<Bind::InputLayout>( gfx, vbuf.GetLayout().GetD3DLayout(), pvsbc ) );
 
 	struct PSMaterialCount
 	{
-		DirectX::XMFLOAT3 color = { 0.6f, 0.6f, 0.8f };
 		float speuclarIntensity = 0.6f;
 		float specularPower = 30.0f;
-		float padding[3];
+		float padding[2];
 	} pmc;
-	bindablePtrs.push_back(std::make_unique<Bind::PixelConstantBuffer<PSMaterialCount>>(gfx, pmc, 1u));
+	bindablePtrs.push_back( std::make_unique<Bind::PixelConstantBuffer<PSMaterialCount>>( gfx, pmc, 1u ) );
 
-	return std::make_unique<Mesh>(gfx, std::move(bindablePtrs));
+	return std::make_unique<Mesh>( gfx, std::move( bindablePtrs ) );
 }
 
 std::unique_ptr<Node> Model::ParseNode( int& nextID, const aiNode& node ) noexcept
 {
 	const auto transform = DirectX::XMMatrixTranspose(
 		DirectX::XMLoadFloat4x4(
-			reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation)
+			reinterpret_cast<const DirectX::XMFLOAT4X4*>( &node.mTransformation )
 		)
 	);
 
 	std::vector<Mesh*> curMeshPtrs;
-	curMeshPtrs.reserve(node.mNumMeshes);
-	for (size_t i = 0; i < node.mNumMeshes; i++)
+	curMeshPtrs.reserve( node.mNumMeshes );
+	for ( size_t i = 0; i < node.mNumMeshes; i++ )
 	{
 		const auto meshIdx = node.mMeshes[i];
-		curMeshPtrs.push_back(meshPtrs.at(meshIdx).get());
+		curMeshPtrs.push_back( meshPtrs.at( meshIdx ).get() );
 	}
 
 	auto pNode = std::make_unique<Node>( nextID++, node.mName.C_Str(), std::move( curMeshPtrs ), transform );
