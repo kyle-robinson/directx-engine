@@ -22,7 +22,7 @@ namespace Bind
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->PSSetSamplers( 0u, 1u, pSampler.GetAddressOf() ) );
 	}
 
-	std::shared_ptr<Bindable> Sampler::Resolve( Graphics& gfx )
+	std::shared_ptr<Sampler> Sampler::Resolve( Graphics& gfx )
 	{
 		return Codex::Resolve<Sampler>( gfx );
 	}

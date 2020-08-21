@@ -32,7 +32,7 @@ namespace Bind
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->IASetVertexBuffers( 0u, 1u, pVertexBuffer.GetAddressOf(), &stride, &offset ) );
 	}
 
-	std::shared_ptr<Bindable> VertexBuffer::Resolve( Graphics& gfx, const std::string& tag, const VertexMeta::VertexBuffer& vbuf )
+	std::shared_ptr<VertexBuffer> VertexBuffer::Resolve( Graphics& gfx, const std::string& tag, const VertexMeta::VertexBuffer& vbuf )
 	{
 		return Codex::Resolve<VertexBuffer>( gfx, tag, vbuf );
 	}

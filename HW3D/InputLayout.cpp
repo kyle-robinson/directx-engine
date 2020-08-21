@@ -26,7 +26,7 @@ namespace Bind
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->IASetInputLayout( pInputLayout.Get() ) );
 	}
 
-	std::shared_ptr<Bindable> InputLayout::Resolve( Graphics& gfx, const VertexMeta::VertexLayout& layout, ID3DBlob* pVertexShaderByteCode )
+	std::shared_ptr<InputLayout> InputLayout::Resolve( Graphics& gfx, const VertexMeta::VertexLayout& layout, ID3DBlob* pVertexShaderByteCode )
 	{
 		return Codex::Resolve<InputLayout>( gfx, layout, pVertexShaderByteCode );
 	}
