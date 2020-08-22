@@ -280,55 +280,17 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		if ( material.GetTexture( aiTextureType_DIFFUSE, 0, &texFileName ) == aiReturn_SUCCESS )
 		{
-			bindablePtrs.push_back( Bind::Texture::Resolve( gfx, base + texFileName.C_Str() ) );
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, base + texFileName.C_Str() ) );
 		}
 
 		if ( material.GetTexture( aiTextureType_SPECULAR, 0, &texFileName ) == aiReturn_SUCCESS )
 		{
-			bindablePtrs.push_back( Bind::Texture::Resolve( gfx, base + texFileName.C_Str(), 1 ) );
+			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, base + texFileName.C_Str(), 1 ) );
 			hasSpecularMap = true;
 		}
 		else
 		{
 			material.Get( AI_MATKEY_SHININESS, shininess );
-		}
-
-		switch ( mesh.mMaterialIndex )
-		{
-		case 0:
-			//bindablePtrs.push_back( Bind::Texture::Resolve( gfx, "res\\models\\nanosuit\\hand_dif.png" ) );
-			//bindablePtrs.push_back( Bind::Texture::Resolve( gfx, "res\\models\\nanosuit\\hand_showroom_spec.png" ) );
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, "res\\models\\nanosuit\\hand_dif.png" ) );
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, "res\\models\\nanosuit\\hand_showroom_spec.png" ) );
-			break;
-		case 1:
-			//bindablePtrs.push_back( Bind::Texture::Resolve( gfx, "res\\models\\nanosuit\\arm_dif.png" ) );
-			//bindablePtrs.push_back( Bind::Texture::Resolve( gfx, "res\\models\\nanosuit\\arm_showroom_spec.png" ) );
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, "res\\models\\nanosuit\\arm_dif.png" ) );
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, "res\\models\\nanosuit\\arm_showroom_spec.png" ) );
-			break;
-		case 2:
-			//bindablePtrs.push_back( Bind::Texture::Resolve( gfx, "res\\models\\nanosuit\\glass_dif.png" ) );
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, "res\\models\\nanosuit\\glass_dif.png" ) );
-			break;
-		case 3:
-			//bindablePtrs.push_back( Bind::Texture::Resolve( gfx, "res\\models\\nanosuit\\helmet_diff.png" ) );
-			//bindablePtrs.push_back( Bind::Texture::Resolve( gfx, "res\\models\\nanosuit\\helmet_showroom_spec.png" ) );
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, "res\\models\\nanosuit\\helmet_diff.png" ) );
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, "res\\models\\nanosuit\\helmet_showroom_spec.png" ) );
-			break;
-		case 4:
-			//bindablePtrs.push_back( Bind::Texture::Resolve( gfx, "res\\models\\nanosuit\\leg_dif.png" ) );
-			//bindablePtrs.push_back( Bind::Texture::Resolve( gfx, "res\\models\\nanosuit\\leg_showroom_spec.png" ) );
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, "res\\models\\nanosuit\\leg_dif.png" ) );
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, "res\\models\\nanosuit\\leg_showroom_spec.png" ) );
-			break;
-		case 5:
-			//bindablePtrs.push_back( Bind::Texture::Resolve( gfx, "res\\models\\nanosuit\\body_dif.png" ) );
-			//bindablePtrs.push_back( Bind::Texture::Resolve( gfx, "res\\models\\nanosuit\\body_showroom_spec.png" ) );
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, "res\\models\\nanosuit\\body_dif.png" ) );
-			bindablePtrs.push_back( std::make_unique<Bind::Texture>( gfx, "res\\models\\nanosuit\\body_showroom_spec.png" ) );
-			break;
 		}
 
 		bindablePtrs.push_back( Bind::Sampler::Resolve( gfx ) );
