@@ -171,6 +171,9 @@
     <ClCompile Include="Vertex.cpp">
       <Filter>Source Files\Drawables</Filter>
     </ClCompile>
+    <ClCompile Include="NormalPlane.cpp">
+      <Filter>Source Files\Drawables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WindowsInclude.h">
@@ -320,6 +323,9 @@
     <ClInclude Include="BindableCodex.h">
       <Filter>Header Files\Bindables</Filter>
     </ClInclude>
+    <ClInclude Include="NormalPlane.h">
+      <Filter>Header Files\Drawables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -408,6 +414,9 @@
       <Filter>Resource Files\Shaders\Textures</Filter>
     </FxCompile>
     <FxCompile Include="PhongPSSpec.hlsl">
+      <Filter>Resource Files\Shaders\Lighting</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongPSNormal.hlsl">
       <Filter>Resource Files\Shaders\Lighting</Filter>
     </FxCompile>
   </ItemGroup>

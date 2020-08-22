@@ -213,6 +213,7 @@
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="NormalPlane.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Sampler.cpp" />
@@ -260,6 +261,7 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="NormalPlane.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="PointLight.h" />
@@ -407,6 +409,7 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <FxCompile Include="PhongPSNormal.hlsl" />
     <FxCompile Include="PhongPSSpec.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
