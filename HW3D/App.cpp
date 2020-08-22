@@ -108,6 +108,7 @@ void App::DoFrame()
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
 		nanosuit.ShowControlWindow();
+		plane.SpawnControlWindow( wnd.Gfx() );
 		ShowRawInputWindow();
 	}
 	

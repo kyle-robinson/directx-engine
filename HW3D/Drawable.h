@@ -17,6 +17,18 @@ public:
 	void Draw( Graphics& gfx ) const noexcept(!IS_DEBUG);
 	virtual ~Drawable() = default;
 protected:
+	template<class T>
+	T* QueryBindable() noexcept
+	{
+		for ( auto& pb : binds )
+		{
+			if ( auto pt = dynamic_cast<T*>( pb.get() ) )
+			{
+				return pt;
+			}
+		}
+		return nullptr;
+	}
 	void AddBind( std::shared_ptr<Bind::Bindable> bind ) noexcept(!IS_DEBUG);
 private:
 	const Bind::IndexBuffer* pIndexBuffer = nullptr;
