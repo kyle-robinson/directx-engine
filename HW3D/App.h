@@ -6,6 +6,7 @@
 #include "ImGuiManager.h"
 #include "Mesh.h"
 #include "NormalPlane.h"
+#include "NormalCube.h"
 
 class App
 {
@@ -26,6 +27,7 @@ private:
 	float speed_factor = 1.0f;
 	Model nanosuit{ wnd.Gfx(), "res\\models\\nanosuit\\nanosuit.obj" };
 	NormalPlane plane;
+	NormalCube cube;
 	
 	int x = 0, y = 0;
 };

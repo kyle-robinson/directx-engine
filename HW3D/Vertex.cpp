@@ -147,7 +147,10 @@ namespace VertexMeta
 	ConstVertex::ConstVertex( const Vertex& v ) noexcept(!IS_DEBUG) : vertex(v) { }
 
 	// VertexBuffer
-	VertexBuffer::VertexBuffer( VertexLayout layout ) noexcept(!IS_DEBUG) : layout(std::move(layout)) { }
+	VertexBuffer::VertexBuffer( VertexLayout layout, size_t size ) noexcept(!IS_DEBUG) : layout( std::move( layout ) )
+	{
+		Resize( size );
+	}
 
 	const char* VertexBuffer::GetData() const noexcept(!IS_DEBUG)
 	{
@@ -157,6 +160,15 @@ namespace VertexMeta
 	const VertexLayout& VertexBuffer::GetLayout() const noexcept
 	{
 		return layout;
+	}
+
+	void VertexBuffer::Resize( size_t newSize ) noexcept(!IS_DEBUG)
+	{
+		const auto size = Size();
+		if ( size < newSize )
+		{
+			buffer.resize( buffer.size() + layout.Size() * (newSize - size) );
+		}
 	}
 
 	size_t VertexBuffer::Size() const noexcept(!IS_DEBUG)

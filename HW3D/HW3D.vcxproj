@@ -213,6 +213,7 @@
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="NormalCube.cpp" />
     <ClCompile Include="NormalPlane.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PointLight.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="NormalCube.h" />
     <ClInclude Include="NormalPlane.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Plane.h" />

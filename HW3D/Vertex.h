@@ -198,9 +198,10 @@ namespace VertexMeta
 	class VertexBuffer
 	{
 	public:
-		VertexBuffer( VertexLayout layout ) noexcept(!IS_DEBUG);
+		VertexBuffer( VertexLayout layout, size_t size = 0u ) noexcept(!IS_DEBUG);
 		const char* GetData() const noexcept(!IS_DEBUG);
 		const VertexLayout& GetLayout() const noexcept;
+		void Resize( size_t newSize ) noexcept(!IS_DEBUG);
 		size_t Size() const noexcept(!IS_DEBUG);
 		size_t SizeBytes() const noexcept(!IS_DEBUG);
 		template<typename ...Params>

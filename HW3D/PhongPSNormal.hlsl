@@ -17,6 +17,12 @@ cbuffer ObjectCBuf
     float padding[1];
 };
 
+cbuffer TransformCBuf
+{
+    matrix modelView;
+    matrix modelViewProj;
+};
+
 Texture2D tex;
 Texture2D norm;
 SamplerState smplr;
@@ -29,7 +35,8 @@ float4 main(float3 cameraPos : Position, float3 n : Normal, float2 tc : Texcoord
         const float3 normalSample = norm.Sample( smplr, tc ).xyz;
         n.x = normalSample.x * 2.0f - 1.0f;
         n.y = -normalSample.y * 2.0f + 1.0f;
-        n.z = -normalSample.z;
+        n.z = -normalSample.z * 2.0f + 1.0f;
+        n = mul(n, (float3x3)modelView);
     }
     
 	// fragment to light

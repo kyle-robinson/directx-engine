@@ -12,9 +12,10 @@
 #include "GDIPlusManager.h"
 GDIPlusManager gdipm;
 
-App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() ), plane( wnd.Gfx(), 3.0f )
+App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() ), plane( wnd.Gfx(), 3.0f ), cube( wnd.Gfx(), 4.0f )
 {
-	plane.SetPos( { 1.0f, 17.0f, -1.0f } );
+	plane.SetPos( { -10.0f, 12.5f, -1.0f } );
+	cube.SetPos( { 5.0f, 15.0f, -2.0f } );
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 40.0f ) );
 }
 
@@ -54,6 +55,7 @@ void App::DoFrame()
 	nanosuit.Draw( wnd.Gfx() );
 	light.Draw( wnd.Gfx() );
 	plane.Draw( wnd.Gfx() );
+	cube.Draw( wnd.Gfx() );
 
 	// raw mouse input
 	while ( const auto& e = wnd.kbd.ReadKey() )
@@ -109,6 +111,7 @@ void App::DoFrame()
 		light.SpawnControlWindow();
 		nanosuit.ShowControlWindow();
 		plane.SpawnControlWindow( wnd.Gfx() );
+		cube.SpawnControlWindow( wnd.Gfx() );
 		ShowRawInputWindow();
 	}
 	
