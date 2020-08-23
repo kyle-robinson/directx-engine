@@ -1,6 +1,5 @@
 #include "Mesh.h"
 #include "Surface.h"
-#include "imgui/imgui.h"
 #include <unordered_map>
 #include <sstream>
 #include <iostream>
@@ -106,39 +105,6 @@ void Node::RenderTree( Node*& pSelectedNode ) const noexcept
 	}
 }
 
-void Node::ControlWindow( Graphics& gfx, PSMaterialConstantFull&  c )
-{
-	if ( ImGui::CollapsingHeader( "Material" ) )
-	{
-		if ( meshPtrs.empty() )
-		{
-			ImGui::Text( "No mesh selected!" );
-			return;
-		}
-
-		if ( auto pcb = meshPtrs.front()->QueryBindable<Bind::PixelConstantBuffer<PSMaterialConstantFull>>() )
-		{
-			bool normalMapEnabled = (bool)c.normalMapEnabled;
-			ImGui::Checkbox( "Normal Map", &normalMapEnabled );
-			c.normalMapEnabled = normalMapEnabled ? TRUE : FALSE;
-
-			bool specularMapEnabled = (bool)c.specularMapEnabled;
-			ImGui::Checkbox( "Specular Map", &specularMapEnabled );
-			c.specularMapEnabled = specularMapEnabled ? TRUE : FALSE;
-
-			bool normalMapEnabled = (bool)c.normalMapEnabled;
-			ImGui::Checkbox( "Normal Map", &normalMapEnabled );
-			c.normalMapEnabled = normalMapEnabled ? TRUE : FALSE;
-
-			ImGui::SliderFloat( "Spec. Weight", &c.specularMapWeight, 0.0f, 2.0f );
-			ImGui::SliderFloat( "Spec. Power", &c.specularPower, 0.0f, 1000.0f, "%f", 5.0f );
-			ImGui::ColorPicker3( "Spec. Color", reinterpret_cast<float*>(&c.specularColor) );
-
-			pcb->Update( gfx, c );
-		}
-	}
-}
-
 void Node::SetAppliedTransform( DirectX::FXMMATRIX transform ) noexcept
 {
 	DirectX::XMStoreFloat4x4( &appliedTransform, transform );
@@ -188,7 +154,9 @@ public:
 					ImGui::SliderFloat( "Z", &transform.z, -20.0f, 20.0f );
 				}
 
-				pSelectedNode->ControlWindow( gfx, mc );
+				if ( ImGui::CollapsingHeader( "Material" ) )
+					if ( !pSelectedNode->ControlWindow( gfx, skinMaterial ) )
+						pSelectedNode->ControlWindow( gfx, ringMaterial );
 
 				if ( ImGui::Button( "Reset" ) )
 					ResetMesh();
@@ -230,7 +198,8 @@ private:
 		float y = 0.0f;
 		float z = 0.0f;
 	};
-	Node::PSMaterialConstantFull mc;
+	Node::PSMaterialConstantFull skinMaterial;
+	Node::PSMaterialConstantNoTexture ringMaterial;
 	std::unordered_map<int, TransformParameters> transforms;
 };
 
@@ -288,7 +257,9 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 	bool hasSpecularMap = false;
 	bool hasNormalMap = false;
 	bool hasAlphaGloss = false;
-	float shininess = 35.0f;
+	float shininess = 2.0f;
+	DirectX::XMFLOAT4 diffuseColor = { 0.45f, 0.45f, 0.85f, 1.0f };
+	DirectX::XMFLOAT4 specularColor = { 0.18f, 0.18f, 0.18f, 1.0f };
 
 	if (mesh.mMaterialIndex >= 0)
 	{
@@ -300,6 +271,10 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 			bindablePtrs.push_back(std::make_unique<Bind::Texture>(gfx, base + texFileName.C_Str()));
 			hasDiffuseMap = true;
 		}
+		else
+		{
+			material.Get( AI_MATKEY_COLOR_DIFFUSE, reinterpret_cast<aiColor3D&>( diffuseColor ) );
+		}
 
 		if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
 		{
@@ -307,6 +282,10 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 			hasAlphaGloss = tex->HasAlpha();
 			bindablePtrs.push_back( std::move( tex ) );
 			hasSpecularMap = true;
+		}
+		else
+		{
+			material.Get( AI_MATKEY_COLOR_SPECULAR, reinterpret_cast<aiColor3D&>( specularColor ) );
 		}
 		if ( !hasAlphaGloss )
 		{
@@ -425,12 +404,13 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		struct PSMaterialConstant
 		{
-			float specularIntensity = 0.18f;
+			float specularIntensity;
 			float specularPower;
 			BOOL normalMapEnabled = TRUE;
 			float padding[1];
 		} pmc;
 		pmc.specularPower = shininess;
+		pmc.specularIntensity = ( specularColor.x + specularColor.y + specularColor.z ) / 3.0f;
 		bindablePtrs.push_back(Bind::PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 	}
 	else if ( hasDiffuseMap )
@@ -477,11 +457,12 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		struct PSMaterialConstant
 		{
-			float specularIntensity = 0.18f;
+			float specularIntensity;
 			float specularPower;
 			float padding[2];
 		} pmc;
 		pmc.specularPower = shininess;
+		pmc.specularIntensity = ( specularColor.x + specularColor.y + specularColor.z ) / 3.0f;
 		bindablePtrs.push_back(Bind::PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 	}
 	else if ( !hasDiffuseMap && !hasSpecularMap && !hasNormalMap )
@@ -524,15 +505,11 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		bindablePtrs.push_back(Bind::InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 
-		struct PSMaterialConstant
-		{
-			DirectX::XMFLOAT4 materialColor = { 0.45f, 0.45f, 0.85f, 1.0f };
-			float specularIntensity = 0.18f;
-			float specularPower;
-			float padding[2];
-		} pmc;
+		Node::PSMaterialConstantNoTexture pmc;
 		pmc.specularPower = shininess;
-		bindablePtrs.push_back(Bind::PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
+		pmc.materialColor = diffuseColor;
+		pmc.specularIntensity = ( specularColor.x + specularColor.y + specularColor.z ) / 3.0f;
+		bindablePtrs.push_back( Bind::PixelConstantBuffer<Node::PSMaterialConstantNoTexture>::Resolve( gfx, pmc, 1u ) );
 	}
 	else
 	{

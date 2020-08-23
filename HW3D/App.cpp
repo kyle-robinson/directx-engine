@@ -105,7 +105,7 @@ void App::DoFrame()
 	{
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
-		goblin.ShowControlWindow();
+		goblin.ShowControlWindow( wnd.Gfx() );
 		ShowRawInputWindow();
 	}
 	
