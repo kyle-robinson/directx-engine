@@ -112,9 +112,11 @@ public:
 	static Surface FromFile(const std::string& name);
 	void Save(const std::string& filename) const;
 	void Copy(const Surface& src) noexcept(!IS_DEBUG);
+	bool AlphaLoaded() const noexcept;
 private:
-	Surface(unsigned int width, unsigned int height, std::unique_ptr<Color[]> pBufferParam) noexcept;
+	Surface(unsigned int width, unsigned int height, std::unique_ptr<Color[]> pBufferParam, bool alphaLoaded = false) noexcept;
 private:
+	bool alphaLoaded = false;
 	std::unique_ptr<Color[]> pBuffer;
 	unsigned int width;
 	unsigned int height;

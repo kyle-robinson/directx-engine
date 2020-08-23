@@ -251,6 +251,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 	bool hasDiffuseMap = false;
 	bool hasSpecularMap = false;
 	bool hasNormalMap = false;
+	bool hasAlphaGloss = false;
 	float shininess = 35.0f;
 
 	if (mesh.mMaterialIndex >= 0)
@@ -266,10 +267,12 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
 		{
-			bindablePtrs.push_back(std::make_unique<Bind::Texture>(gfx, base + texFileName.C_Str(), 1));
+			auto tex = std::make_unique<Bind::Texture>( gfx, base + texFileName.C_Str(), 1 );
+			hasAlphaGloss = tex->HasAlpha();
+			bindablePtrs.push_back( std::move( tex ) );
 			hasSpecularMap = true;
 		}
-		else
+		if ( !hasAlphaGloss )
 		{
 			material.Get(AI_MATKEY_SHININESS, shininess);
 		}
@@ -336,8 +339,12 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 		struct PSMaterialConstant
 		{
 			BOOL normalMapEnabled = TRUE;
-			float padding[3];
+			BOOL hasGlossMap;
+			float specularPower;
+			float padding[1];
 		} pmc;
+		pmc.specularPower = shininess;
+		pmc.hasGlossMap = hasAlphaGloss ? TRUE : FALSE;
 		bindablePtrs.push_back( Bind::PixelConstantBuffer<PSMaterialConstant>::Resolve( gfx, pmc, 1u ) );
 	}
 	else if ( hasDiffuseMap && hasNormalMap )
@@ -489,7 +496,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		struct PSMaterialConstant
 		{
-			DirectX::XMFLOAT4 materialColor = { 0.65f, 0.65f, 0.85f, 1.0f };
+			DirectX::XMFLOAT4 materialColor = { 0.45f, 0.45f, 0.85f, 1.0f };
 			float specularIntensity = 0.18f;
 			float specularPower;
 			float padding[2];

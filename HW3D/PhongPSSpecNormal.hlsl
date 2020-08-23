@@ -12,6 +12,8 @@ cbuffer LightCBuf
 cbuffer ObjectCBuf
 {
     bool normalMapEnabled;
+    bool hasGloss;
+    float specularPowerConst;
     float padding[3];
 };
 
@@ -42,7 +44,7 @@ float4 main(float3 cameraPos : Position, float3 n : Normal, float3 tan : Tangent
     }
     
 	// fragment to light
-        const float3 vToL = lightPos - cameraPos;
+    const float3 vToL = lightPos - cameraPos;
     const float distToL = length(vToL);
     const float3 dirToL = vToL / distToL;
 	
@@ -59,8 +61,12 @@ float4 main(float3 cameraPos : Position, float3 n : Normal, float3 tan : Tangent
 	// specular intensity
     const float4 specularSample = spec.Sample(smplr, tc);
     const float3 specularReflectionColor = specularSample.rgb;
-    const float specularPower = pow(2.0f, specularSample.a * 13.0f);
-    const float3 specular = ( diffuseColor * diffuseIntensity ) * att * pow(max(0.0f, dot(normalize(-r), normalize(cameraPos))), specularPower);
+    float specularPower;
+    if ( hasGloss )
+        specularPower = pow(2.0f, specularSample.a * 13.0f);
+    else
+        specularPower = specularPowerConst;
+    const float3 specular = (diffuseColor * diffuseIntensity) * att * pow(max(0.0f, dot(normalize(-r), normalize(cameraPos))), specularPower);
 	
 	// final color
     return float4(saturate((ambient + diffuse) * tex.Sample(smplr, tc).rgb + specular * specularReflectionColor), 1.0f);
