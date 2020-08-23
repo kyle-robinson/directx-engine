@@ -80,6 +80,10 @@ namespace VertexMeta
 			return sizeof(Map<Texture2D>::VertexType);
 		case Normal:
 			return sizeof(Map<Normal>::VertexType);
+		case Tangent:
+			return sizeof(Map<Tangent>::VertexType);
+		case Bitangent:
+			return sizeof(Map<Bitangent>::VertexType);
 		case Float3Color:
 			return sizeof(Map<Float3Color>::VertexType);
 		case Float4Color:
@@ -104,6 +108,10 @@ namespace VertexMeta
 			return GenerateDesc<Texture2D>(GetOffset());
 		case Normal:
 			return GenerateDesc<Normal>(GetOffset());
+		case Tangent:
+			return GenerateDesc<Tangent>(GetOffset());
+		case Bitangent:
+			return GenerateDesc<Bitangent>(GetOffset());
 		case Float3Color:
 			return GenerateDesc<Float3Color>(GetOffset());
 		case Float4Color:
@@ -127,6 +135,10 @@ namespace VertexMeta
 			return Map<Texture2D>::code;
 		case Normal:
 			return Map<Normal>::code;
+		case Tangent:
+			return Map<Tangent>::code;
+		case Bitangent:
+			return Map<Bitangent>::code;
 		case Float3Color:
 			return Map<Float3Color>::code;
 		case Float4Color:

@@ -11,39 +11,38 @@ cbuffer LightCBuf
 
 cbuffer ObjectCBuf
 {
-    float speuclarIntensity;
-    float specularPower;
     bool normalMapEnabled;
-    float padding[1];
+    float padding[3];
 };
 
 Texture2D tex;
-Texture2D norm : register(t2);
+Texture2D spec;
+Texture2D norm;
+
 SamplerState smplr;
 
 float4 main(float3 cameraPos : Position, float3 n : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : Texcoord) : SV_Target
 {
-    // sample normals from normal map
+    // sample normal from map
     if ( normalMapEnabled )
     {
-        // build the rotation into tangent space
+        // build the rotation matrix into tangent space
         const float3x3 tanToView = float3x3(
             normalize(tan),
             normalize(bitan),
             normalize(n)
         );
         
-        // get normals from map into tangent space
-        const float3 normalSample = norm.Sample( smplr, tc ).xyz;
+        // get normal data from map
+        const float3 normalSample = norm.Sample(smplr, tc).xyz;
         n = normalSample * 2.0f - 1.0f;
-        n.y = -n.y;
         
-        // normal from tangent space to view space
+        // normal from tangent to view
         n = mul(n, tanToView);
     }
     
 	// fragment to light
-    const float3 vToL = lightPos - cameraPos;
+        const float3 vToL = lightPos - cameraPos;
     const float distToL = length(vToL);
     const float3 dirToL = vToL / distToL;
 	
@@ -58,8 +57,11 @@ float4 main(float3 cameraPos : Position, float3 n : Normal, float3 tan : Tangent
     const float3 r = w * 2.0f - vToL;
 	
 	// specular intensity
+    const float4 specularSample = spec.Sample(smplr, tc);
+    const float3 specularReflectionColor = specularSample.rgb;
+    const float specularPower = pow(2.0f, specularSample.a * 13.0f);
     const float3 specular = ( diffuseColor * diffuseIntensity ) * att * pow(max(0.0f, dot(normalize(-r), normalize(cameraPos))), specularPower);
 	
 	// final color
-    return float4(saturate((ambient + diffuse) * tex.Sample(smplr, tc).rgb + specular), 1.0f);
+    return float4(saturate((ambient + diffuse) * tex.Sample(smplr, tc).rgb + specular * specularReflectionColor), 1.0f);
 }

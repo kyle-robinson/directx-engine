@@ -25,9 +25,9 @@ private:
 	PointLight light;
 
 	float speed_factor = 1.0f;
-	Model nanosuit{ wnd.Gfx(), "res\\models\\nanosuit\\nanosuit.obj" };
-	NormalPlane plane;
-	NormalCube cube;
+	Model wall{ wnd.Gfx(), "res\\models\\brick_wall\\brick_wall.obj" };
+	NormalPlane plane{ wnd.Gfx(), 1.0f };
+	//NormalCube cube;
 	
 	int x = 0, y = 0;
 };

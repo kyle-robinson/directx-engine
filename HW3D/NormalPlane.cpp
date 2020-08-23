@@ -18,7 +18,7 @@ NormalPlane::NormalPlane( Graphics& gfx, float size )
 	auto pvs = Bind::VertexShader::Resolve( gfx, "PhongVS.cso" );
 	auto pvsbc = pvs->GetByteCode();
 	AddBind( std::move( pvs ) );
-	AddBind( Bind::PixelShader::Resolve( gfx, "PhongPSNormal.cso" ) );
+	AddBind( Bind::PixelShader::Resolve( gfx, "PhongPSNormalObject.cso" ) );
 
 	AddBind( Bind::PixelConstantBuffer<PSMaterialConstant>::Resolve( gfx, pmc, 1u ) );
 

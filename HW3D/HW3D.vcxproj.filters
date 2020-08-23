@@ -437,10 +437,16 @@
     <FxCompile Include="TexturedPhongVS.hlsl">
       <Filter>Resource Files\Shaders\Textures</Filter>
     </FxCompile>
-    <FxCompile Include="PhongPSSpec.hlsl">
+    <FxCompile Include="PhongPSNormal.hlsl">
       <Filter>Resource Files\Shaders\Lighting</Filter>
     </FxCompile>
-    <FxCompile Include="PhongPSNormal.hlsl">
+    <FxCompile Include="PhongPSSpecNormal.hlsl">
+      <Filter>Resource Files\Shaders\Lighting</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongVSNormal.hlsl">
+      <Filter>Resource Files\Shaders\Lighting</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongPSNormalObject.hlsl">
       <Filter>Resource Files\Shaders\Lighting</Filter>
     </FxCompile>
   </ItemGroup>

@@ -28,11 +28,11 @@ public:
 
 			for ( int y = 0, i = 0; y < nVertices_y; y++ )
 			{
-				const float y_pos = float( y ) * divisionSize_y;
+				const float y_pos = float( y ) * divisionSize_y - side_y;
 				const float y_pos_tc = 1.0f - float( y ) * divisionSize_y_tc;
 				for (int x = 0; x < nVertices_x; x++, i++)
 				{
-					const float x_pos = float( x ) * divisionSize_x;
+					const float x_pos = float( x ) * divisionSize_x - side_x;
 					const float x_pos_tc = float( x ) * divisionSize_x_tc;
 					vb.EmplaceBack(
 						DirectX::XMFLOAT3{ x_pos, y_pos, 0.0f },

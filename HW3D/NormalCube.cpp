@@ -1,6 +1,5 @@
 #include "NormalCube.h"
 #include "BindableCommon.h"
-#include "TransformCbufDouble.h"
 #include "Cube.h"
 #include "imgui/imgui.h"
 
@@ -29,7 +28,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 	
 	AddBind( Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
-	AddBind( std::make_shared<TransformCbufDouble>( gfx, *this, 0u, 2u ) );
+	AddBind( std::make_shared<TransformCbuf>( gfx, *this ) );
 }
 
 void NormalCube::SetPos( DirectX::XMFLOAT3 pos ) noexcept
