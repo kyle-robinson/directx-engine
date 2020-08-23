@@ -2,6 +2,7 @@
 #include "Drawable.h"
 #include "BindableCommon.h"
 #include "Vertex.h"
+#include "ConstantBuffers.h"
 #include <optional>
 
 #include <assimp/Importer.hpp>
@@ -33,11 +34,22 @@ class Node
 {
 	friend class Model;
 public:
+	struct PSMaterialConstantFull
+	{
+		BOOL normalMapEnabled = TRUE;
+		BOOL specularMapEnabled = TRUE;
+		BOOL hasGlossMap = FALSE;
+		float specularPower = 3.1f;
+		DirectX::XMFLOAT3 specularColor = { 0.75f, 0.75f, 0.75f };
+		float specularMapWeight = 0.671f;
+	};
+public:
 	Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in ) noexcept(!IS_DEBUG);
 	void Draw( Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG);
 	void SetAppliedTransform( DirectX::FXMMATRIX transform ) noexcept;
 	int GetID() const noexcept;
 	void RenderTree( Node*& pSelectedNode ) const noexcept;
+	void ControlWindow( Graphics& gfx, PSMaterialConstantFull& c );
 private:
 	void AddChild( std::unique_ptr<Node> pChild ) noexcept(!IS_DEBUG);
 private:
@@ -54,7 +66,7 @@ class Model
 public:
 	Model( Graphics& gfx, const std::string fileName );
 	void Draw( Graphics& gfx ) const noexcept(!IS_DEBUG);
-	void ShowControlWindow( const char* windowName = nullptr ) noexcept;
+	void ShowControlWindow( Graphics& gfx, const char* windowName = nullptr ) noexcept;
 	void SetRootTransform( DirectX::FXMMATRIX tf ) noexcept;
 	~Model() noexcept;
 private:
