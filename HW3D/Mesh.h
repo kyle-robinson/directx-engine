@@ -45,6 +45,12 @@ public:
 		DirectX::XMFLOAT3 specularColor = { 0.75f, 0.75f, 0.75f };
 		float specularMapWeight = 0.671f;
 	};
+	struct PSMaterialConstantDiffuse
+	{
+		float specularIntensity = 1.0f;
+		float specularPower = 20.0f;
+		float padding[2];
+	} pmc;
 	struct PSMaterialConstantNoTexture
 	{
 		DirectX::XMFLOAT4 materialColor = { 0.447970f, 0.327254f, 0.176283f, 1.0f };
@@ -88,6 +94,17 @@ public:
 				ImGui::ColorPicker3("Spec. Color", reinterpret_cast<float*>(&c.specularColor));
 
 				pcb->Update(gfx, c);
+				return true;
+			}
+		}
+		else if constexpr( std::is_same<T, PSMaterialConstantDiffuse>::value )
+		{
+			if ( auto pcb = meshPtrs.front()->QueryBindable<Bind::PixelConstantBuffer<T>>() )
+			{
+				ImGui::SliderFloat( "Spec. Inten.", &c.specularIntensity, 0.0f, 2.0f );
+				ImGui::SliderFloat( "Spec. Pow.", &c.specularPower, 0.0f, 1000.0f, "%f", 5.0f );
+
+				pcb->Update( gfx, c );
 				return true;
 			}
 		}

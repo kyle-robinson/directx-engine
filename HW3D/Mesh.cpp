@@ -156,7 +156,8 @@ public:
 
 				if ( ImGui::CollapsingHeader( "Material" ) )
 					if ( !pSelectedNode->ControlWindow( gfx, skinMaterial ) )
-						pSelectedNode->ControlWindow( gfx, ringMaterial );
+						if( !pSelectedNode->ControlWindow( gfx, eyeMaterial ) )
+							pSelectedNode->ControlWindow( gfx, ringMaterial );
 
 				if ( ImGui::Button( "Reset" ) )
 					ResetMesh();
@@ -199,6 +200,7 @@ private:
 		float z = 0.0f;
 	};
 	Node::PSMaterialConstantFull skinMaterial;
+	Node::PSMaterialConstantDiffuse eyeMaterial;
 	Node::PSMaterialConstantNoTexture ringMaterial;
 	std::unordered_map<int, TransformParameters> transforms;
 };
@@ -455,15 +457,10 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		bindablePtrs.push_back(Bind::InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 
-		struct PSMaterialConstant
-		{
-			float specularIntensity;
-			float specularPower;
-			float padding[2];
-		} pmc;
+		Node::PSMaterialConstantDiffuse pmc;
 		pmc.specularPower = shininess;
 		pmc.specularIntensity = ( specularColor.x + specularColor.y + specularColor.z ) / 3.0f;
-		bindablePtrs.push_back(Bind::PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
+		bindablePtrs.push_back(Bind::PixelConstantBuffer<Node::PSMaterialConstantDiffuse>::Resolve(gfx, pmc, 1u));
 	}
 	else if ( !hasDiffuseMap && !hasSpecularMap && !hasNormalMap )
 	{
