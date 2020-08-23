@@ -48,9 +48,9 @@ public:
 	struct PSMaterialConstantNoTexture
 	{
 		DirectX::XMFLOAT4 materialColor = { 0.447970f, 0.327254f, 0.176283f, 1.0f };
-		float specularIntensity = 0.65f;
+		DirectX::XMFLOAT4 specularColor = { 0.65f, 0.65f, 0.65f, 1.0f };
 		float specularPower = 120.0f;
-		float padding[2];
+		float padding[3];
 	};
 public:
 	Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in ) noexcept(!IS_DEBUG);
@@ -95,9 +95,9 @@ public:
 		{
 			if ( auto pcb = meshPtrs.front()->QueryBindable<Bind::PixelConstantBuffer<T>>() )
 			{
-				ImGui::SliderFloat( "Spec. Inten.", &c.specularIntensity, 0.0f, 1.0f );
-				ImGui::SliderFloat( "Spec. Pow.", &c.specularPower, 0.0f, 1000.0f, "%f", 5.0f );
 				ImGui::ColorPicker3( "Diff. Color", reinterpret_cast<float*>( &c.materialColor ) );
+				ImGui::ColorPicker3( "Spec. Color", reinterpret_cast<float*>( &c.specularColor ) );
+				ImGui::SliderFloat( "Spec. Pow.", &c.specularPower, 0.0f, 1000.0f, "%f", 5.0f );
 
 				pcb->Update( gfx, c );
 				return true;
