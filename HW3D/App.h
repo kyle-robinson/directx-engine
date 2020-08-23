@@ -5,8 +5,6 @@
 #include "PointLight.h"
 #include "ImGuiManager.h"
 #include "Mesh.h"
-#include "NormalPlane.h"
-#include "NormalCube.h"
 
 class App
 {
@@ -25,9 +23,7 @@ private:
 	PointLight light;
 
 	float speed_factor = 1.0f;
-	Model wall{ wnd.Gfx(), "res\\models\\brick_wall\\brick_wall.obj" };
-	NormalPlane plane{ wnd.Gfx(), 1.0f };
-	//NormalCube cube;
+	Model goblin{ wnd.Gfx(), "res\\models\\goblin\\GoblinX.obj" };
 	
 	int x = 0, y = 0;
 };

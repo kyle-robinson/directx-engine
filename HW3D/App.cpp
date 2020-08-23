@@ -12,11 +12,9 @@
 #include "GDIPlusManager.h"
 GDIPlusManager gdipm;
 
-App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )//, plane( wnd.Gfx(), 3.0f ), cube( wnd.Gfx(), 4.0f )
+App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
-	wall.SetRootTransform( DirectX::XMMatrixTranslation( -1.5f, 0.0f, 0.0f ) );
-	plane.SetPos( { -1.5f, 0.0f, 0.0f } );
-	//cube.SetPos( { 5.0f, 15.0f, -2.0f } );
+	//goblin.SetRootTransform( DirectX::XMMatrixTranslation( -1.5f, 0.0f, 0.0f ) );
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 40.0f ) );
 }
 
@@ -53,10 +51,8 @@ void App::DoFrame()
 	light.Bind( wnd.Gfx(), camera.GetMatrix() );
 
 	// objects
-	wall.Draw( wnd.Gfx() );
-	light.Draw( wnd.Gfx() );
-	plane.Draw( wnd.Gfx() );
-	//cube.Draw( wnd.Gfx() );
+	goblin.Draw( wnd.Gfx() );
+	light.Draw( wnd.Gfx() );;
 
 	// raw mouse input
 	while ( const auto& e = wnd.kbd.ReadKey() )
@@ -110,9 +106,7 @@ void App::DoFrame()
 	{
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
-		wall.ShowControlWindow();
-		plane.SpawnControlWindow( wnd.Gfx() );
-		//cube.SpawnControlWindow( wnd.Gfx() );
+		goblin.ShowControlWindow();
 		ShowRawInputWindow();
 	}
 	

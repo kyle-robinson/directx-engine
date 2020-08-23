@@ -76,6 +76,30 @@
     <Filter Include="Source Files\Objects">
       <UniqueIdentifier>{055cebec-b6f7-4e57-bfba-d79770f726ef}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Lighting\Vertex">
+      <UniqueIdentifier>{088a367d-2b4d-4216-a5e8-03a9c92e00bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Lighting\Pixel">
+      <UniqueIdentifier>{0c8956e7-d093-4107-bc28-514fab84a6ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Cube/Tri\Vertex">
+      <UniqueIdentifier>{30b0d664-08a0-4449-bbf2-c7c5c53aa7fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Cube/Tri\Pixel">
+      <UniqueIdentifier>{af7db1ea-ba46-4383-a993-9912cb12302c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Primitives\Pixel">
+      <UniqueIdentifier>{5c9a9b15-89f7-4c61-ad60-6d1bbc560d8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Primitives\Vertex">
+      <UniqueIdentifier>{9595d5ed-9ccb-4e66-8045-b68b438d2015}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Textures\Vertex">
+      <UniqueIdentifier>{49aabadb-7d70-439c-9c0e-a660a1bd75c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Textures\Pixel">
+      <UniqueIdentifier>{23b21e0a-56f6-4ded-9b47-53a39c9d87d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -380,74 +404,80 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="VertexShaderTri.hlsl">
-      <Filter>Resource Files\Shaders\Cube/Tri</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShaderCube.hlsl">
-      <Filter>Resource Files\Shaders\Cube/Tri</Filter>
-    </FxCompile>
-    <FxCompile Include="PixelShaderTri.hlsl">
-      <Filter>Resource Files\Shaders\Cube/Tri</Filter>
-    </FxCompile>
-    <FxCompile Include="VertexShaderCube.hlsl">
-      <Filter>Resource Files\Shaders\Cube/Tri</Filter>
-    </FxCompile>
-    <FxCompile Include="ColorIndexVS.hlsl">
-      <Filter>Resource Files\Shaders\Primitives</Filter>
-    </FxCompile>
-    <FxCompile Include="ColorBlendPS.hlsl">
-      <Filter>Resource Files\Shaders\Primitives</Filter>
-    </FxCompile>
-    <FxCompile Include="ColorBlendVS.hlsl">
-      <Filter>Resource Files\Shaders\Primitives</Filter>
-    </FxCompile>
-    <FxCompile Include="ColorIndexPS.hlsl">
-      <Filter>Resource Files\Shaders\Primitives</Filter>
-    </FxCompile>
-    <FxCompile Include="TexturePS.hlsl">
-      <Filter>Resource Files\Shaders\Textures</Filter>
-    </FxCompile>
-    <FxCompile Include="TextureVS.hlsl">
-      <Filter>Resource Files\Shaders\Textures</Filter>
+    <FxCompile Include="PhongVSNormal.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
     </FxCompile>
     <FxCompile Include="PhongVS.hlsl">
-      <Filter>Resource Files\Shaders\Lighting</Filter>
-    </FxCompile>
-    <FxCompile Include="PhongPS.hlsl">
-      <Filter>Resource Files\Shaders\Lighting</Filter>
-    </FxCompile>
-    <FxCompile Include="SolidVS.hlsl">
-      <Filter>Resource Files\Shaders\Primitives</Filter>
-    </FxCompile>
-    <FxCompile Include="SolidPS.hlsl">
-      <Filter>Resource Files\Shaders\Primitives</Filter>
-    </FxCompile>
-    <FxCompile Include="IndexedPhongPS.hlsl">
-      <Filter>Resource Files\Shaders\Lighting</Filter>
-    </FxCompile>
-    <FxCompile Include="BlendedPhongPS.hlsl">
-      <Filter>Resource Files\Shaders\Primitives</Filter>
-    </FxCompile>
-    <FxCompile Include="BlendedPhongVS.hlsl">
-      <Filter>Resource Files\Shaders\Primitives</Filter>
-    </FxCompile>
-    <FxCompile Include="TexturedPhongPS.hlsl">
-      <Filter>Resource Files\Shaders\Textures</Filter>
-    </FxCompile>
-    <FxCompile Include="TexturedPhongVS.hlsl">
-      <Filter>Resource Files\Shaders\Textures</Filter>
-    </FxCompile>
-    <FxCompile Include="PhongPSNormal.hlsl">
-      <Filter>Resource Files\Shaders\Lighting</Filter>
+      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
     </FxCompile>
     <FxCompile Include="PhongPSSpecNormal.hlsl">
-      <Filter>Resource Files\Shaders\Lighting</Filter>
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
     </FxCompile>
-    <FxCompile Include="PhongVSNormal.hlsl">
-      <Filter>Resource Files\Shaders\Lighting</Filter>
+    <FxCompile Include="IndexedPhongPS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongPS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongPSNormal.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
     </FxCompile>
     <FxCompile Include="PhongPSNormalObject.hlsl">
-      <Filter>Resource Files\Shaders\Lighting</Filter>
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShaderTri.hlsl">
+      <Filter>Resource Files\Shaders\Cube/Tri\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShaderCube.hlsl">
+      <Filter>Resource Files\Shaders\Cube/Tri\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShaderTri.hlsl">
+      <Filter>Resource Files\Shaders\Cube/Tri\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShaderCube.hlsl">
+      <Filter>Resource Files\Shaders\Cube/Tri\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="SolidVS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorIndexVS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorBlendVS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="BlendedPhongVS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="SolidPS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="BlendedPhongPS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorBlendPS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="ColorIndexPS.hlsl">
+      <Filter>Resource Files\Shaders\Primitives\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="TextureVS.hlsl">
+      <Filter>Resource Files\Shaders\Textures\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturedPhongVS.hlsl">
+      <Filter>Resource Files\Shaders\Textures\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturePS.hlsl">
+      <Filter>Resource Files\Shaders\Textures\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="TexturedPhongPS.hlsl">
+      <Filter>Resource Files\Shaders\Textures\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongVSNoTexture.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongPSNoTexture.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
