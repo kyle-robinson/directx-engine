@@ -39,7 +39,7 @@ float4 main(float3 cameraPos : Position, float3 viewNormal : Normal, float2 tc :
         tanNormal.x = normalSample.x * 2.0f - 1.0f;
         tanNormal.y = -normalSample.y * 2.0f + 1.0f;
         tanNormal.z = -normalSample.z * 2.0f + 1.0f;
-        viewNormal = mul(tanNormal, (float3x3) modelView);
+        viewNormal = normalize(mul(tanNormal, (float3x3) modelView));
     }
     
 	// fragment to light

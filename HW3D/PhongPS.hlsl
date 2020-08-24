@@ -21,7 +21,10 @@ SamplerState smplr;
 
 float4 main(float3 cameraPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord) : SV_Target
 {
-	// fragment to light
+	// renormalize interpolated normal
+    viewNormal = normalize(viewNormal);
+    
+    // fragment to light
     const float3 vToL = lightPos - cameraPos;
     const float distToL = length(vToL);
     const float3 dirToL = vToL / distToL;

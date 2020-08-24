@@ -40,7 +40,7 @@ float4 main(float3 cameraPos : Position, float3 viewNormal : Normal, float3 tan 
         tanNormal.y = -tanNormal.y;
         
         // normal from tangent space to view space
-        viewNormal = mul(tanNormal, tanToView);
+        viewNormal = normalize(mul(tanNormal, tanToView));
     }
     
 	// fragment to light
