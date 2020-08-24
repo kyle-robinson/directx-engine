@@ -25,7 +25,7 @@ Texture2D norm;
 
 SamplerState smplr;
 
-float4 main(float3 cameraPos : Position, float3 n : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : Texcoord) : SV_Target
+float4 main(float3 cameraPos : Position, float3 viewNormal : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : Texcoord) : SV_Target
 {
     // sample normal from map
     if ( normalMapEnabled )
@@ -34,15 +34,16 @@ float4 main(float3 cameraPos : Position, float3 n : Normal, float3 tan : Tangent
         const float3x3 tanToView = float3x3(
             normalize(tan),
             normalize(bitan),
-            normalize(n)
+            normalize(viewNormal)
         );
         
         // get normal data from map
         const float3 normalSample = norm.Sample(smplr, tc).xyz;
-        n = normalSample * 2.0f - 1.0f;
+        float3 tanNormal;
+        tanNormal = normalSample * 2.0f - 1.0f;
         
         // normal from tangent to view
-        n = mul(n, tanToView);
+        viewNormal = mul(tanNormal, tanToView);
     }
     
 	// fragment to light
@@ -54,10 +55,10 @@ float4 main(float3 cameraPos : Position, float3 n : Normal, float3 tan : Tangent
     const float att = 1.0f / (attConst + attLin * distToL + attQuad * (distToL * distToL));
 	
 	// diffuse intensity
-    const float3 diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(dirToL, n));
+    const float3 diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(dirToL, viewNormal));
 	
 	// reflected light vector
-    const float3 w = n * dot(vToL, n);
+    const float3 w = viewNormal * dot(vToL, viewNormal);
     const float3 r = w * 2.0f - vToL;
 	
 	// specular intensity

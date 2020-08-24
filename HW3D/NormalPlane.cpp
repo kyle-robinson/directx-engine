@@ -20,7 +20,7 @@ NormalPlane::NormalPlane( Graphics& gfx, float size )
 	AddBind( std::move( pvs ) );
 	AddBind( Bind::PixelShader::Resolve( gfx, "PhongPSNormalObject.cso" ) );
 
-	AddBind( Bind::PixelConstantBuffer<PSMaterialConstant>::Resolve( gfx, pmc, 1u ) );
+	AddBind( Bind::PixelConstantBuffer<PSMaterialConstant>::Resolve( gfx, pmc, 2u ) );
 
 	AddBind( Bind::InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
 	AddBind( Bind::Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
