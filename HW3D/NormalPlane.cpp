@@ -13,14 +13,14 @@ NormalPlane::NormalPlane( Graphics& gfx, float size )
 	AddBind( Bind::IndexBuffer::Resolve( gfx, geometryTag, model.indices ) );
 
 	AddBind( std::make_unique<Bind::Texture>( gfx, "res\\textures\\brickwall.jpg" ) );
-	AddBind( std::make_unique<Bind::Texture>( gfx, "res\\textures\\brickwall_normal.jpg", 1u ) );
+	AddBind( std::make_unique<Bind::Texture>( gfx, "res\\textures\\brickwall_normal_obj.png", 2u ) );
 
 	auto pvs = Bind::VertexShader::Resolve( gfx, "PhongVS.cso" );
 	auto pvsbc = pvs->GetByteCode();
 	AddBind( std::move( pvs ) );
 	AddBind( Bind::PixelShader::Resolve( gfx, "PhongPSNormalObject.cso" ) );
 
-	AddBind( Bind::PixelConstantBuffer<PSMaterialConstant>::Resolve( gfx, pmc, 2u ) );
+	AddBind( Bind::PixelConstantBuffer<PSMaterialConstant>::Resolve( gfx, pmc, 1u ) );
 
 	AddBind( Bind::InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
 	AddBind( Bind::Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );

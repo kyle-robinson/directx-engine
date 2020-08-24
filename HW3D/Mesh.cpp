@@ -1,5 +1,6 @@
 #include "Mesh.h"
 #include "Surface.h"
+#include "MathX.h"
 #include <unordered_map>
 #include <sstream>
 #include <iostream>
@@ -110,6 +111,11 @@ void Node::SetAppliedTransform( DirectX::FXMMATRIX transform ) noexcept
 	DirectX::XMStoreFloat4x4( &appliedTransform, transform );
 }
 
+const DirectX::XMFLOAT4X4& Node::GetAppliedTransform() const noexcept
+{
+	return appliedTransform;
+}
+
 void Node::AddChild(std::unique_ptr<Node> pChild) noexcept(!IS_DEBUG)
 {
 	assert(pChild);
@@ -138,7 +144,24 @@ public:
 			ImGui::NextColumn();
 			if ( pSelectedNode != nullptr )
 			{
-				auto& transform = transforms[pSelectedNode->GetID()];
+				const auto id = pSelectedNode->GetID();
+				auto i = transforms.find( id );
+				if ( i == transforms.end() )
+				{
+					const auto& applied = pSelectedNode->GetAppliedTransform();
+					const auto angles = ExtractEulerAngles( applied );
+					const auto translation = ExtractTranslation( applied );
+
+					TransformParameters tp;
+					tp.roll = angles.z;
+					tp.pitch = angles.x;
+					tp.yaw = angles.y;
+					tp.x = translation.x;
+					tp.y = translation.y;
+					tp.z = translation.z;
+					std::tie( i, std::ignore ) = transforms.insert( { id, tp } );
+				}
+				auto transform = i->second;
 
 				if ( ImGui::CollapsingHeader( "Orientation" ) )
 				{
@@ -407,10 +430,64 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 			float specularIntensity;
 			float specularPower;
 			BOOL normalMapEnabled = TRUE;
-			float padding[1];
+			float padding;
 		} pmc;
 		pmc.specularPower = shininess;
 		pmc.specularIntensity = ( specularColor.x + specularColor.y + specularColor.z ) / 3.0f;
+		bindablePtrs.push_back(Bind::PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
+	}
+	else if ( hasDiffuseMap && !hasNormalMap && hasSpecularMap )
+	{
+		VertexMeta::VertexBuffer vbuf(
+			std::move(
+				VertexLayout{}
+				.Append(VertexLayout::Position3D)
+				.Append(VertexLayout::Normal)
+				.Append(VertexLayout::Texture2D)
+			)
+		);
+
+		for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+		{
+			vbuf.EmplaceBack(
+				DirectX::XMFLOAT3(mesh.mVertices[i].x * scale, mesh.mVertices[i].y * scale, mesh.mVertices[i].z * scale),
+				*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh.mNormals[i]),
+				*reinterpret_cast<DirectX::XMFLOAT2*>(&mesh.mTextureCoords[0][i])
+			);
+		}
+
+		std::vector<unsigned short> indices;
+		indices.reserve(mesh.mNumFaces * 3);
+		for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+		{
+			const auto& face = mesh.mFaces[i];
+			assert(face.mNumIndices == 3);
+			indices.push_back(face.mIndices[0]);
+			indices.push_back(face.mIndices[1]);
+			indices.push_back(face.mIndices[2]);
+		}
+
+		bindablePtrs.push_back(Bind::VertexBuffer::Resolve(gfx, meshTag, vbuf));
+		bindablePtrs.push_back(Bind::IndexBuffer::Resolve(gfx, meshTag, indices));
+
+		auto pvs = Bind::VertexShader::Resolve(gfx, "PhongVS.cso");
+		auto pvsbc = pvs->GetByteCode();
+		bindablePtrs.push_back(std::move(pvs));
+
+		bindablePtrs.push_back(Bind::PixelShader::Resolve(gfx, "PhongPSSpec.cso"));
+
+		bindablePtrs.push_back(Bind::InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
+
+		struct PSMaterialConstant
+		{
+			float specularPowerConst;
+			BOOL hasGloss;
+			float specularMapWeight;
+			float padding;
+		} pmc;
+		pmc.specularPowerConst = shininess;
+		pmc.hasGloss = hasAlphaGloss ? TRUE : FALSE;
+		pmc.specularMapWeight = 1.0f;
 		bindablePtrs.push_back(Bind::PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));
 	}
 	else if ( hasDiffuseMap )

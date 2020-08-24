@@ -14,17 +14,13 @@ cbuffer ObjectCBuf
 
 Texture2D tex;
 Texture2D spec;
-Texture2D norm;
 
 SamplerState smplr;
 
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord) : SV_Target
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord) : SV_Target
 {
     // sample normal from map
-    if ( normalMapEnabled )
-    {
-        viewNormal = MapNormals(normalize(viewTan), normalize(viewBitan), viewNormal, tc, norm, smplr);
-    }
+    viewNormal = normalize(viewNormal);
     
 	// fragment to light
     const LightVectorData lvd = CalculateLightVectorData(viewLightPos, viewFragPos);
@@ -36,20 +32,12 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lvd.dirToL, viewNormal);
 	
 	// specular - uniform or mapped
-    float3 specularReflectionColor;
     float specularPower = specularPowerConst;
-    if ( specularMapEnabled )
+    const float4 specularSample = spec.Sample(smplr, tc);
+    const float3 specularReflectionColor = specularSample.rgb * specularMapWeight;
+    if ( hasGloss )
     {
-        const float4 specularSample = spec.Sample(smplr, tc);
-        specularReflectionColor = specularSample.rgb * specularMapWeight;
-        if ( hasGloss )
-        {
-            specularPower = pow(2.0f, specularSample.a * 13.0f);
-        }
-    }
-    else
-    {
-        specularReflectionColor = specularColor;
+        specularPower = pow(2.0f, specularSample.a * 13.0f);
     }
     
     // specular reflected

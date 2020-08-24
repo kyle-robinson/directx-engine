@@ -10,7 +10,7 @@
 class App
 {
 public:
-	App();
+	App( const std::string& commandLine = "" );
 	~App();
 	int Init();
 private:
@@ -28,5 +28,6 @@ private:
 	Model wall{ wnd.Gfx(), "res\\models\\brick_wall\\brick_wall.obj", 6.0f };
 	NormalPlane plane{ wnd.Gfx(), 6.0f };
 	
+	std::string commandLine;
 	int x = 0, y = 0;
 };

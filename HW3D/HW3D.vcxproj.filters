@@ -219,6 +219,9 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="MathX.cpp">
+      <Filter>Source Files\Windows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bindable.h">
@@ -377,6 +380,12 @@
     <ClInclude Include="GDIPlusManager.h">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
+    <ClInclude Include="NormalMapTweak.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="MathX.h">
+      <Filter>Header Files\Windows</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -398,6 +407,12 @@
       <Filter>Resource Files\Shaders\Includes</Filter>
     </None>
     <None Include="PointLight.hlsli">
+      <Filter>Resource Files\Shaders\Includes</Filter>
+    </None>
+    <None Include="Transform.hlsli">
+      <Filter>Resource Files\Shaders\Includes</Filter>
+    </None>
+    <None Include="LightVectorData.hlsli">
       <Filter>Resource Files\Shaders\Includes</Filter>
     </None>
   </ItemGroup>
@@ -486,6 +501,9 @@
       <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
     </FxCompile>
     <FxCompile Include="PhongPSNoTexture.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongPSSpec.hlsl">
       <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
     </FxCompile>
   </ItemGroup>

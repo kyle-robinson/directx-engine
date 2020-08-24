@@ -1,64 +1,46 @@
-cbuffer LightCBuf
-{
-    float3 lightPos;
-    float3 ambient;
-    float3 diffuseColor;
-    float diffuseIntensity;
-    float attConst;
-    float attLin;
-    float attQuad;
-};
+#include "ShaderLighting.hlsli"
+#include "LightVectorData.hlsli"
+#include "PointLight.hlsli"
 
 cbuffer ObjectCBuf
 {
-    float speuclarIntensity;
+    float specularIntensity;
     float specularPower;
     bool normalMapEnabled;
     float padding[1];
 };
 
-cbuffer TransformCBuf
-{
-    matrix modelView;
-    matrix modelViewProj;
-};
+#include "Transform.hlsli"
 
 Texture2D tex;
 Texture2D norm : register(t2);
 
 SamplerState smplr;
 
-float4 main(float3 cameraPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord) : SV_Target
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord) : SV_Target
 {
     // sample normals from normal map
     if ( normalMapEnabled )
     {
         // get normals from map into tangent space
         const float3 normalSample = norm.Sample( smplr, tc ).xyz;
-        float3 tanNormal;
-        tanNormal.x = normalSample.x * 2.0f - 1.0f;
-        tanNormal.y = -normalSample.y * 2.0f + 1.0f;
-        tanNormal.z = -normalSample.z * 2.0f + 1.0f;
-        viewNormal = normalize(mul(tanNormal, (float3x3) modelView));
+        const float3 objectNormal = normalSample * 2.0f - 1.0f;
+        
+        // normal from object to view space
+        viewNormal = normalize(mul(objectNormal, (float3x3) modelView));
     }
     
 	// fragment to light
-    const float3 vToL = lightPos - cameraPos;
-    const float distToL = length(vToL);
-    const float3 dirToL = vToL / distToL;
+    const LightVectorData lvd = CalculateLightVectorData( viewLightPos, viewFragPos );
 	
 	// diffuse attenuation
-    const float att = 1.0f / (attConst + attLin * distToL + attQuad * (distToL * distToL));
+    const float att = Attenuate(attConst, attLin, attQuad, lvd.distToL);
 	
 	// diffuse intensity
-    const float3 diffuse = diffuseColor * diffuseIntensity * att * max(0.0f, dot(dirToL, viewNormal));
-	
-	// reflected light vector
-    const float3 w = viewNormal * dot(vToL, viewNormal);
-    const float3 r = w * 2.0f - vToL;
+    const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lvd.dirToL, viewNormal);
 	
 	// specular intensity
-    const float3 specular = ( diffuseColor * diffuseIntensity ) * att * pow(max(0.0f, dot(normalize(-r), normalize(cameraPos))), specularPower);
+    const float3 specular = Speculate(specularIntensity.rrr, 1.0f, viewNormal, lvd.vToL, viewFragPos, att, specularPower);
 	
 	// final color
     return float4(saturate((ambient + diffuse) * tex.Sample(smplr, tc).rgb + specular), 1.0f);

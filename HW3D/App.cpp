@@ -1,10 +1,11 @@
 #include "App.h"
 #include "Math.h"
-#include "AssimpObject.h"
+#include "NormalMapTweak.h"
 
 #include <memory>
 #include <algorithm>
 #include <sstream>
+#include <shellapi.h>
 
 #include "imgui/imgui.h"
 
@@ -12,8 +13,24 @@
 #include "GDIPlusManager.h"
 GDIPlusManager gdipm;
 
-App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
+App::App( const std::string& commandLine ) : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
+	if ( this->commandLine != "" )
+	{
+		int nArgs;
+		const auto pLineW = GetCommandLineW();
+		const auto pArgs = CommandLineToArgvW( pLineW, &nArgs );
+		if ( nArgs >= 4 && std::wstring( pArgs[1] ) == L"--ntwerk-rotx180" )
+		{
+			const std::wstring pathInWide = pArgs[2];
+			const std::wstring pathOutWide = pArgs[3];
+			NormalMapTweak::RotateXAxis180(
+				std::string( pathInWide.begin(), pathInWide.end() ),
+				std::string( pathOutWide.begin(), pathOutWide.end() )
+			);
+		}
+	}
+	
 	goblin.SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, 0.0f, -4.0f ) );
 	nanosuit.SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -7.0f, 6.0f ) );
 	wall.SetRootTransform( DirectX::XMMatrixTranslation( -12.0f, 0.0f, 0.0f ) );

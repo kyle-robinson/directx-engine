@@ -63,6 +63,7 @@ public:
 	Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in ) noexcept(!IS_DEBUG);
 	void Draw( Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG);
 	void SetAppliedTransform( DirectX::FXMMATRIX transform ) noexcept;
+	const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 	int GetID() const noexcept;
 	void RenderTree( Node*& pSelectedNode ) const noexcept;
 	template<class T>
