@@ -161,7 +161,7 @@ public:
 					tp.z = translation.z;
 					std::tie( i, std::ignore ) = transforms.insert( { id, tp } );
 				}
-				auto transform = i->second;
+				auto& transform = i->second;
 
 				if ( ImGui::CollapsingHeader( "Orientation" ) )
 				{
