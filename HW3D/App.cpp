@@ -14,6 +14,10 @@ GDIPlusManager gdipm;
 
 App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
+	goblin.SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, 0.0f, -4.0f ) );
+	nanosuit.SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -7.0f, 6.0f ) );
+	wall.SetRootTransform( DirectX::XMMatrixTranslation( -12.0f, 0.0f, 0.0f ) );
+	plane.SetPos( { 12.0f, 0.0f, 0.0f } );
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 40.0f ) );
 }
 
@@ -33,7 +37,7 @@ App::~App() { }
 
 void App::DoFrame()
 {
-	const auto dt = timer.Mark() * speed_factor;
+	const auto dt = timer.Mark();
 
 	if ( wnd.kbd.KeyIsPressed( VK_ESCAPE ) )
 		wnd.EndWindow();
@@ -51,7 +55,10 @@ void App::DoFrame()
 
 	// objects
 	goblin.Draw( wnd.Gfx() );
-	light.Draw( wnd.Gfx() );;
+	nanosuit.Draw( wnd.Gfx() );
+	wall.Draw( wnd.Gfx() );
+	plane.Draw( wnd.Gfx() );
+	light.Draw( wnd.Gfx() );
 
 	// raw mouse input
 	while ( const auto& e = wnd.kbd.ReadKey() )
@@ -105,7 +112,10 @@ void App::DoFrame()
 	{
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
-		goblin.ShowControlWindow( wnd.Gfx() );
+		goblin.ShowControlWindow( wnd.Gfx(), "Goblin" );
+		nanosuit.ShowControlWindow( wnd.Gfx(), "Nanosuit" );
+		wall.ShowControlWindow( wnd.Gfx(), "Wall" );
+		plane.SpawnControlWindow( wnd.Gfx() );
 		ShowRawInputWindow();
 	}
 	

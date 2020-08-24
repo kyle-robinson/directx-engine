@@ -6,6 +6,7 @@
 #include "imgui/imgui.h"
 #include <optional>
 #include <type_traits>
+#include <filesystem>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -136,13 +137,13 @@ private:
 class Model
 {
 public:
-	Model( Graphics& gfx, const std::string fileName );
+	Model( Graphics& gfx, const std::string& pathString, float scale = 1.0f );
 	void Draw( Graphics& gfx ) const noexcept(!IS_DEBUG);
 	void ShowControlWindow( Graphics& gfx, const char* windowName = nullptr ) noexcept;
 	void SetRootTransform( DirectX::FXMMATRIX tf ) noexcept;
 	~Model() noexcept;
 private:
-	static std::unique_ptr<Mesh> ParseMesh( Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials );
+	static std::unique_ptr<Mesh> ParseMesh( Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, float scale );
 	std::unique_ptr<Node> ParseNode( int& nextID, const aiNode& node ) noexcept;
 public:
 	std::unique_ptr<Node> pRoot;

@@ -100,6 +100,9 @@
     <Filter Include="Resource Files\Shaders\Textures\Pixel">
       <UniqueIdentifier>{23b21e0a-56f6-4ded-9b47-53a39c9d87d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Includes">
+      <UniqueIdentifier>{15e28de3-b881-4db2-b739-f049f6ecd826}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -390,6 +393,12 @@
     </None>
     <None Include="res\cursors\WoW_Select.ani">
       <Filter>Resource Files\Cursors</Filter>
+    </None>
+    <None Include="ShaderLighting.hlsli">
+      <Filter>Resource Files\Shaders\Includes</Filter>
+    </None>
+    <None Include="PointLight.hlsli">
+      <Filter>Resource Files\Shaders\Includes</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

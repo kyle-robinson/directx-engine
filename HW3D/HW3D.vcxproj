@@ -297,8 +297,10 @@
     <None Include="DXGetErrorDescription.inl" />
     <None Include="DXGetErrorString.inl" />
     <None Include="DXTrace.inl" />
+    <None Include="PointLight.hlsli" />
     <None Include="res\cursors\WoW_Normal.ani" />
     <None Include="res\cursors\WoW_Select.ani" />
+    <None Include="ShaderLighting.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="BlendedPhongPS.hlsl">
