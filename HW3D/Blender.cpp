@@ -1,5 +1,5 @@
 #include "Blender.h"
-#include "BindableCommon.h"
+#include "BindableCodex.h"
 #include "GraphicsThrowMacros.h"
 
 namespace Bind

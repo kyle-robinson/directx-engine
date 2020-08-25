@@ -279,6 +279,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 	bool hasDiffuseMap = false;
 	bool hasSpecularMap = false;
+	bool hasAlphaDiffuse = false;
 	bool hasNormalMap = false;
 	bool hasAlphaGloss = false;
 	float shininess = 2.0f;
@@ -292,7 +293,9 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
 		{
-			bindablePtrs.push_back(std::make_unique<Bind::Texture>(gfx, rootPath + texFileName.C_Str()));
+			auto tex = std::make_unique<Bind::Texture>( gfx, rootPath + texFileName.C_Str() );
+			hasAlphaDiffuse = tex->HasAlpha();
+			bindablePtrs.push_back( std::move( tex ) );
 			hasDiffuseMap = true;
 		}
 		else
@@ -587,6 +590,8 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 	{
 		throw std::runtime_error( "ERROR::MATERIAL:: Was not able to load any materials!" );
 	}
+
+	bindablePtrs.push_back( std::make_unique<Bind::Rasterizer>( gfx, hasAlphaDiffuse ) );
 
 	return std::make_unique<Mesh>( gfx, std::move( bindablePtrs ) );
 }

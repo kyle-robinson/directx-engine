@@ -20,7 +20,18 @@ SamplerState smplr;
 
 float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord) : SV_Target
 {
+    // sample diffuse texture
+    float4 dtex = tex.Sample(smplr, tc);
+    clip(dtex.a < 0.1f ? -1 : 1);
+    
+    // flip normals for backfaces
+    if (dot(viewNormal, viewFragPos) >= 0.0f)
+    {
+        viewNormal = -viewNormal;
+    }
+    
     // sample normal from map
+    viewNormal = normalize(viewNormal);
     if ( normalMapEnabled )
     {
         viewNormal = MapNormals(normalize(viewTan), normalize(viewBitan), viewNormal, tc, norm, smplr);
@@ -54,9 +65,6 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     
     // specular reflected
     const float3 specularReflected = Speculate(specularReflectionColor, 1.0f, viewNormal, lvd.vToL, viewFragPos, att, specularPower);
-	
-    // sample alpha from diffuse texture
-    float4 dtex = tex.Sample(smplr, tc);
     
 	// final color
     return float4(saturate((ambient + diffuse) * dtex.rgb + specularReflected), dtex.a);
