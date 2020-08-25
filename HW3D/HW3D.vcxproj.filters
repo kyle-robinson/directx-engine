@@ -222,6 +222,9 @@
     <ClCompile Include="MathX.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
+    <ClCompile Include="TexturePreprocessor.cpp">
+      <Filter>Source Files\Bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bindable.h">
@@ -380,11 +383,11 @@
     <ClInclude Include="GDIPlusManager.h">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="NormalMapTweak.h">
-      <Filter>Header Files\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="MathX.h">
       <Filter>Header Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturePreprocessor.h">
+      <Filter>Header Files\Bindables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
