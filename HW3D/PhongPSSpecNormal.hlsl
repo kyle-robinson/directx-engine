@@ -55,6 +55,9 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     // specular reflected
     const float3 specularReflected = Speculate(specularReflectionColor, 1.0f, viewNormal, lvd.vToL, viewFragPos, att, specularPower);
 	
+    // sample alpha from diffuse texture
+    float4 dtex = tex.Sample(smplr, tc);
+    
 	// final color
-    return float4(saturate((ambient + diffuse) * tex.Sample(smplr, tc).rgb + specularReflected), 1.0f);
+    return float4(saturate((ambient + diffuse) * dtex.rgb + specularReflected), dtex.a);
 }

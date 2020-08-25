@@ -225,6 +225,9 @@
     <ClCompile Include="TexturePreprocessor.cpp">
       <Filter>Source Files\Bindables</Filter>
     </ClCompile>
+    <ClCompile Include="Blender.cpp">
+      <Filter>Source Files\Bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bindable.h">
@@ -387,6 +390,9 @@
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
     <ClInclude Include="TexturePreprocessor.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Blender.h">
       <Filter>Header Files\Bindables</Filter>
     </ClInclude>
   </ItemGroup>
