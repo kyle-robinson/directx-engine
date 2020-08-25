@@ -8,7 +8,7 @@ namespace Bind
 	{
 		INFOMANAGER( gfx );
 
-		D3D11_BLEND_DESC blendDesc = { 0 };
+		D3D11_BLEND_DESC blendDesc = CD3D11_BLEND_DESC( CD3D11_DEFAULT{} );
 		auto& brt = blendDesc.RenderTarget[0];
 		if ( blending )
 		{
@@ -21,11 +21,6 @@ namespace Bind
 			brt.BlendOpAlpha = D3D11_BLEND_OP_ADD;
 			brt.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 		}
-		else
-		{
-			brt.BlendEnable = FALSE;
-			brt.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-		}
 		GFX_THROW_INFO( GetDevice( gfx )->CreateBlendState( &blendDesc, &pBlender ) );
 	}
 
@@ -34,7 +29,7 @@ namespace Bind
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->OMSetBlendState( pBlender.Get(), nullptr, 0xFFFFFFFFu ) );
 	}
 
-	std::shared_ptr<Blender> Resolve( Graphics& gfx, bool blending )
+	std::shared_ptr<Blender> Blender::Resolve( Graphics& gfx, bool blending )
 	{
 		return Codex::Resolve<Blender>( gfx, blending );
 	}

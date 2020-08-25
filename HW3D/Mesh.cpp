@@ -373,7 +373,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 		auto pvsbc = pvs->GetByteCode();
 		bindablePtrs.push_back( std::move( pvs ) );
 
-		bindablePtrs.push_back( Bind::PixelShader::Resolve( gfx, "PhongPSSpecNormal.cso" ) );
+		bindablePtrs.push_back( Bind::PixelShader::Resolve( gfx, hasAlphaDiffuse ? "PhongPSSpecNormalMask.cso" : "PhongPSSpecNormal.cso" ) );
 		
 		bindablePtrs.push_back( Bind::InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 

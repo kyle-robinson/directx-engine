@@ -521,6 +521,9 @@
     <FxCompile Include="PhongPSSpec.hlsl">
       <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
     </FxCompile>
+    <FxCompile Include="PhongPSSpecNormalMask.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HW3D.rc">

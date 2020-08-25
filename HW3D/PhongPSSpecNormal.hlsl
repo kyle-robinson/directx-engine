@@ -22,6 +22,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
 {
     // sample diffuse texture
     float4 dtex = tex.Sample(smplr, tc);
+    
+#ifdef MASK_ENABLED
     clip(dtex.a < 0.1f ? -1 : 1);
     
     // flip normals for backfaces
@@ -29,6 +31,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     {
         viewNormal = -viewNormal;
     }
+#endif
     
     // sample normal from map
     viewNormal = normalize(viewNormal);
