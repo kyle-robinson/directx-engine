@@ -2,6 +2,7 @@
 #include "Math.h"
 #include "TexturePreprocessor.h"
 #include "imgui/imgui.h"
+#include <dxtex/DirectXTex.h>
 
 #include <memory>
 #include <algorithm>
