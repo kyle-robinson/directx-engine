@@ -9,10 +9,6 @@
 #include <sstream>
 #include <shellapi.h>
 
-#include "Surface.h"
-#include "GDIPlusManager.h"
-GDIPlusManager gdipm;
-
 App::App( const std::string& commandLine ) : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
 	if ( this->commandLine != "" )

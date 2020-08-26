@@ -201,9 +201,6 @@
     <ClCompile Include="WinMain.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="GDIPlusManager.cpp">
-      <Filter>Source Files\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="Exception.cpp">
       <Filter>Source Files\Exceptions</Filter>
     </ClCompile>
@@ -385,9 +382,6 @@
     </ClInclude>
     <ClInclude Include="IndexedTriangleList.h">
       <Filter>Header Files\Bindables</Filter>
-    </ClInclude>
-    <ClInclude Include="GDIPlusManager.h">
-      <Filter>Header Files\Windows</Filter>
     </ClInclude>
     <ClInclude Include="MathX.h">
       <Filter>Header Files\Windows</Filter>
