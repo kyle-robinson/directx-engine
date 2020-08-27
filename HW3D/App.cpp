@@ -9,9 +9,9 @@
 #include <sstream>
 #include <shellapi.h>
 
-App::App( const std::string& commandLine ) : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
+App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
-	if ( this->commandLine != "" )
+	/*if ( this->commandLine != "" )
 	{
 		int nArgs;
 		const auto pLineW = GetCommandLineW();
@@ -41,7 +41,7 @@ App::App( const std::string& commandLine ) : wnd( 1280, 720, "DirectX 11 Engine 
 				std::string( pathWide.begin(), pathWide.end() ), std::stof( minWide ), std::stof( maxWide )
 			);
 		}
-	}
+	}*/
 	
 	//goblin.SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, 0.0f, -4.0f ) );
 	//nanosuit.SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -7.0f, 6.0f ) );

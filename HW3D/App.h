@@ -10,7 +10,7 @@
 class App
 {
 public:
-	App( const std::string& commandLine = "" );
+	App();
 	~App();
 	int Init();
 private:
