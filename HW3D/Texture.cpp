@@ -27,9 +27,9 @@ namespace Bind
 		textureDesc.CPUAccessFlags = 0u;
 		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
-		D3D11_SUBRESOURCE_DATA sd = { 0 };
+		/*D3D11_SUBRESOURCE_DATA sd = { 0 };
 		sd.pSysMem = s.GetBufferPtr();
-		sd.SysMemPitch = s.GetWidth() * sizeof( Surface::Color );
+		sd.SysMemPitch = s.GetWidth() * sizeof( Surface::Color );*/
 
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture;
 		GFX_THROW_INFO( GetDevice( gfx )->CreateTexture2D( &textureDesc, nullptr, &pTexture ) );
@@ -64,7 +64,7 @@ namespace Bind
 	std::string Texture::GenerateUID( const std::string& path, UINT slot )
 	{
 		using namespace std::string_literals;
-		return typeid( Texture ).name() + "#"s + std::to_string( slot );
+		return typeid( Texture ).name() + "#"s + path + "#" + std::to_string( slot );
 	}
 
 	std::string Texture::GetUID() const noexcept
