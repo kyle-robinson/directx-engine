@@ -293,7 +293,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName) == aiReturn_SUCCESS)
 		{
-			auto tex = std::make_unique<Bind::Texture>( gfx, rootPath + texFileName.C_Str() );
+			auto tex = Bind::Texture::Resolve( gfx, rootPath + texFileName.C_Str() );
 			hasAlphaDiffuse = tex->HasAlpha();
 			bindablePtrs.push_back( std::move( tex ) );
 			hasDiffuseMap = true;
@@ -305,7 +305,7 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		if (material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName) == aiReturn_SUCCESS)
 		{
-			auto tex = std::make_unique<Bind::Texture>( gfx, rootPath + texFileName.C_Str(), 1 );
+			auto tex = Bind::Texture::Resolve( gfx, rootPath + texFileName.C_Str(), 1 );
 			hasAlphaGloss = tex->HasAlpha();
 			bindablePtrs.push_back( std::move( tex ) );
 			hasSpecularMap = true;
@@ -321,12 +321,12 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		if (material.GetTexture(aiTextureType_NORMALS, 0, &texFileName) == aiReturn_SUCCESS)
 		{
-			bindablePtrs.push_back(std::make_unique<Bind::Texture>(gfx, rootPath + texFileName.C_Str(), 2));
+			bindablePtrs.push_back( Bind::Texture::Resolve( gfx, rootPath + texFileName.C_Str(), 2 ) );
 			hasNormalMap = true;
 		}
 
 		if ( hasDiffuseMap || hasSpecularMap || hasNormalMap )
-			bindablePtrs.push_back(Bind::Sampler::Resolve(gfx));
+			bindablePtrs.push_back( Bind::Sampler::Resolve( gfx ) );
 	}
 
 	const auto meshTag = path.string() + "%" + mesh.mName.C_Str();

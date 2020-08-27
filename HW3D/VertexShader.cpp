@@ -1,6 +1,7 @@
 #include "VertexShader.h"
-#include "GraphicsThrowMacros.h"
 #include "BindableCodex.h"
+#include "StringConverter.h"
+#include "GraphicsThrowMacros.h"
 #include <typeinfo>
 #include <d3dcompiler.h>
 
@@ -10,7 +11,7 @@ namespace Bind
 	{
 		INFOMANAGER( gfx );
 
-		GFX_THROW_INFO( D3DReadFileToBlob( std::wstring{ path.begin(), path.end() }.c_str(), &pBytecodeBlob));
+		GFX_THROW_INFO( D3DReadFileToBlob( ToWide( path ).c_str(), &pBytecodeBlob));
 		GFX_THROW_INFO( GetDevice( gfx )->CreateVertexShader(
 			pBytecodeBlob->GetBufferPointer(),
 			pBytecodeBlob->GetBufferSize(),

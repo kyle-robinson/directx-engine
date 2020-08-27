@@ -103,6 +103,9 @@
     <Filter Include="Resource Files\Shaders\Includes">
       <UniqueIdentifier>{15e28de3-b881-4db2-b739-f049f6ecd826}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Macros">
+      <UniqueIdentifier>{348fdccf-7014-47e3-8c5a-aef5b1ead2c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -227,6 +230,9 @@
     </ClCompile>
     <ClCompile Include="Rasterizer.cpp">
       <Filter>Source Files\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="StringConverter.cpp">
+      <Filter>Source Files\Macros</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -394,6 +400,9 @@
     </ClInclude>
     <ClInclude Include="Rasterizer.h">
       <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="StringConverter.h">
+      <Filter>Header Files\Macros</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

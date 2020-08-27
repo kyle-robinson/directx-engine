@@ -221,6 +221,7 @@
     <ClCompile Include="Rasterizer.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="SolidSphere.cpp" />
+    <ClCompile Include="StringConverter.cpp" />
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TexturePreprocessor.cpp" />
@@ -277,6 +278,7 @@
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="SolidSphere.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="StringConverter.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TexturePreprocessor.h" />

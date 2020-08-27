@@ -95,7 +95,7 @@ public:
 		std::string note;
 	};
 public:
-	Surface(unsigned int width, unsigned int height) noexcept;
+	Surface(unsigned int width, unsigned int height);
 	Surface(Surface&& source) noexcept = default;
 	Surface(Surface&) = delete;
 	Surface& operator=(Surface&& donor) noexcept = default;
