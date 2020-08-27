@@ -212,6 +212,7 @@
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputLayout.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="LayoutCodex.cpp" />
     <ClCompile Include="MathX.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Mouse.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="IndexedTriangleList.h" />
     <ClInclude Include="InputLayout.h" />
     <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="LayoutCodex.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="MathX.h" />
     <ClInclude Include="Mesh.h" />

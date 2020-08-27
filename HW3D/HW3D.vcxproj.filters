@@ -237,6 +237,9 @@
     <ClCompile Include="DynamicConstant.cpp">
       <Filter>Source Files\Bindables</Filter>
     </ClCompile>
+    <ClCompile Include="LayoutCodex.cpp">
+      <Filter>Source Files\Bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bindable.h">
@@ -408,6 +411,9 @@
       <Filter>Header Files\Macros</Filter>
     </ClInclude>
     <ClInclude Include="DynamicConstant.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="LayoutCodex.h">
       <Filter>Header Files\Bindables</Filter>
     </ClInclude>
   </ItemGroup>
