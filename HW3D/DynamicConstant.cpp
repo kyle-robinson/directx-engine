@@ -370,7 +370,7 @@ namespace DCB
 	/***** BUFFER *****/
 	Buffer::Buffer(RawLayout&& lay) noexcept(!IS_DEBUG)
 		:
-	Buffer(LayoutCodex::Resolve(std::move(lay)))
+		Buffer(LayoutCodex::Resolve(std::move(lay)))
 	{}
 
 	Buffer::Buffer(const CompleteLayout& lay) noexcept(!IS_DEBUG)

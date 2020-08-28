@@ -56,7 +56,7 @@ namespace DCB
 	template<> struct Map<Float4>
 	{
 		using DynamicType = DirectX::XMFLOAT4;
-		static constexpr size_t hlslSize = sizeof( DirectX::XMFLOAT4 );
+		static constexpr size_t hlslSize = sizeof( DynamicType );
 		static constexpr const char* code = "F4";
 		static constexpr bool valid = true;
 	};
@@ -148,7 +148,12 @@ namespace DCB
 		{
 			switch ( type )
 			{
-
+#define X( element ) case element: assert( typeid( Map<element>::DynamicType ) == typeid( T ) ); return *offset;
+			LEAF_ELEMENT_TYPES
+#undef X
+			default:
+				assert( "Tried to resolve non-leaf element!" && false );
+				return 0u;
 			}
 		}
 	private:
@@ -365,11 +370,11 @@ namespace DCB
 		Buffer( RawLayout&& layout ) noexcept(!IS_DEBUG);
 		Buffer( const CompleteLayout& layout ) noexcept(!IS_DEBUG);
 		Buffer( CompleteLayout&& layout ) noexcept(!IS_DEBUG);
-		Buffer( const Buffer& ) noexcept(!IS_DEBUG);
+		Buffer( const Buffer& ) noexcept;
 		// the buffer that has been pilfered must not be used
 		Buffer( Buffer&& ) noexcept;
 
-		// // begin indexing into buffer
+		// begin indexing into buffer
 		ElementRef operator[]( const std::string& key ) noexcept(!IS_DEBUG);
 		ConstElementRef operator[]( const std::string& key ) const noexcept(!IS_DEBUG);
 

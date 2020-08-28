@@ -4,11 +4,8 @@
 
 cbuffer ObjectCBuf
 {
-    bool normalMapEnabled;
-    bool specularMapEnabled;
+    float specularPower;
     bool hasGloss;
-    float specularPowerConst;
-    float3 specularColor;
     float specularMapWeight;
 };
 
@@ -32,16 +29,16 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lvd.dirToL, viewNormal);
 	
 	// specular - uniform or mapped
-    float specularPower = specularPowerConst;
+    float specularPowerLoaded = specularPower;
     const float4 specularSample = spec.Sample(smplr, tc);
     const float3 specularReflectionColor = specularSample.rgb * specularMapWeight;
     if ( hasGloss )
     {
-        specularPower = pow(2.0f, specularSample.a * 13.0f);
+        specularPowerLoaded = pow(2.0f, specularSample.a * 13.0f);
     }
     
     // specular reflected
-    const float3 specularReflected = Speculate(specularReflectionColor, 1.0f, viewNormal, lvd.vToL, viewFragPos, att, specularPower);
+    const float3 specularReflected = Speculate(specularReflectionColor, 1.0f, viewNormal, lvd.vToL, viewFragPos, att, specularPowerLoaded);
 	
 	// final color
     return float4(saturate((ambient + diffuse) * tex.Sample(smplr, tc).rgb + specularReflected), 1.0f);

@@ -2,7 +2,10 @@
 #include "Drawable.h"
 #include "BindableCommon.h"
 #include "Vertex.h"
-#include "ConstantBuffers.h"
+//#include "ConstantBuffers.h"
+#include "DynamicConstant.h"
+#include "ConstantBufferEx.h"
+#include "LayoutCodex.h"
 #include "imgui/imgui.h"
 #include <optional>
 #include <type_traits>
@@ -36,7 +39,7 @@ private:
 class Node
 {
 	friend class Model;
-public:
+/*public:
 	struct PSMaterialConstantFull
 	{
 		BOOL normalMapEnabled = TRUE;
@@ -58,7 +61,7 @@ public:
 		DirectX::XMFLOAT4 specularColor = { 0.65f, 0.65f, 0.65f, 1.0f };
 		float specularPower = 120.0f;
 		float padding[3];
-	};
+	};*/
 public:
 	Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in ) noexcept(!IS_DEBUG);
 	void Draw( Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG);
@@ -66,7 +69,9 @@ public:
 	const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 	int GetID() const noexcept;
 	void RenderTree( Node*& pSelectedNode ) const noexcept;
-	template<class T>
+	const DCB::Buffer* GetMaterialConstants() const noexcept(!IS_DEBUG);
+	void SetMaterialConstants( const DCB::Buffer& ) noexcept(!IS_DEBUG);
+	/*template<class T>
 	bool ControlWindow( Graphics& gfx, T& c )
 	{
 		if (meshPtrs.empty())
@@ -123,14 +128,14 @@ public:
 			}
 		}
 		return false;
-	}
+	}*/
 private:
 	void AddChild( std::unique_ptr<Node> pChild ) noexcept(!IS_DEBUG);
 private:
-	std::string name;
 	int id;
-	std::vector<std::unique_ptr<Node>> childPtrs;
+	std::string name;
 	std::vector<Mesh*> meshPtrs;
+	std::vector<std::unique_ptr<Node>> childPtrs;
 	DirectX::XMFLOAT4X4 baseTransform;
 	DirectX::XMFLOAT4X4 appliedTransform;
 };

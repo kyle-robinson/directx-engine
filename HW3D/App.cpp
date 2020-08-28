@@ -1,13 +1,9 @@
 #include "App.h"
 #include "Math.h"
-#include "TexturePreprocessor.h"
 #include "imgui/imgui.h"
-#include <dxtex/DirectXTex.h>
 
 #include <memory>
 #include <algorithm>
-#include <sstream>
-#include <shellapi.h>
 
 App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
