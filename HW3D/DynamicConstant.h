@@ -164,8 +164,8 @@ namespace DCB
 		std::string GetSignatureForArray() const noexcept(!IS_DEBUG);
 
 		// implementations for Finalize
-		size_t FinalizeForStruct( size_t offsetIn ) const noexcept(!IS_DEBUG);
-		size_t FinalizeForArray( size_t offsetIn ) const noexcept(!IS_DEBUG);
+		size_t FinalizeForStruct( size_t offsetIn );
+		size_t FinalizeForArray( size_t offsetIn );
 
 		// returns singleton instance of empty layout element
 		static LayoutElement& GetEmptyElement() noexcept
@@ -381,7 +381,7 @@ namespace DCB
 		// copy bytes from another buffer
 		void CopyFrom( const Buffer& ) noexcept(!IS_DEBUG);
 		// return another shared_ptr to the layout root
-		std::shared_ptr<LayoutElement> ShareLayoutRoot() const noexcept
+		std::shared_ptr<LayoutElement> ShareLayoutRoot() const noexcept;
 	private:
 		std::shared_ptr<LayoutElement> pLayoutRoot;
 		std::vector<char> bytes;
