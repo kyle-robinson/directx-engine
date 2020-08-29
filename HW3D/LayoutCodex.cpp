@@ -1,8 +1,8 @@
 #include "LayoutCodex.h"
 
-namespace DCB
+namespace Dcb
 {
-	DCB::CompleteLayout LayoutCodex::Resolve( DCB::RawLayout&& layout ) noexcept(!IS_DEBUG)
+	CompleteLayout LayoutCodex::Resolve( RawLayout&& layout ) noexcept(!IS_DEBUG)
 	{
 		auto sig = layout.GetSignature();
 		auto& map = Get_().map;

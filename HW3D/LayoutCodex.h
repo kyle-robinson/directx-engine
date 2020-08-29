@@ -4,14 +4,14 @@
 #include <string>
 #include <memory>
 
-namespace DCB
+namespace Dcb
 {
 	class LayoutCodex
 	{
 	public:
-		static DCB::CompleteLayout Resolve( DCB::RawLayout&& layout ) noexcept(!IS_DEBUG);
+		static CompleteLayout Resolve( RawLayout&& layout ) noexcept(!IS_DEBUG);
 	private:
 		static LayoutCodex& Get_() noexcept;
-		std::unordered_map<std::string, std::shared_ptr<DCB::LayoutElement>> map;
+		std::unordered_map<std::string, std::shared_ptr<LayoutElement>> map;
 	};
 }

@@ -5,7 +5,7 @@
 #include <string>
 #include <cctype>
 
-namespace DCB
+namespace Dcb
 {
 	struct ExtraData
 	{

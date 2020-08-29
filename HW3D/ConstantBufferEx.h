@@ -8,7 +8,7 @@ namespace Bind
 	class PixelConstantBufferEx : public Bindable
 	{
 	public:
-		void Update( Graphics& gfx, const DCB::Buffer& buf )
+		void Update( Graphics& gfx, const Dcb::Buffer& buf )
 		{
 			INFOMANAGER( gfx );
 			assert( &buf.GetRootLayoutElement() == &GetRootLayoutElement() );
@@ -28,9 +28,9 @@ namespace Bind
 		{
 			GetContext( gfx )->PSSetConstantBuffers( slot, 1u, pConstantBuffer.GetAddressOf() );
 		}
-		virtual const DCB::LayoutElement& GetRootLayoutElement() const noexcept = 0;
+		virtual const Dcb::LayoutElement& GetRootLayoutElement() const noexcept = 0;
 	protected:
-		PixelConstantBufferEx(Graphics& gfx, const DCB::LayoutElement& layoutRoot, UINT slot, const DCB::Buffer* pBuf)
+		PixelConstantBufferEx(Graphics& gfx, const Dcb::LayoutElement& layoutRoot, UINT slot, const Dcb::Buffer* pBuf)
 			:
 			slot(slot)
 		{
@@ -63,25 +63,25 @@ namespace Bind
 	class CachingPixelConstantBufferEx : public PixelConstantBufferEx
 	{
 	public:
-		CachingPixelConstantBufferEx(Graphics& gfx, const DCB::CompleteLayout& layout, UINT slot)
+		CachingPixelConstantBufferEx(Graphics& gfx, const Dcb::CompleteLayout& layout, UINT slot)
 			:
 			PixelConstantBufferEx(gfx, *layout.ShareRoot(), slot, nullptr),
-			buf(DCB::Buffer(layout))
+			buf(Dcb::Buffer(layout))
 		{}
-		CachingPixelConstantBufferEx(Graphics& gfx, const DCB::Buffer& buf, UINT slot)
+		CachingPixelConstantBufferEx(Graphics& gfx, const Dcb::Buffer& buf, UINT slot)
 			:
 			PixelConstantBufferEx(gfx, buf.GetRootLayoutElement(), slot, &buf),
 			buf(buf)
 		{}
-		const DCB::LayoutElement& GetRootLayoutElement() const noexcept override
+		const Dcb::LayoutElement& GetRootLayoutElement() const noexcept override
 		{
 			return buf.GetRootLayoutElement();
 		}
-		const DCB::Buffer& GetBuffer() const noexcept
+		const Dcb::Buffer& GetBuffer() const noexcept
 		{
 			return buf;
 		}
-		void SetBuffer(const DCB::Buffer& buf_in)
+		void SetBuffer(const Dcb::Buffer& buf_in)
 		{
 			buf.CopyFrom(buf_in);
 			bufferSet = true;
@@ -97,27 +97,27 @@ namespace Bind
 		}
 	private:
 		bool bufferSet = false;
-		DCB::Buffer buf;
+		Dcb::Buffer buf;
 	};
 
 	class NoCachePixelConstantBufferEx : public PixelConstantBufferEx
 	{
 	public:
-		NoCachePixelConstantBufferEx(Graphics& gfx, const DCB::CompleteLayout& layout, UINT slot)
+		NoCachePixelConstantBufferEx(Graphics& gfx, const Dcb::CompleteLayout& layout, UINT slot)
 			:
 			PixelConstantBufferEx(gfx, *layout.ShareRoot(), slot, nullptr),
 			pLayoutRoot(layout.ShareRoot())
 		{}
-		NoCachePixelConstantBufferEx(Graphics& gfx, const DCB::Buffer& buf, UINT slot)
+		NoCachePixelConstantBufferEx(Graphics& gfx, const Dcb::Buffer& buf, UINT slot)
 			:
 			PixelConstantBufferEx(gfx, buf.GetRootLayoutElement(), slot, &buf),
 			pLayoutRoot(buf.ShareLayoutRoot())
 		{}
-		const DCB::LayoutElement& GetRootLayoutElement() const noexcept override
+		const Dcb::LayoutElement& GetRootLayoutElement() const noexcept override
 		{
 			return *pLayoutRoot;
 		}
 	private:
-		std::shared_ptr<DCB::LayoutElement> pLayoutRoot;
+		std::shared_ptr<Dcb::LayoutElement> pLayoutRoot;
 	};
 }

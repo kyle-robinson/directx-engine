@@ -2,10 +2,6 @@
 #include "Drawable.h"
 #include "BindableCommon.h"
 #include "Vertex.h"
-//#include "ConstantBuffers.h"
-#include "DynamicConstant.h"
-#include "ConstantBufferEx.h"
-#include "LayoutCodex.h"
 #include "imgui/imgui.h"
 #include <optional>
 #include <type_traits>
@@ -14,6 +10,9 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+
+#include "ConstantBuffers.h"
+#include "DynamicConstant.h"
 
 class ModelException : public Exception
 {
@@ -69,8 +68,8 @@ public:
 	const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 	int GetID() const noexcept;
 	void RenderTree( Node*& pSelectedNode ) const noexcept;
-	const DCB::Buffer* GetMaterialConstants() const noexcept(!IS_DEBUG);
-	void SetMaterialConstants( const DCB::Buffer& ) noexcept(!IS_DEBUG);
+	const Dcb::Buffer* GetMaterialConstants() const noexcept(!IS_DEBUG);
+	void SetMaterialConstants( const Dcb::Buffer& ) noexcept(!IS_DEBUG);
 	/*template<class T>
 	bool ControlWindow( Graphics& gfx, T& c )
 	{

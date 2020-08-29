@@ -14,7 +14,7 @@
 	X( Matrix ) \
 	X( Bool )
 
-namespace DCB
+namespace Dcb
 {
 	enum Type
 	{
@@ -222,7 +222,7 @@ namespace DCB
 		template<Type type>
 		LayoutElement& Add( const std::string& key ) noexcept(!IS_DEBUG)
 		{
-			return pRoot->Add<Type>( key );
+			return pRoot->Add<type>( key );
 		}
 	private:
 		// reset object with empty struct as the root
