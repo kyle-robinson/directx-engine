@@ -9,6 +9,7 @@ namespace Bind
 	public:
 		InputLayout( Graphics& gfx, VertexMeta::VertexLayout layout_in, ID3DBlob* pVertexShaderByteCode );
 		void Bind( Graphics& gfx ) noexcept override;
+		const VertexMeta::VertexLayout GetLayout() const noexcept;
 		static std::shared_ptr<InputLayout> Resolve( Graphics& gfx, const VertexMeta::VertexLayout& layout, ID3DBlob* pVertexShaderByteCode );
 		static std::string GenerateUID( const VertexMeta::VertexLayout& layout, ID3DBlob* pVertexShaderByteCode = nullptr );
 	protected:

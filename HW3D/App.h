@@ -7,7 +7,7 @@
 #include "Mesh.h"
 #include "NormalPlane.h"
 #include "NormalCube.h"
-#include "Stencil.h"
+#include "FrameCommander.h"
 
 class App
 {
@@ -24,8 +24,9 @@ private:
 	Timer timer;
 	Camera camera;
 	PointLight light;
+	FrameCommander fc;
 
-	Model sponza{ wnd.Gfx(), "res\\models\\sponza\\sponza.obj", 1.0f / 20.0f };
+	//Model sponza{ wnd.Gfx(), "res\\models\\sponza\\sponza.obj", 1.0f / 20.0f };
 	NormalCube cube{ wnd.Gfx(), 4.0f };
 	NormalCube cube2{ wnd.Gfx(), 4.0f };
 	//Model goblin{ wnd.Gfx(), "res\\models\\goblin\\GoblinX.obj", 6.0f };

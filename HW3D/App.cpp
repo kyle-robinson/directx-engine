@@ -43,6 +43,9 @@ App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 	//nanosuit.SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -7.0f, 6.0f ) );
 	//wall.SetRootTransform( DirectX::XMMatrixTranslation( -12.0f, 0.0f, 0.0f ) );
 	//plane.SetPos( { 12.0f, 0.0f, 0.0f } );
+
+	cube.SetPos( { 4.0f, 0.0f, 0.0f } );
+	cube2.SetPos( { 0.0f, 4.0f, 0.0f } );
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 400.0f ) );
 }
 
@@ -83,13 +86,12 @@ void App::DoFrame()
 	//nanosuit.Draw( wnd.Gfx() );
 	//wall.Draw( wnd.Gfx() );
 	//plane.Draw( wnd.Gfx() );
-	light.Draw( wnd.Gfx() );
-	sponza.Draw( wnd.Gfx() );
-	cube.Draw( wnd.Gfx() );
-	cube2.Draw( wnd.Gfx() );
+	light.Submit( fc );
+	//sponza.Draw( wnd.Gfx() );
+	cube.Submit( fc );
+	cube2.Submit( fc );
 
-	cube.DrawOutline( wnd.Gfx() );
-	cube2.DrawOutline( wnd.Gfx() );
+	fc.Execute( wnd.Gfx() );
 
 	// raw mouse input
 	while ( const auto& e = wnd.kbd.ReadKey() )
@@ -143,7 +145,7 @@ void App::DoFrame()
 	{
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
-		sponza.ShowControlWindow( wnd.Gfx() );
+		//sponza.ShowControlWindow( wnd.Gfx() );
 		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 		//goblin.ShowControlWindow( wnd.Gfx(), "Goblin" );
@@ -154,6 +156,7 @@ void App::DoFrame()
 	}
 	
 	wnd.Gfx().EndFrame();
+	fc.Reset();
 }
 
 void App::ShowRawInputWindow()

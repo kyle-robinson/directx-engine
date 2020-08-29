@@ -6,7 +6,7 @@
 
 NormalPlane::NormalPlane( Graphics& gfx, float size )
 {
-	auto model = Plane::Make();
+	/*auto model = Plane::Make();
 	model.Transform( DirectX::XMMatrixScaling( size, size, 1.0f ) );
 	const auto geometryTag = "$plane." + std::to_string( size );
 	AddBind( Bind::VertexBuffer::Resolve( gfx, geometryTag, model.vertices ) );
@@ -25,7 +25,7 @@ NormalPlane::NormalPlane( Graphics& gfx, float size )
 	AddBind( Bind::InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
 	AddBind( Bind::Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
-	AddBind( std::make_shared<Bind::TransformCbufDouble>( gfx, *this, 0u, 2u ) );
+	AddBind( std::make_shared<Bind::TransformCbufDouble>( gfx, *this, 0u, 2u ) );*/
 }
 
 void NormalPlane::SetPos( DirectX::XMFLOAT3 pos ) noexcept
@@ -48,7 +48,7 @@ DirectX::XMMATRIX NormalPlane::GetTransformXM() const noexcept
 
 void NormalPlane::SpawnControlWindow( Graphics& gfx ) noexcept
 {
-	if ( ImGui::Begin( "Plane", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
+	/*if ( ImGui::Begin( "Plane", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
 	{
 		if ( ImGui::CollapsingHeader( "Position" ) )
 		{
@@ -76,5 +76,5 @@ void NormalPlane::SpawnControlWindow( Graphics& gfx ) noexcept
 				QueryBindable<Bind::PixelConstantBuffer<PSMaterialConstant>>()->Update( gfx, pmc );
 		}
 	}
-	ImGui::End();
+	ImGui::End();*/
 }

@@ -118,6 +118,12 @@
     <Filter Include="Source Files\BindableEx">
       <UniqueIdentifier>{d519d8bd-d00c-4a6e-90af-24b38eb13732}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Jobs">
+      <UniqueIdentifier>{a537f8d4-5e58-4c22-8f1e-b1ee09310df2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Jobs">
+      <UniqueIdentifier>{4a074eed-d6d3-46b4-adc4-e04388da8b30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -254,6 +260,15 @@
     </ClCompile>
     <ClCompile Include="NullPixelShader.cpp">
       <Filter>Source Files\BindableEx</Filter>
+    </ClCompile>
+    <ClCompile Include="Job.cpp">
+      <Filter>Source Files\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="Technique.cpp">
+      <Filter>Source Files\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="Step.cpp">
+      <Filter>Source Files\Jobs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -439,6 +454,21 @@
     </ClInclude>
     <ClInclude Include="NullPixelShader.h">
       <Filter>Header Files\BindableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="FrameCommander.h">
+      <Filter>Header Files\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="Job.h">
+      <Filter>Header Files\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="Pass.h">
+      <Filter>Header Files\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="Technique.h">
+      <Filter>Header Files\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="Step.h">
+      <Filter>Header Files\Jobs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

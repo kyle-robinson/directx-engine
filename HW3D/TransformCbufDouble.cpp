@@ -1,6 +1,6 @@
 #include "TransformCbufDouble.h"
 
-namespace Bind
+/*namespace Bind
 {
 	TransformCbufDouble::TransformCbufDouble( Graphics& gfx, const Drawable& parent, UINT slotV, UINT slotP )
 		: TransformCbuf( gfx, parent, slotV )
@@ -25,4 +25,4 @@ namespace Bind
 	}
 
 	std::unique_ptr<PixelConstantBuffer<TransformCbuf::Transforms>> TransformCbufDouble::pPcbuf;
-}
+}*/

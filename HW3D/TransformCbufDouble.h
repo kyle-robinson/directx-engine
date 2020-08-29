@@ -1,7 +1,7 @@
 #pragma once
 #include "TransformCbuf.h"
 
-namespace Bind
+/*namespace Bind
 {
 	class TransformCbufDouble : public TransformCbuf
 	{
@@ -13,4 +13,4 @@ namespace Bind
 	private:
 		static std::unique_ptr<PixelConstantBuffer<Transforms>> pPcbuf;
 	};
-}
+}*/

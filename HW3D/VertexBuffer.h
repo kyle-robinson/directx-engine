@@ -11,6 +11,7 @@ namespace Bind
 		VertexBuffer( Graphics& gfx, const std::string& tag, const VertexMeta::VertexBuffer& vbuf );
 		VertexBuffer( Graphics& gfx, const VertexMeta::VertexBuffer& vbuf );
 		void Bind( Graphics& gfx ) noexcept override;
+		const VertexMeta::VertexLayout& GetLayout() const noexcept;
 		static std::shared_ptr<VertexBuffer> Resolve( Graphics& gfx, const std::string& tag, const VertexMeta::VertexBuffer& vbuf );
 		template<typename...Ignore>
 		static std::string GenerateUID( const std::string& tag, Ignore&&...ignore )
@@ -21,8 +22,9 @@ namespace Bind
 	private:
 		static std::string GenerateUID_( const std::string& tag );
 	protected:
-		std::string tag;
 		UINT stride;
+		std::string tag;
+		VertexMeta::VertexLayout layout;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> pVertexBuffer;
 	};
 }

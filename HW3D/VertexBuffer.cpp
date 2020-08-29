@@ -7,7 +7,7 @@ namespace Bind
 		: VertexBuffer( gfx, "?", vbuf ) { }
 
 	VertexBuffer::VertexBuffer( Graphics& gfx, const std::string& tag, const VertexMeta::VertexBuffer& vbuf )
-		: stride( (UINT)vbuf.GetLayout().Size() ), tag( tag )
+		: stride( (UINT)vbuf.GetLayout().Size() ), tag( tag ), layout( vbuf.GetLayout() )
 	{
 		INFOMANAGER(gfx);
 
@@ -30,6 +30,11 @@ namespace Bind
 		const UINT offset = 0u;
 		INFOMANAGER( gfx );
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->IASetVertexBuffers( 0u, 1u, pVertexBuffer.GetAddressOf(), &stride, &offset ) );
+	}
+
+	const VertexMeta::VertexLayout& VertexBuffer::GetLayout() const noexcept
+	{
+		return layout;
 	}
 
 	std::shared_ptr<VertexBuffer> VertexBuffer::Resolve( Graphics& gfx, const std::string& tag, const VertexMeta::VertexBuffer& vbuf )

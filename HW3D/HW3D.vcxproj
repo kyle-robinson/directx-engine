@@ -211,6 +211,7 @@
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="IndexBuffer.cpp" />
     <ClCompile Include="InputLayout.cpp" />
+    <ClCompile Include="Job.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="LayoutCodex.cpp" />
     <ClCompile Include="MathX.cpp" />
@@ -224,8 +225,10 @@
     <ClCompile Include="Rasterizer.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="SolidSphere.cpp" />
+    <ClCompile Include="Step.cpp" />
     <ClCompile Include="StringConverter.cpp" />
     <ClCompile Include="Surface.cpp" />
+    <ClCompile Include="Technique.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TexturePreprocessor.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -262,12 +265,14 @@
     <ClInclude Include="DxgiInfoManager.h" />
     <ClInclude Include="DynamicConstant.h" />
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="FrameCommander.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="GraphicsThrowMacros.h" />
     <ClInclude Include="ImGuiManager.h" />
     <ClInclude Include="IndexBuffer.h" />
     <ClInclude Include="IndexedTriangleList.h" />
     <ClInclude Include="InputLayout.h" />
+    <ClInclude Include="Job.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="LayoutCodex.h" />
     <ClInclude Include="Math.h" />
@@ -277,6 +282,7 @@
     <ClInclude Include="NormalCube.h" />
     <ClInclude Include="NormalPlane.h" />
     <ClInclude Include="NullPixelShader.h" />
+    <ClInclude Include="Pass.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="PointLight.h" />
@@ -286,8 +292,10 @@
     <ClInclude Include="SolidSphere.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Stencil.h" />
+    <ClInclude Include="Step.h" />
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="Surface.h" />
+    <ClInclude Include="Technique.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TexturePreprocessor.h" />
     <ClInclude Include="Timer.h" />

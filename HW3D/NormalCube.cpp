@@ -1,7 +1,7 @@
 #include "NormalCube.h"
 #include "BindableCommon.h"
 #include "Cube.h"
-#include "Stencil.h"
+#include "NullPixelShader.h"
 #include "TransformCbufDouble.h"
 #include "imgui/imgui.h"
 
@@ -14,10 +14,77 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 	model.Transform( DirectX::XMMatrixScaling( size, size, size ) );
 	model.SetNormalsIndependentFlat();
 	const auto geometryTag = "$cube." + std::to_string( size );
-	AddBind( VertexBuffer::Resolve( gfx, geometryTag, model.vertices ) );
-	AddBind( IndexBuffer::Resolve( gfx, geometryTag, model.indices ) );
+	pVertices = VertexBuffer::Resolve( gfx, geometryTag, model.vertices );
+	pIndices = IndexBuffer::Resolve( gfx, geometryTag, model.indices );
+	pTopology = Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
-	AddBind( Texture::Resolve( gfx, "res\\textures\\brickwall.jpg" ) );
+	{
+		Technique standard;
+		{
+			Step initial( 0 );
+
+			initial.AddBindable( Texture::Resolve( gfx, "res\\textures\\brickwall.jpg" ) );
+			initial.AddBindable( Sampler::Resolve( gfx ) );
+
+			auto pvs = VertexShader::Resolve( gfx, "PhongVS.cso" );
+			auto pvsbc = pvs->GetByteCode();
+			initial.AddBindable( std::move( pvs ) );
+			initial.AddBindable( PixelShader::Resolve( gfx, "PhongPS.cso" ) );
+
+			initial.AddBindable( PixelConstantBuffer<PSMaterialConstant>::Resolve( gfx, pmc, 1u ) );
+			initial.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
+			initial.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
+
+			standard.AddStep( std::move( initial ) );
+		}
+		AddTechnique( std::move( standard ) );
+	}
+
+	{
+		Technique outline;
+		{
+			Step mask( 1 );
+
+			auto pvs = VertexShader::Resolve( gfx, "SolidVS.cso" );
+			auto pvsbc = pvs->GetByteCode();
+			mask.AddBindable( std::move( pvs ) );
+
+			mask.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
+			mask.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
+
+			outline.AddStep( std::move( mask ) );
+		}
+		{
+			Step draw( 2 );
+
+			auto pvs = VertexShader::Resolve( gfx, "SolidVS.cso" );
+			auto pvsbc = pvs->GetByteCode();
+			draw.AddBindable( std::move( pvs ) );
+			draw.AddBindable( PixelShader::Resolve( gfx, "SolidPS.cso" ) );
+
+			draw.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
+
+			class TransformCbufScaling : public TransformCbuf
+			{
+			public:
+				using TransformCbuf::TransformCbuf;
+				void Bind( Graphics& gfx ) noexcept override
+				{
+					const auto scale = DirectX::XMMatrixScaling( 1.03f, 1.03f, 1.03f );
+					auto xf = GetTransforms( gfx );
+					xf.modelView = xf.modelView * scale;
+					xf.modelViewProj = xf.modelViewProj * scale;
+					UpdateBind( gfx, xf );
+				}
+			};
+			draw.AddBindable( std::make_shared<TransformCbufScaling>( gfx ) );
+
+			outline.AddStep( std::move( draw ) );
+		}
+		AddTechnique( std::move( outline ) );
+	}
+
+	/*AddBind( Texture::Resolve( gfx, "res\\textures\\brickwall.jpg" ) );
 	//AddBind( Texture::Resolve( gfx, "res\\textures\\brickwall_normal.jpg", 1u ) );
 	AddBind( Sampler::Resolve( gfx ) );
 
@@ -54,7 +121,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 	outlineEffect.push_back( InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
 	outlineEffect.push_back( Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 	outlineEffect.push_back( std::move( tcbdb ) );
-	outlineEffect.push_back( std::make_shared<Stencil>( gfx, Stencil::Mode::Mask ) );
+	outlineEffect.push_back( std::make_shared<Stencil>( gfx, Stencil::Mode::Mask ) );*/
 }
 
 void NormalCube::SetPos( DirectX::XMFLOAT3 pos ) noexcept
@@ -71,11 +138,8 @@ void NormalCube::SetRotation( float roll, float pitch, float yaw ) noexcept
 
 DirectX::XMMATRIX NormalCube::GetTransformXM() const noexcept
 {
-	auto xf = DirectX::XMMatrixRotationRollPitchYaw( roll, pitch, yaw ) *
+	return DirectX::XMMatrixRotationRollPitchYaw( roll, pitch, yaw ) *
 		DirectX::XMMatrixTranslation( pos.x, pos.y, pos.z );
-	if ( outlining )
-		xf = DirectX::XMMatrixScaling( 1.03f, 1.03f, 1.03f ) * xf;
-	return xf;
 }
 
 void NormalCube::SpawnControlWindow( Graphics& gfx, const char* name ) noexcept
@@ -97,7 +161,7 @@ void NormalCube::SpawnControlWindow( Graphics& gfx, const char* name ) noexcept
 			ImGui::SliderAngle( "Yaw", &yaw, -180.0f, 180.0f );
 		}
 
-		if ( ImGui::CollapsingHeader( "Shading" ) )
+		/*if ( ImGui::CollapsingHeader( "Shading" ) )
 		{
 			bool specInt = ImGui::SliderFloat( "Spec. Int", &pmc.specularIntensity, 0.0f, 1.0f );
 			bool specPow = ImGui::SliderFloat( "Spec. Pow", &pmc.specularPower, 0.0f, 100.0f );
@@ -107,16 +171,16 @@ void NormalCube::SpawnControlWindow( Graphics& gfx, const char* name ) noexcept
 
 			if ( specInt || specPow || normalEnabled )
 				QueryBindable<Bind::PixelConstantBuffer<PSMaterialConstant>>()->Update( gfx, pmc );
-		}
+		}*/
 	}
 	ImGui::End();
 }
 
-void NormalCube::DrawOutline( Graphics& gfx ) noexcept(!IS_DEBUG)
+/*void NormalCube::DrawOutline( Graphics& gfx ) noexcept(!IS_DEBUG)
 {
 	outlining = true;
 	for ( auto& b : outlineEffect )
 		b->Bind( gfx );
 	gfx.DrawIndexed( QueryBindable<Bind::IndexBuffer>()->GetCount() );
 	outlining = false;
-}
+}*/

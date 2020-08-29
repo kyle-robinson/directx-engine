@@ -1,7 +1,6 @@
 #include "Mesh.h"
 #include "Surface.h"
 #include "MathX.h"
-#include "Stencil.h"
 #include <unordered_map>
 #include <sstream>
 #include <iostream>
@@ -33,7 +32,7 @@ const std::string& ModelException::GetNote() const noexcept
 }
 
 // Mesh
-Mesh::Mesh( Graphics& gfx, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs )
+/*Mesh::Mesh( Graphics& gfx, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs )
 {
 	AddBind( Bind::Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
@@ -43,12 +42,12 @@ Mesh::Mesh( Graphics& gfx, std::vector<std::shared_ptr<Bind::Bindable>> bindPtrs
 	}
 
 	AddBind( std::make_shared<Bind::TransformCbuf>( gfx, *this ) );
-}
+}*/
 
-void Mesh::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform) const noexcept(!IS_DEBUG)
+void Mesh::Submit( FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG)
 {
-	DirectX::XMStoreFloat4x4(&transform, accumulatedTransform);
-	Drawable::Draw(gfx);
+	DirectX::XMStoreFloat4x4( &transform, accumulatedTransform );
+	Drawable::Submit( frame );
 }
 DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
 {
@@ -63,7 +62,7 @@ Node::Node( int id, const std::string& name, std::vector<Mesh*> meshPtrs, const 
 	DirectX::XMStoreFloat4x4( &appliedTransform, DirectX::XMMatrixIdentity() );
 }
 
-void Node::Draw( Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG)
+void Node::Submit( FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG)
 {
 	const auto built =
 		DirectX::XMLoadFloat4x4( &baseTransform ) *
@@ -71,11 +70,11 @@ void Node::Draw( Graphics& gfx, DirectX::FXMMATRIX accumulatedTransform ) const 
 		accumulatedTransform;
 	for (const auto pm : meshPtrs)
 	{
-		pm->Draw(gfx, built);
+		pm->Submit(frame, built);
 	}
 	for (const auto& pc : childPtrs)
 	{
-		pc->Draw(gfx, built);
+		pc->Submit(frame, built);
 	}
 }
 
@@ -111,7 +110,7 @@ void Node::RenderTree( Node*& pSelectedNode ) const noexcept
 	}
 }
 
-const Dcb::Buffer* Node::GetMaterialConstants() const noexcept(!IS_DEBUG)
+/*const Dcb::Buffer* Node::GetMaterialConstants() const noexcept(!IS_DEBUG)
 {
 	if ( meshPtrs.size() == 0 )
 		return nullptr;
@@ -125,7 +124,7 @@ void Node::SetMaterialConstants( const Dcb::Buffer& buf_in ) noexcept(!IS_DEBUG)
 	auto pcb = meshPtrs.front()->QueryBindable<Bind::CachingPixelConstantBufferEx>();
 	assert( pcb != nullptr );
 	pcb->SetBuffer( buf_in );
-}
+}*/
 
 void Node::SetAppliedTransform( DirectX::FXMMATRIX transform ) noexcept
 {
@@ -154,7 +153,7 @@ class ModelWindow
 public:
 	void Show( Graphics& gfx, const char* windowName, const Node& root ) noexcept
 	{
-		windowName = windowName ? windowName : "Model";
+		/*windowName = windowName ? windowName : "Model";
 		int nodeIndexTracker = 0;
 
 		if ( ImGui::Begin( windowName ) )
@@ -234,20 +233,13 @@ public:
 							linkCheck( ImGui::SliderFloat( "Spec. Inten", &v, 0.0f, 1.0f ) );
 					}
 				}
-				/*if ( ImGui::CollapsingHeader( "Material" ) )
-					if ( !pSelectedNode->ControlWindow( gfx, skinMaterial ) )
-						if( !pSelectedNode->ControlWindow( gfx, eyeMaterial ) )
-							pSelectedNode->ControlWindow( gfx, ringMaterial );*/
-
-				/*if ( ImGui::Button( "Reset" ) )
-					ResetMesh();*/
 			}
 		}
-		ImGui::End();
+		ImGui::End();*/
 	}
 	void ApplyParameters() noexcept(!IS_DEBUG)
 	{
-		if ( Transform() )
+		/*if ( Transform() )
 		{
 			pSelectedNode->SetAppliedTransform( GetTransform() );
 			ResetTransform();
@@ -256,7 +248,7 @@ public:
 		{
 			pSelectedNode->SetMaterialConstants( GetMaterial() );
 			ResetMaterial();
-		}
+		}*/
 	}
 private:
 	/*void ResetMesh() noexcept
@@ -355,14 +347,14 @@ Model::Model( Graphics& gfx, const std::string& pathString, float scale ) : pWin
 	pRoot = ParseNode( nextID, *pScene->mRootNode );
 }
 
-void Model::Draw( Graphics& gfx ) const noexcept(!IS_DEBUG)
+void Model::Submit( FrameCommander& frame ) const noexcept(!IS_DEBUG)
 {
 	/*if ( auto node = pWindow->GetSelectedNode() )
 	{
 		node->SetAppliedTransform( pWindow->GetTransform() );
 	}*/
 	pWindow->ApplyParameters();
-	pRoot->Draw( gfx, DirectX::XMMatrixIdentity() );
+	pRoot->Submit( frame, DirectX::XMMatrixIdentity() );
 }
 
 void Model::ShowControlWindow( Graphics& gfx, const char* windowName ) noexcept
@@ -377,7 +369,7 @@ void Model::SetRootTransform( DirectX::FXMMATRIX tf ) noexcept
 
 std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, float scale )
 {
-	using namespace std::string_literals;
+	/*using namespace std::string_literals;
 	using VertexMeta::VertexLayout;
 	using namespace Bind;
 
@@ -486,11 +478,6 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 		
 		bindablePtrs.push_back( InputLayout::Resolve( gfx, vbuf.GetLayout(), pvsbc ) );
 
-		/*Node::PSMaterialConstantFull pmc;
-		pmc.specularPower = shininess;
-		pmc.hasGlossMap = hasAlphaGloss ? TRUE : FALSE;
-		bindablePtrs.push_back( PixelConstantBuffer<Node::PSMaterialConstantFull>::Resolve( gfx, pmc, 1u ) );*/
-
 		Dcb::RawLayout layout;
 		layout.Add<Dcb::Bool>( "normalMapEnabled" );
 		layout.Add<Dcb::Bool>( "specularMapEnabled" );
@@ -555,17 +542,6 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 
-		/*struct PSMaterialConstant
-		{
-			float specularIntensity;
-			float specularPower;
-			BOOL normalMapEnabled = TRUE;
-			float padding;
-		} pmc;
-		pmc.specularPower = shininess;
-		pmc.specularIntensity = ( specularColor.x + specularColor.y + specularColor.z ) / 3.0f;
-		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));*/
-
 		Dcb::RawLayout layout;
 		layout.Add<Dcb::Float>( "specularIntensity" );
 		layout.Add<Dcb::Float>( "specularPower" );
@@ -619,18 +595,6 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 		bindablePtrs.push_back(PixelShader::Resolve(gfx, "PhongPSSpec.cso"));
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
-
-		/*struct PSMaterialConstant
-		{
-			float specularPowerConst;
-			BOOL hasGloss;
-			float specularMapWeight;
-			float padding;
-		} pmc;
-		pmc.specularPowerConst = shininess;
-		pmc.hasGloss = hasAlphaGloss ? TRUE : FALSE;
-		pmc.specularMapWeight = 1.0f;
-		bindablePtrs.push_back(PixelConstantBuffer<PSMaterialConstant>::Resolve(gfx, pmc, 1u));*/
 
 		Dcb::RawLayout layout;
 		layout.Add<Dcb::Float>( "specularPower" );
@@ -686,11 +650,6 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 
-		/*Node::PSMaterialConstantDiffuse pmc;
-		pmc.specularPower = shininess;
-		pmc.specularIntensity = ( specularColor.x + specularColor.y + specularColor.z ) / 3.0f;
-		bindablePtrs.push_back(PixelConstantBuffer<Node::PSMaterialConstantDiffuse>::Resolve(gfx, pmc, 1u));*/
-
 		Dcb::RawLayout layout;
 		layout.Add<Dcb::Float>( "specularIntensity" );
 		layout.Add<Dcb::Float>( "specularPower" );
@@ -743,12 +702,6 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 
 		bindablePtrs.push_back(InputLayout::Resolve(gfx, vbuf.GetLayout(), pvsbc));
 
-		/*Node::PSMaterialConstantNoTexture pmc;
-		pmc.specularPower = shininess;
-		pmc.materialColor = diffuseColor;
-		pmc.specularColor = specularColor;
-		bindablePtrs.push_back( PixelConstantBuffer<Node::PSMaterialConstantNoTexture>::Resolve( gfx, pmc, 1u ) );*/
-
 		Dcb::RawLayout layout;
 		layout.Add<Dcb::Float4>( "materialColor" );
 		layout.Add<Dcb::Float4>( "specularColor" );
@@ -770,7 +723,9 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 	bindablePtrs.push_back( Rasterizer::Resolve( gfx, hasAlphaDiffuse ) );
 	bindablePtrs.push_back( std::make_shared<Stencil>( gfx, Stencil::Mode::Off ) );
 
-	return std::make_unique<Mesh>( gfx, std::move( bindablePtrs ) );
+	return std::make_unique<Mesh>( gfx, std::move( bindablePtrs ) );*/
+
+	return {};
 }
 
 std::unique_ptr<Node> Model::ParseNode( int& nextID, const aiNode& node ) noexcept
