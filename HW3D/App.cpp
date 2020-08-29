@@ -85,6 +85,11 @@ void App::DoFrame()
 	//plane.Draw( wnd.Gfx() );
 	light.Draw( wnd.Gfx() );
 	sponza.Draw( wnd.Gfx() );
+	cube.Draw( wnd.Gfx() );
+	cube2.Draw( wnd.Gfx() );
+
+	cube.DrawOutline( wnd.Gfx() );
+	cube2.DrawOutline( wnd.Gfx() );
 
 	// raw mouse input
 	while ( const auto& e = wnd.kbd.ReadKey() )
@@ -139,6 +144,8 @@ void App::DoFrame()
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
 		sponza.ShowControlWindow( wnd.Gfx() );
+		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
+		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 		//goblin.ShowControlWindow( wnd.Gfx(), "Goblin" );
 		//nanosuit.ShowControlWindow( wnd.Gfx(), "Nanosuit" );
 		//wall.ShowControlWindow( wnd.Gfx(), "Wall" );

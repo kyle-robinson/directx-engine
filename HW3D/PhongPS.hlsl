@@ -27,7 +27,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lvd.dirToL, viewNormal);
 	
 	// specular
-    const float3 specular = Speculate(diffuseColor, diffuseIntensity, viewNormal, lvd.vToL, viewFragPos, att, specularPower);
+    const float3 specular = Speculate(diffuseColor, diffuseIntensity * specularIntensity, viewNormal, lvd.vToL, viewFragPos, att, specularPower);
 	
 	// final color
     return float4(saturate((ambient + diffuse) * tex.Sample(smplr, tc) + specular), 1.0f);

@@ -1,5 +1,7 @@
 #pragma once
 #include "Drawable.h"
+#include "Bindable.h"
+#include "IndexBuffer.h"
 
 class NormalCube : public Drawable
 {
@@ -8,7 +10,8 @@ public:
 	void SetPos( DirectX::XMFLOAT3 pos ) noexcept;
 	void SetRotation( float roll, float pitch, float yaw ) noexcept;
 	DirectX::XMMATRIX GetTransformXM() const noexcept override;
-	void SpawnControlWindow( Graphics& gfx ) noexcept;
+	void SpawnControlWindow( Graphics& gfx, const char* name ) noexcept;
+	void DrawOutline( Graphics& gfx ) noexcept(!IS_DEBUG);
 private:
 	struct PSMaterialConstant
 	{
@@ -19,4 +22,6 @@ private:
 	} pmc;
 	DirectX::XMFLOAT3 pos = { 1.0f, 1.0f, 1.0f };
 	float roll = 0.0f, pitch = 0.0f, yaw = 0.0f;
+	bool outlining = false;
+	std::vector<std::shared_ptr<Bind::Bindable>> outlineEffect;
 };

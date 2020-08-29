@@ -1,6 +1,7 @@
 #include "SolidSphere.h"
 #include "Sphere.h"
 #include "Vertex.h"
+#include "Stencil.h"
 #include "BindableCommon.h"
 #include "GraphicsThrowMacros.h"
 
@@ -31,6 +32,8 @@ SolidSphere::SolidSphere( Graphics& gfx, float radius )
 	AddBind( Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST ) );
 
 	AddBind( std::make_shared<TransformCbuf>( gfx, *this ) );
+
+	AddBind( std::make_shared<Stencil>( gfx, Stencil::Mode::Off ) );
 }
 
 void SolidSphere::SetPos( DirectX::XMFLOAT3 pos ) noexcept
