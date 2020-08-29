@@ -19,9 +19,6 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{219be665-8f2c-4f10-8c48-24d82d9e7483}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Bindables">
-      <UniqueIdentifier>{349ec208-c37d-4421-baf2-e216435005e1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Macros">
       <UniqueIdentifier>{c21a54b0-7718-4619-a64d-0cc6058e01ed}</UniqueIdentifier>
     </Filter>
@@ -106,6 +103,21 @@
     <Filter Include="Source Files\Macros">
       <UniqueIdentifier>{348fdccf-7014-47e3-8c5a-aef5b1ead2c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\BindableEx">
+      <UniqueIdentifier>{b8ee7edc-cdd4-4708-bbf2-c05dadc5ac0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Bindables">
+      <UniqueIdentifier>{349ec208-c37d-4421-baf2-e216435005e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\DrawableEx">
+      <UniqueIdentifier>{4488074c-2114-4117-b192-63cc61811f73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DrawableEx">
+      <UniqueIdentifier>{db95a852-2da9-455b-9653-02b9a2b66d98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\BindableEx">
+      <UniqueIdentifier>{d519d8bd-d00c-4a6e-90af-24b38eb13732}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -127,12 +139,6 @@
       <Filter>Source Files\Bindables</Filter>
     </ClCompile>
     <ClCompile Include="TransformCbuf.cpp">
-      <Filter>Source Files\Bindables</Filter>
-    </ClCompile>
-    <ClCompile Include="Drawable.cpp">
-      <Filter>Source Files\Drawables</Filter>
-    </ClCompile>
-    <ClCompile Include="Bindable.cpp">
       <Filter>Source Files\Bindables</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
@@ -163,9 +169,6 @@
       <Filter>Resource Files\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Drawables</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertex.cpp">
       <Filter>Source Files\Drawables</Filter>
     </ClCompile>
     <ClCompile Include="NormalPlane.cpp">
@@ -222,9 +225,6 @@
     <ClCompile Include="MathX.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="TexturePreprocessor.cpp">
-      <Filter>Source Files\Bindables</Filter>
-    </ClCompile>
     <ClCompile Include="Blender.cpp">
       <Filter>Source Files\Bindables</Filter>
     </ClCompile>
@@ -234,17 +234,26 @@
     <ClCompile Include="StringConverter.cpp">
       <Filter>Source Files\Macros</Filter>
     </ClCompile>
-    <ClCompile Include="DynamicConstant.cpp">
-      <Filter>Source Files\Bindables</Filter>
+    <ClCompile Include="TexturePreprocessor.cpp">
+      <Filter>Source Files\BindableEx</Filter>
     </ClCompile>
     <ClCompile Include="LayoutCodex.cpp">
-      <Filter>Source Files\Bindables</Filter>
+      <Filter>Source Files\BindableEx</Filter>
+    </ClCompile>
+    <ClCompile Include="DynamicConstant.cpp">
+      <Filter>Source Files\BindableEx</Filter>
+    </ClCompile>
+    <ClCompile Include="Bindable.cpp">
+      <Filter>Source Files\BindableEx</Filter>
+    </ClCompile>
+    <ClCompile Include="Drawable.cpp">
+      <Filter>Source Files\DrawableEx</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>Source Files\DrawableEx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bindable.h">
-      <Filter>Header Files\Bindables</Filter>
-    </ClInclude>
     <ClInclude Include="ConstantBuffers.h">
       <Filter>Header Files\Bindables</Filter>
     </ClInclude>
@@ -274,9 +283,6 @@
     </ClInclude>
     <ClInclude Include="TransformCbuf.h">
       <Filter>Header Files\Bindables</Filter>
-    </ClInclude>
-    <ClInclude Include="Drawable.h">
-      <Filter>Header Files\Drawables</Filter>
     </ClInclude>
     <ClInclude Include="Sphere.h">
       <Filter>Header Files\Drawables</Filter>
@@ -323,20 +329,8 @@
     <ClInclude Include="..\External\imgui\imstb_truetype.h">
       <Filter>Resource Files\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
-      <Filter>Header Files\Drawables</Filter>
-    </ClInclude>
-    <ClInclude Include="BindableCommon.h">
-      <Filter>Header Files\Bindables</Filter>
-    </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Header Files\Drawables</Filter>
-    </ClInclude>
-    <ClInclude Include="Color.h">
-      <Filter>Header Files\Bindables</Filter>
-    </ClInclude>
-    <ClInclude Include="BindableCodex.h">
-      <Filter>Header Files\Bindables</Filter>
     </ClInclude>
     <ClInclude Include="NormalPlane.h">
       <Filter>Header Files\Drawables</Filter>
@@ -392,14 +386,8 @@
     <ClInclude Include="ImGuiManager.h">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="IndexedTriangleList.h">
-      <Filter>Header Files\Bindables</Filter>
-    </ClInclude>
     <ClInclude Include="MathX.h">
       <Filter>Header Files\Windows</Filter>
-    </ClInclude>
-    <ClInclude Include="TexturePreprocessor.h">
-      <Filter>Header Files\Bindables</Filter>
     </ClInclude>
     <ClInclude Include="Blender.h">
       <Filter>Header Files\Bindables</Filter>
@@ -410,14 +398,41 @@
     <ClInclude Include="StringConverter.h">
       <Filter>Header Files\Macros</Filter>
     </ClInclude>
-    <ClInclude Include="DynamicConstant.h">
-      <Filter>Header Files\Bindables</Filter>
-    </ClInclude>
-    <ClInclude Include="LayoutCodex.h">
-      <Filter>Header Files\Bindables</Filter>
-    </ClInclude>
     <ClInclude Include="ConstantBufferEx.h">
       <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="Stencil.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturePreprocessor.h">
+      <Filter>Header Files\BindableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="LayoutCodex.h">
+      <Filter>Header Files\BindableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexedTriangleList.h">
+      <Filter>Header Files\BindableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="DynamicConstant.h">
+      <Filter>Header Files\BindableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Header Files\BindableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="BindableCommon.h">
+      <Filter>Header Files\BindableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="BindableCodex.h">
+      <Filter>Header Files\BindableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files\DrawableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="Drawable.h">
+      <Filter>Header Files\DrawableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="Bindable.h">
+      <Filter>Header Files\BindableEx</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

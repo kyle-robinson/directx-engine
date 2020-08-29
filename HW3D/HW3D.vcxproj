@@ -283,6 +283,7 @@
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="SolidSphere.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="Stencil.h" />
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Texture.h" />
