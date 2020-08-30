@@ -26,9 +26,7 @@ public:
 	{
 		probe.SetTechnique( this );
 		for ( auto& s : steps )
-		{
 			s.Accept( probe );
-		}
 	}
 	const std::string& GetName() const noexcept
 	{
@@ -37,5 +35,5 @@ public:
 private:
 	bool active = true;
 	std::vector<Step> steps;
-	std::string name = "Nameless Technique"
+	std::string name = "Nameless Technique";
 };

@@ -2,6 +2,7 @@
 #include "Graphics.h"
 
 class Drawable;
+class TechniqueProbe;
 
 namespace Bind
 {

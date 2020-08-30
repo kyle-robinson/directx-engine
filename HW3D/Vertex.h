@@ -183,7 +183,7 @@ namespace VertexMeta
 		struct AttributeSetting
 		{
 			template<typename T>
-			static constexpr auto Execute( Vertex* pVertec, char* pAttribute, T&& val ) noexcept(!IS_DEBUG)
+			static constexpr auto Execute( Vertex* pVertex, char* pAttribute, T&& val ) noexcept(!IS_DEBUG)
 			{
 				return pVertex->SetAttribute<type>( pAttribute, std::forward<T>( val ) );
 			}
@@ -200,8 +200,8 @@ namespace VertexMeta
 		{
 			const auto& element = layout.ResolveByIndex( i );
 			auto pAttribute = pData + element.GetOffset();
-			VertexLayout::Bridge<>(
-				element.GetType(), this, pAttribute, std::forward<T>( val );
+			VertexLayout::Bridge<AttributeSetting>(
+				element.GetType(), this, pAttribute, std::forward<T>( value )
 			);
 		}
 	protected:
@@ -246,6 +246,7 @@ namespace VertexMeta
 	{
 	public:
 		VertexBuffer( VertexLayout layout, size_t size = 0u ) noexcept(!IS_DEBUG);
+		VertexBuffer( VertexLayout layout, const aiMesh& mesh );
 		const char* GetData() const noexcept(!IS_DEBUG);
 		const VertexLayout& GetLayout() const noexcept;
 		void Resize( size_t newSize ) noexcept(!IS_DEBUG);

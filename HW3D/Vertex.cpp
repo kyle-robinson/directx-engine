@@ -150,6 +150,23 @@ namespace VertexMeta
 		Resize( size );
 	}
 
+	template<VertexLayout::ElementType type>
+	struct AttributeAiMeshFill
+	{
+		static constexpr void Execute( VertexBuffer* pBuf, const aiMesh& mesh ) noexcept(!IS_DEBUG)
+		{
+			for ( auto end = mesh.mNumVertices, i = 0u; i < end; i++ )
+				( *pBuf )[i].Attr<type>() = VertexLayout::Map<type>::Extract( mesh, i );
+		}
+	};
+
+	VertexBuffer::VertexBuffer( VertexLayout layout, const aiMesh& mesh ) : layout( std::move( layout ) )
+	{
+		Resize( mesh.mNumVertices );
+		for (  size_t i = 0, end = layout.GetElementCount(); i < end; i++ )
+			VertexLayout::Bridge<AttributeAiMeshFill>( layout.ResolveByIndex( i ).GetType(), this, mesh );
+	}
+
 	const char* VertexBuffer::GetData() const noexcept(!IS_DEBUG)
 	{
 		return buffer.data();
@@ -164,9 +181,7 @@ namespace VertexMeta
 	{
 		const auto size = Size();
 		if ( size < newSize )
-		{
 			buffer.resize( buffer.size() + layout.Size() * (newSize - size) );
-		}
 	}
 
 	size_t VertexBuffer::Size() const noexcept(!IS_DEBUG)

@@ -13,7 +13,7 @@ public:
 	{
 		bindables.push_back( std::move( bind_in ) );
 	}
-	void Submint( class FrameCommander& grame, const class Drawable& drawable ) const;
+	void Submit( class FrameCommander& grame, const class Drawable& drawable ) const;
 	void Bind( Graphics& gfx ) const
 	{
 		for ( const auto& b : bindables )

@@ -2,7 +2,7 @@
 #include "Drawable.h"
 #include "FrameCommander.h"
 
-void Step::Submint( FrameCommander& frame, const Drawable& drawable ) const
+void Step::Submit( FrameCommander& frame, const Drawable& drawable ) const
 {
 	frame.Accept( Job{ this, &drawable }, targetPass );
 }

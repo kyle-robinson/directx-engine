@@ -7,7 +7,7 @@ void Technique::Submit( FrameCommander& frame, const Drawable& drawable ) const 
 	if ( active )
 	{
 		for ( const auto& step : steps )
-			step.Submint( frame, drawable );
+			step.Submit( frame, drawable );
 	}
 }
 
