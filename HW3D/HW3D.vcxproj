@@ -296,6 +296,7 @@
     <ClInclude Include="StringConverter.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="Technique.h" />
+    <ClInclude Include="TechniqueProbe.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TexturePreprocessor.h" />
     <ClInclude Include="Timer.h" />

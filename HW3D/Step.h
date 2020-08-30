@@ -1,4 +1,5 @@
 #pragma once
+#include "TechniqueProbe.h"
 #include "Bindable.h"
 #include "Graphics.h"
 #include <vector>
@@ -21,6 +22,14 @@ public:
 		}
 	}
 	void InitializeParentReferences( const class Drawable& parent ) noexcept;
+	void Accept( TechniqueProbe& probe )
+	{
+		probe.SetStep( this );
+		for ( auto& pb : bindables )
+		{
+			pb->Accept( probe );
+		}
+	}
 private:
 	size_t targetPass;
 	std::vector<std::shared_ptr<Bind::Bindable>> bindables;

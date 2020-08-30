@@ -3,6 +3,8 @@
 #include "Technique.h"
 #include <memory>
 
+class TechniqueProbe;
+
 namespace Bind
 {
 	class IndexBuffer;
@@ -20,27 +22,12 @@ public:
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
 	void Submit( class FrameCommander& frame ) const noexcept;
 	void Bind( Graphics& gfx ) const noexcept;
+	void Accept( TechniqueProbe& );
 	UINT GetIndexCount() const noexcept(!IS_DEBUG);
 	virtual ~Drawable();
-	/*void Draw( Graphics& gfx ) const noexcept(!IS_DEBUG);
-	template<class T>
-	T* QueryBindable() noexcept
-	{
-		for ( auto& pb : binds )
-		{
-			if ( auto pt = dynamic_cast<T*>( pb.get() ) )
-			{
-				return pt;
-			}
-		}
-		return nullptr;
-	}*/
 protected:
 	std::vector<Technique> techniques;
 	std::shared_ptr<Bind::IndexBuffer> pIndices;
 	std::shared_ptr<Bind::Topology> pTopology;
 	std::shared_ptr<Bind::VertexBuffer> pVertices;
-/*private:
-	const Bind::IndexBuffer* pIndexBuffer = nullptr;
-	std::vector<std::shared_ptr<Bind::Bindable>> binds;*/
 };

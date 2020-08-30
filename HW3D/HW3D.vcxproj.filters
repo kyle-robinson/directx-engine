@@ -470,6 +470,9 @@
     <ClInclude Include="Step.h">
       <Filter>Header Files\Jobs</Filter>
     </ClInclude>
+    <ClInclude Include="TechniqueProbe.h">
+      <Filter>Header Files\Jobs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
