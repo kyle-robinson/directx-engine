@@ -473,6 +473,9 @@
     <ClInclude Include="TechniqueProbe.h">
       <Filter>Header Files\Jobs</Filter>
     </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Files\DrawableEx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">

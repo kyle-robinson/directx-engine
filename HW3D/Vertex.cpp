@@ -1,3 +1,4 @@
+#define DVTX_SOURCE_FILE
 #include "Vertex.h"
 
 namespace VertexMeta
@@ -68,59 +69,44 @@ namespace VertexMeta
 		return type;
 	}
 
+	template<VertexLayout::ElementType type>
+	struct SysSizeLookup
+	{
+		static constexpr auto Execute() noexcept
+		{
+			return sizeof( VertexLayout::Map<type>::VertexType );
+		}
+	};
+
 	constexpr size_t VertexLayout::Element::SizeOf(ElementType type) noexcept(!IS_DEBUG)
 	{
-		switch (type)
-		{
-		case Position2D:
-			return sizeof(Map<Position2D>::VertexType);
-		case Position3D:
-			return sizeof(Map<Position3D>::VertexType);
-		case Texture2D:
-			return sizeof(Map<Texture2D>::VertexType);
-		case Normal:
-			return sizeof(Map<Normal>::VertexType);
-		case Tangent:
-			return sizeof(Map<Tangent>::VertexType);
-		case Bitangent:
-			return sizeof(Map<Bitangent>::VertexType);
-		case Float3Color:
-			return sizeof(Map<Float3Color>::VertexType);
-		case Float4Color:
-			return sizeof(Map<Float4Color>::VertexType);
-		case BGRAColor:
-			return sizeof(Map<BGRAColor>::VertexType);
-		default:
-			assert("Invalid element type!" && false);
-		}
-		return 0u;
+		return Bridge<SysSizeLookup>( type );
 	}
+
+	template<VertexLayout::ElementType type>
+	struct CodeLookup
+	{
+		static constexpr auto Execute() noexcept
+		{
+			return VertexLayout::Map<type>::code;
+		}
+	};
+
+	template<VertexLayout::ElementType type> struct DescGenerate
+	{
+		static constexpr D3D11_INPUT_ELEMENT_DESC Execute( size_t offset ) noexcept
+		{
+			return {
+				VertexLayout::Map<type>::semantic, 0,
+				VertexLayout::Map<type>::dxgiFormat,
+				0, (UINT)offset, D3D11_INPUT_PER_VERTEX_DATA, 0
+			};
+		}
+	};
 
 	D3D11_INPUT_ELEMENT_DESC VertexLayout::Element::GetDesc() const noexcept(!IS_DEBUG)
 	{
-		switch (type)
-		{
-		case Position2D:
-			return GenerateDesc<Position2D>(GetOffset());
-		case Position3D:
-			return GenerateDesc<Position3D>(GetOffset());
-		case Texture2D:
-			return GenerateDesc<Texture2D>(GetOffset());
-		case Normal:
-			return GenerateDesc<Normal>(GetOffset());
-		case Tangent:
-			return GenerateDesc<Tangent>(GetOffset());
-		case Bitangent:
-			return GenerateDesc<Bitangent>(GetOffset());
-		case Float3Color:
-			return GenerateDesc<Float3Color>(GetOffset());
-		case Float4Color:
-			return GenerateDesc<Float4Color>(GetOffset());
-		case BGRAColor:
-			return GenerateDesc<BGRAColor>(GetOffset());
-		}
-		assert("Invalid element type!" && false);
-		return { "INVALID", 0, DXGI_FORMAT_UNKNOWN, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 };
+		return Bridge<DescGenerate>( type, GetOffset() );
 	}
 
 	const char* VertexLayout::Element::GetCode() const noexcept

@@ -275,6 +275,7 @@
     <ClInclude Include="Job.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="LayoutCodex.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="MathX.h" />
     <ClInclude Include="Mesh.h" />
