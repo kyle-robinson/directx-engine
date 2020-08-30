@@ -174,10 +174,11 @@ void NormalCube::SpawnControlWindow( Graphics& gfx, const char* name ) noexcept
 					float bufferSet = false;
 					const auto linkCheck = [&bufferSet]( bool changed ) { bufferSet = bufferSet || changed; };
 					auto tag = [tagScratch = std::string{}, tagString = "##" + std::to_string( bufIdx )]
-							   ( const char* label ) mutable {
-									tagScratch = label + tagString;
-									return tagScratch.c_str();
-							   };
+					( const char* label ) mutable
+					{
+						tagScratch = label + tagString;
+						return tagScratch.c_str();
+					};
 
 					if ( auto v = buf["scale"]; v.Exists() )
 						linkCheck( ImGui::SliderFloat( tag( "Scale" ), &v, 1.0f, 2.0f, "%.3f", 3.5f ) );
