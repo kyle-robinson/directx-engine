@@ -192,7 +192,37 @@ VertexMeta::VertexBuffer Material::ExtractVertices( const aiMesh& mesh ) const n
 	return { layout, mesh };
 }
 
+std::vector<unsigned short> Material::ExtractIndices( const aiMesh& mesh ) const noexcept
+{
+	std::vector<unsigned short> indices;
+	indices.reserve(mesh.mNumFaces * 3);
+	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+	{
+		const auto& face = mesh.mFaces[i];
+		assert(face.mNumIndices == 3);
+		indices.push_back(face.mIndices[0]);
+		indices.push_back(face.mIndices[1]);
+		indices.push_back(face.mIndices[2]);
+	}
+	return indices;
+}
+
+std::shared_ptr<Bind::VertexBuffer> Material::MakeVertexBindable(Graphics& gfx, const aiMesh& mesh) const noexcept(!IS_DEBUG)
+{
+	return Bind::VertexBuffer::Resolve(gfx, MakeMeshTag(mesh), ExtractVertices(mesh));
+}
+
+std::shared_ptr<Bind::IndexBuffer> Material::MakeIndexBindable(Graphics& gfx, const aiMesh& mesh) const noexcept(!IS_DEBUG)
+{
+	return Bind::IndexBuffer::Resolve(gfx, MakeMeshTag(mesh), ExtractIndices(mesh));
+}
+
 std::vector<Technique> Material::GetTechniques() const noexcept
 {
 	return techniques;
+}
+
+std::string Material::MakeMeshTag(const aiMesh& mesh) const noexcept
+{
+	return modelPath + "%" + mesh.mName.C_Str();
 }

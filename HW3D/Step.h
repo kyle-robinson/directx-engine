@@ -31,18 +31,14 @@ public:
 	void Bind( Graphics& gfx ) const
 	{
 		for ( const auto& b : bindables )
-		{
 			b->Bind( gfx );
-		}
 	}
 	void InitializeParentReferences( const class Drawable& parent ) noexcept;
 	void Accept( TechniqueProbe& probe )
 	{
 		probe.SetStep( this );
 		for ( auto& pb : bindables )
-		{
 			pb->Accept( probe );
-		}
 	}
 private:
 	size_t targetPass;

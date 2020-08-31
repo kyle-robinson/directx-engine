@@ -124,6 +124,9 @@
     <Filter Include="Source Files\Jobs">
       <UniqueIdentifier>{4a074eed-d6d3-46b4-adc4-e04388da8b30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Lighting\Pixel\Old">
+      <UniqueIdentifier>{f064b014-397d-44e9-bcfc-f48263585793}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -521,21 +524,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PhongVS.hlsl">
-      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
-    </FxCompile>
-    <FxCompile Include="PhongPSSpecNormal.hlsl">
-      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="IndexedPhongPS.hlsl">
-      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="PhongPS.hlsl">
-      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="PhongPSNormalObject.hlsl">
-      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
-    </FxCompile>
     <FxCompile Include="VertexShaderTri.hlsl">
       <Filter>Resource Files\Shaders\Cube/Tri\Vertex</Filter>
     </FxCompile>
@@ -584,22 +572,46 @@
     <FxCompile Include="TexturedPhongPS.hlsl">
       <Filter>Resource Files\Shaders\Textures\Pixel</Filter>
     </FxCompile>
-    <FxCompile Include="PhongVSNoTexture.hlsl">
-      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
-    </FxCompile>
-    <FxCompile Include="PhongPSNoTexture.hlsl">
-      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="PhongPSSpec.hlsl">
-      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="PhongPSSpecNormalMask.hlsl">
-      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
-    </FxCompile>
     <FxCompile Include="PhongDifNrmPS.hlsl">
       <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
     </FxCompile>
     <FxCompile Include="PhongDifNrmVS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongDifPS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongDifVS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongPS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongVS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="IndexedPhongPS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel\Old</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongDifSpcNrmPS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongDifMskSpcNrmPS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongDifSpcPS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="xPhongDifNro.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel\Old</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongDifSpcVS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongDifSpcNrmVS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongDifMskSpcNrmVS.hlsl">
       <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
     </FxCompile>
   </ItemGroup>

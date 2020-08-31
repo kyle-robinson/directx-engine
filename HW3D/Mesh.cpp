@@ -60,13 +60,9 @@ void Node::Submit( FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransfor
 		DirectX::XMLoadFloat4x4( &appliedTransform ) *
 		accumulatedTransform;
 	for (const auto pm : meshPtrs)
-	{
 		pm->Submit(frame, built);
-	}
 	for (const auto& pc : childPtrs)
-	{
 		pc->Submit(frame, built);
-	}
 }
 
 void Node::RenderTree( Node*& pSelectedNode ) const noexcept
@@ -86,17 +82,13 @@ void Node::RenderTree( Node*& pSelectedNode ) const noexcept
 
 	// for selecting nodes
 	if ( ImGui::IsItemClicked() )
-	{
 		pSelectedNode = const_cast<Node*>(this);
-	}
 
 	// if node is expanded, recursively render all children
 	if ( expanded )
 	{
 		for ( const auto& pChild : childPtrs )
-		{
 			pChild->RenderTree( pSelectedNode );
-		}
 		ImGui::TreePop();
 	}
 }
