@@ -270,6 +270,9 @@
     <ClCompile Include="Step.cpp">
       <Filter>Source Files\Jobs</Filter>
     </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files\DrawableEx</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConstantBuffers.h">
@@ -518,9 +521,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="PhongVSNormal.hlsl">
-      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
-    </FxCompile>
     <FxCompile Include="PhongVS.hlsl">
       <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
     </FxCompile>
@@ -531,9 +531,6 @@
       <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
     </FxCompile>
     <FxCompile Include="PhongPS.hlsl">
-      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
-    </FxCompile>
-    <FxCompile Include="PhongPSNormal.hlsl">
       <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
     </FxCompile>
     <FxCompile Include="PhongPSNormalObject.hlsl">
@@ -598,6 +595,12 @@
     </FxCompile>
     <FxCompile Include="PhongPSSpecNormalMask.hlsl">
       <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongDifNrmPS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongDifNrmVS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

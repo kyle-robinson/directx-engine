@@ -4,6 +4,8 @@
 #include <memory>
 
 class TechniqueProbe;
+class Material;
+struct aiMesh;
 
 namespace Bind
 {
@@ -18,6 +20,7 @@ class Drawable
 public:
 	Drawable() = default;
 	Drawable( const Drawable& ) = delete;
+	Drawable( Graphics& gfx, const Material& mat, const aiMesh& mesh ) noexcept;
 	void AddTechnique( Technique tech_in ) noexcept;
 	virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
 	void Submit( class FrameCommander& frame ) const noexcept;

@@ -4,10 +4,11 @@
 
 cbuffer ObjectCBuf
 {
-    float speuclarIntensity;
-    float specularPower;
-    bool normalMapEnabled;
-    float padding[1];
+    float3 specularColor;
+    float specularWeight;
+    float specularGloss;
+    bool useNormalMap;
+    float normalMapWeight;
 };
 
 Texture2D tex;
@@ -20,7 +21,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     viewNormal = normalize(viewNormal);
     
     // sample normals from normal map
-    if ( normalMapEnabled )
+    if ( useNormalMap )
     {
         viewNormal = MapNormals(normalize(viewTan), normalize(viewBitan), viewNormal, tc, norm, smplr);
     }
@@ -35,7 +36,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lvd.dirToL, viewNormal);
 	
 	// specular
-    const float3 specular = Speculate(diffuseColor, diffuseIntensity, viewNormal, lvd.vToL, viewFragPos, att, specularPower);
+    const float3 specular = Speculate(diffuseColor * diffuseIntensity * specularColor, specularWeight, viewNormal, lvd.vToL, viewFragPos, att, specularGloss);
 	
 	// final color
     return float4(saturate((ambient + diffuse) * tex.Sample(smplr, tc).rgb + specular), 1.0f);

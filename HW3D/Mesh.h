@@ -6,6 +6,7 @@
 #include <optional>
 #include <type_traits>
 #include <filesystem>
+#include <string>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -13,6 +14,8 @@
 
 #include "ConstantBuffers.h"
 #include "DynamicConstant.h"
+
+class Material;
 
 class ModelException : public Exception
 {
@@ -28,7 +31,7 @@ private:
 class Mesh : public Drawable
 {
 public:
-	using Drawable::Drawable;
+	Mesh( Graphics& gfx, const Material& mat, const aiMesh& mesh ) noexcept(!IS_DEBUG);
 	void Submit( FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG);
 	DirectX::XMMATRIX GetTransformXM() const noexcept;
 private:

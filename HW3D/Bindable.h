@@ -22,4 +22,10 @@ namespace Bind
 		static ID3D11Device* GetDevice( Graphics& gfx ) noexcept;
 		static DxgiInfoManager& GetInfoManager( Graphics& gfx ) noexcept(!IS_DEBUG);
 	};
+
+	class CloningBindable : public Bindable
+	{
+	public:
+		virtual std::unique_ptr<CloningBindable> Clone() const noexcept = 0;
+	};
 }

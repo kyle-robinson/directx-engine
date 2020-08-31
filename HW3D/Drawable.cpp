@@ -1,9 +1,21 @@
 #include "Drawable.h"
+#include "Material.h"
 #include "BindableCodex.h"
 #include "BindableCommon.h"
 #include "GraphicsThrowMacros.h"
+#include <assimp/scene.h>
 
 using namespace Bind;
+
+Drawable::Drawable( Graphics& gfx, const Material& mat, const aiMesh& mesh ) noexcept
+{
+	pVertices = mat.MakeVertexBindable( gfx, mesh );
+	pIndices = mat.MakeIndexBindable( gfx, mesh );
+	pTopology = Bind::Topology::Resolve( gfx );
+
+	for ( auto& t : mat.GetTechniques() )
+		AddTechnique( std::move( t ) );
+}
 
 void Drawable::Submit( FrameCommander& frame ) const noexcept
 {

@@ -9,10 +9,21 @@ namespace VertexMeta
 		return elements[i];
 	}
 
-	VertexLayout& VertexLayout::Append(ElementType type) noexcept(!IS_DEBUG)
+	VertexLayout& VertexLayout::Append( ElementType type ) noexcept(!IS_DEBUG)
 	{
-		elements.emplace_back(type, Size());
+		if ( !Has( type ) )
+			elements.emplace_back( type, Size() );
 		return *this;
+	}
+
+	bool VertexLayout::Has( ElementType type ) const noexcept
+	{
+		for ( auto& e : elements )
+		{
+			if ( e.GetType() == type )
+				return true;
+		}
+		return false;
 	}
 
 	size_t VertexLayout::Size() const noexcept(!IS_DEBUG)
