@@ -7,43 +7,6 @@
 
 App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
-	/*if ( this->commandLine != "" )
-	{
-		int nArgs;
-		const auto pLineW = GetCommandLineW();
-		const auto pArgs = CommandLineToArgvW( pLineW, &nArgs );
-		if ( nArgs >= 3 && std::wstring( pArgs[1] ) == L"--twerk-objnorm" )
-		{
-			const std::wstring pathInWide = pArgs[2];
-			TexturePreprocessor::FlipAllYNormalsInObj(
-				std::string( pathInWide.begin(), pathInWide.end() )
-			);
-		}
-		else if ( nArgs >= 3 && std::wstring( pArgs[1] ) == L"--twerk-flipy" )
-		{
-			const std::wstring pathInWide = pArgs[2];
-			const std::wstring pathOutWide = pArgs[3];
-			TexturePreprocessor::FlipYNormalMap(
-				std::string( pathInWide.begin(), pathInWide.end() ),
-				std::string( pathOutWide.begin(), pathOutWide.end() )
-			);
-		}
-		else if ( nArgs >= 4 && std::wstring( pArgs[1] ) == L"--twerk-validate" )
-		{
-			const std::wstring minWide = pArgs[2];
-			const std::wstring maxWide = pArgs[3];
-			const std::wstring pathWide = pArgs[4];
-			TexturePreprocessor::ValidateNormalMap(
-				std::string( pathWide.begin(), pathWide.end() ), std::stof( minWide ), std::stof( maxWide )
-			);
-		}
-	}*/
-	
-	//goblin.SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, 0.0f, -4.0f ) );
-	//nanosuit.SetRootTransform( DirectX::XMMatrixTranslation( 0.0f, -7.0f, 6.0f ) );
-	//wall.SetRootTransform( DirectX::XMMatrixTranslation( -12.0f, 0.0f, 0.0f ) );
-	//plane.SetPos( { 12.0f, 0.0f, 0.0f } );
-
 	cube.SetPos( { 4.0f, 0.0f, 0.0f } );
 	cube2.SetPos( { 0.0f, 4.0f, 0.0f } );
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 400.0f ) );
@@ -82,12 +45,7 @@ void App::DoFrame()
 	light.Bind( wnd.Gfx(), camera.GetMatrix() );
 
 	// objects
-	//goblin.Draw( wnd.Gfx() );
-	//nanosuit.Draw( wnd.Gfx() );
-	//wall.Draw( wnd.Gfx() );
-	//plane.Draw( wnd.Gfx() );
 	light.Submit( fc );
-	//sponza.Draw( wnd.Gfx() );
 	cube.Submit( fc );
 	cube2.Submit( fc );
 
@@ -145,13 +103,8 @@ void App::DoFrame()
 	{
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
-		//sponza.ShowControlWindow( wnd.Gfx() );
 		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
-		//goblin.ShowControlWindow( wnd.Gfx(), "Goblin" );
-		//nanosuit.ShowControlWindow( wnd.Gfx(), "Nanosuit" );
-		//wall.ShowControlWindow( wnd.Gfx(), "Wall" );
-		//plane.SpawnControlWindow( wnd.Gfx() );
 		ShowRawInputWindow();
 	}
 	
