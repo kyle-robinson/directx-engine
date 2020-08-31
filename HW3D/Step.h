@@ -21,6 +21,8 @@ public:
 				bindables.push_back( pb );
 		}
 	}
+	Step& operator=( const Step& ) = delete;
+	Step& operator=( Step&& ) = delete;
 	void AddBindable( std::shared_ptr<Bind::Bindable> bind_in ) noexcept
 	{
 		bindables.push_back( std::move( bind_in ) );

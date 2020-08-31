@@ -337,6 +337,7 @@ void Model::SetRootTransform( DirectX::FXMMATRIX tf ) noexcept
 
 std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, float scale )
 {
+	return {};
 	/*using namespace std::string_literals;
 	using VertexMeta::VertexLayout;
 	using namespace Bind;
@@ -692,8 +693,6 @@ std::unique_ptr<Mesh> Model::ParseMesh( Graphics& gfx, const aiMesh& mesh, const
 	bindablePtrs.push_back( std::make_shared<Stencil>( gfx, Stencil::Mode::Off ) );
 
 	return std::make_unique<Mesh>( gfx, std::move( bindablePtrs ) );*/
-
-	return {};
 }
 
 std::unique_ptr<Node> Model::ParseNode( int& nextID, const aiNode& node ) noexcept

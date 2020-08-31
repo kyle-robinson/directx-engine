@@ -23,7 +23,8 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     // sample normals from normal map
     if ( useNormalMap )
     {
-        viewNormal = MapNormals(normalize(viewTan), normalize(viewBitan), viewNormal, tc, norm, smplr);
+        const float3 mappedNormal = MapNormals(normalize(viewTan), normalize(viewBitan), viewNormal, tc, norm, smplr);
+        viewNormal = lerp(viewNormal, mappedNormal, normalMapWeight);
     }
     
 	// fragment to light

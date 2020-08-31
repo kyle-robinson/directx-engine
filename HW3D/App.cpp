@@ -7,8 +7,8 @@
 
 App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
-	cube.SetPos( { 4.0f, 0.0f, 0.0f } );
-	cube2.SetPos( { 0.0f, 4.0f, 0.0f } );
+	//cube.SetPos( { 4.0f, 0.0f, 0.0f } );
+	//cube2.SetPos( { 0.0f, 4.0f, 0.0f } );
 
 	{
 		std::string path = "res\\models\\brick_wall\\brick_wall.obj";
@@ -114,13 +114,55 @@ void App::DoFrame()
 			camera.Rotate( delta->x, delta->y );
 	}
 
+	class Probe : public TechniqueProbe
+	{
+	public:
+		void OnSetTechnique() override
+		{
+			using namespace std::string_literals;
+			ImGui::TextColored( { 0.4f, 1.0f, 0.6f, 1.0f }, pTech->GetName().c_str() );
+			bool active = pTech->IsActive();
+			ImGui::Checkbox( ( "Tech Active##"s + std::to_string( techIdx ) ).c_str(), &active );
+			pTech->SetActiveState( active );
+		}
+		bool OnVisitBuffer( Dcb::Buffer& buf ) override
+		{
+			float bufferSet = false;
+			const auto linkCheck = [&bufferSet]( bool changed ) { bufferSet = bufferSet || changed; };
+			auto tag = [tagScratch = std::string{}, tagString = "##" + std::to_string( bufIdx )]
+			( const char* label ) mutable
+			{
+				tagScratch = label + tagString;
+				return tagScratch.c_str();
+			};
+
+			if ( auto v = buf["scale"]; v.Exists() )
+				linkCheck( ImGui::SliderFloat( tag( "Scale" ), &v, 1.0f, 2.0f, "%.3f", 3.5f ) );
+			if ( auto v = buf["materialColor"]; v.Exists() )
+				linkCheck( ImGui::ColorPicker3( tag( "Color" ), reinterpret_cast<float*>( &static_cast<DirectX::XMFLOAT3&>( v ) ) ) );
+			if ( auto v = buf["specularColor"]; v.Exists() )
+				linkCheck( ImGui::ColorPicker3( tag( "Spec. Color" ), reinterpret_cast<float*>( &static_cast<DirectX::XMFLOAT3&>( v ) ) ) );
+			if ( auto v = buf["specularGloss"]; v.Exists() )
+				linkCheck( ImGui::SliderFloat( tag( "Spec. Gloss" ), &v, 1.0f, 100.0f, "%.1f", 1.5f ) );
+			if ( auto v = buf["specularWeight"]; v.Exists() )
+				linkCheck( ImGui::SliderFloat( tag( "Spec. Weight" ), &v, 0.0f, 2.0f ) );
+			if ( auto v = buf["useNormalMap"]; v.Exists() )
+				linkCheck( ImGui::Checkbox( tag( "Normal Map" ), &v ) );
+			if ( auto v = buf["normalMapWeight"]; v.Exists() )
+				linkCheck( ImGui::SliderFloat( tag( "Normal Map Weight" ), &v, 1.0f, 2.0f ) );
+
+			return bufferSet;
+		}
+	} probe;
+	pLoaded->Accept( probe );
+
 	// imgui
 	if ( wnd.Gfx().IsImGuiEnabled() )
 	{
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
-		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
-		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
+		//cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
+		//cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 		ShowRawInputWindow();
 	}
 	

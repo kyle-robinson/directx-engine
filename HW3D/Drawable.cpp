@@ -38,10 +38,8 @@ void Drawable::Bind( Graphics& gfx ) const noexcept
 
 void Drawable::Accept( TechniqueProbe& probe )
 {
-	for ( auto t : techniques )
-	{
+	for ( auto& t : techniques )
 		t.Accept( probe );
-	}
 }
 
 UINT Drawable::GetIndexCount() const noexcept(!IS_DEBUG)

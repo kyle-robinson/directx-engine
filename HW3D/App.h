@@ -27,8 +27,8 @@ private:
 	FrameCommander fc;
 
 	//Model sponza{ wnd.Gfx(), "res\\models\\sponza\\sponza.obj", 1.0f / 20.0f };
-	NormalCube cube{ wnd.Gfx(), 4.0f };
-	NormalCube cube2{ wnd.Gfx(), 4.0f };
+	//NormalCube cube{ wnd.Gfx(), 4.0f };
+	//NormalCube cube2{ wnd.Gfx(), 4.0f };
 	
 	std::unique_ptr<Mesh> pLoaded;
 	std::string commandLine;
