@@ -108,7 +108,8 @@ namespace VertexMeta
 		return Bridge<CodeLookup>( type );
 	}
 
-	template<VertexLayout::ElementType type> struct DescGenerate
+	template<VertexLayout::ElementType type>
+	struct DescGenerate
 	{
 		static constexpr D3D11_INPUT_ELEMENT_DESC Execute( size_t offset ) noexcept
 		{
