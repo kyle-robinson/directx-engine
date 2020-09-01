@@ -7,7 +7,7 @@ class FrameCommander;
 
 class Node
 {
-	friend class Model;
+	friend Model;
 public:
 	Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform_in) noexcept(!IS_DEBUG);
 	void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform) const noexcept(!IS_DEBUG);

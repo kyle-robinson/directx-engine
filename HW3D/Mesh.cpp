@@ -19,5 +19,5 @@ void Mesh::Submit( FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransfor
 
 DirectX::XMMATRIX Mesh::GetTransformXM() const noexcept
 {
-	return DirectX::XMLoadFloat4x4(&transform);
+	return DirectX::XMLoadFloat4x4( &transform );
 }

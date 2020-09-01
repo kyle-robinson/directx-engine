@@ -8,7 +8,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 
-Model::Model(Graphics& gfx, const std::string& pathString, float scale)// : pWindow(std::make_unique<ModelWindow>())
+Model::Model(Graphics& gfx, const std::string& pathString, const float scale)// : pWindow(std::make_unique<ModelWindow>())
 {
 	Assimp::Importer importer;
 	const auto pScene = importer.ReadFile(
@@ -35,7 +35,7 @@ Model::Model(Graphics& gfx, const std::string& pathString, float scale)// : pWin
 	}
 
 	int nextID = 0;
-	pRoot = ParseNode(nextID, *pScene->mRootNode);
+	pRoot = ParseNode( nextID, *pScene->mRootNode, DirectX::XMMatrixScaling( scale, scale, scale ) );
 }
 
 void Model::Submit(FrameCommander& frame) const noexcept(!IS_DEBUG)
@@ -59,9 +59,9 @@ void Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept
 	return {};
 }*/
 
-std::unique_ptr<Node> Model::ParseNode(int& nextID, const aiNode& node) noexcept
+std::unique_ptr<Node> Model::ParseNode( int& nextID, const aiNode& node, DirectX::FXMMATRIX additionalTransform ) noexcept
 {
-	const auto transform = DirectX::XMMatrixTranspose(
+	const auto transform = additionalTransform * DirectX::XMMatrixTranspose(
 		DirectX::XMLoadFloat4x4(
 			reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation)
 		)
@@ -77,9 +77,7 @@ std::unique_ptr<Node> Model::ParseNode(int& nextID, const aiNode& node) noexcept
 
 	auto pNode = std::make_unique<Node>(nextID++, node.mName.C_Str(), std::move(curMeshPtrs), transform);
 	for (size_t i = 0; i < node.mNumChildren; i++)
-	{
-		pNode->AddChild(ParseNode(nextID, *node.mChildren[i]));
-	}
+		pNode->AddChild( ParseNode( nextID, *node.mChildren[i], DirectX::XMMatrixIdentity() ) );
 
 	return pNode;
 }

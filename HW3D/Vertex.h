@@ -151,7 +151,7 @@ namespace VertexMeta
 				if ( e.GetType() == Type )
 					return e;
 			}
-			assert( "Could not resolve element type!"  && false );
+			assert( "Could not resolve element type!" && false );
 			return elements.front();
 		}
 		const Element& ResolveByIndex( size_t i ) const noexcept(!IS_DEBUG);

@@ -119,7 +119,7 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 	}
 	// outline
 	{
-		Technique outline( "Outline" );
+		Technique outline( "Outline", false );
 		{
 			Step mask( 1 );
 
