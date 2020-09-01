@@ -34,12 +34,14 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 			initial.AddBindable( PixelShader::Resolve( gfx, "PhongDifPS.cso" ) );
 
 			Dcb::RawLayout layout;
-			layout.Add<Dcb::Float>( "specularIntensity" );
-			layout.Add<Dcb::Float>( "specularPower" );
+			layout.Add<Dcb::Float3>( "specularColor" );
+			layout.Add<Dcb::Float>( "specularWeight" );
+			layout.Add<Dcb::Float>( "specularGloss" );
 			
 			auto buf = Dcb::Buffer( std::move( layout ) );
-			buf["specularIntensity"] = 0.1f;
-			buf["specularPower"] = 20.0f;
+			buf["specularColor"] = DirectX::XMFLOAT3{ 1.0f, 1.0f, 1.0f };
+			buf["specularWeight"] = 0.1f;
+			buf["specularGloss"] = 20.0f;
 			initial.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buf, 1u ) );
 
 			initial.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );

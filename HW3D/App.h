@@ -32,7 +32,7 @@ private:
 	NormalCube cube{ wnd.Gfx(), 4.0f };
 	NormalCube cube2{ wnd.Gfx(), 4.0f };
 	
-	//std::unique_ptr<Mesh> pLoaded;
+	std::unique_ptr<Mesh> pLoaded;
 	std::string commandLine;
 	int x = 0, y = 0;
 };
