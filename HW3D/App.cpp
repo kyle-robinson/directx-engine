@@ -68,11 +68,11 @@ void App::DoFrame()
 
 	// objects
 	light.Submit( fc );
-	sponza.Submit( fc );
+	//sponza.Submit( fc );
 	//goblin.Submit( fc );
 	//backpack.Submit( fc );
-	//cube.Submit( fc );
-	//cube2.Submit( fc );
+	cube.Submit( fc );
+	cube2.Submit( fc );
 	//pLoaded->Submit( fc, DirectX::XMMatrixIdentity() );
 
 	fc.Execute( wnd.Gfx() );
@@ -156,6 +156,8 @@ void App::DoFrame()
 				linkCheck( ImGui::SliderFloat( tag( "Spec. Gloss" ), &v, 1.0f, 100.0f, "%.1f", 1.5f ) );
 			if ( auto v = buf["specularWeight"]; v.Exists() )
 				linkCheck( ImGui::SliderFloat( tag( "Spec. Weight" ), &v, 0.0f, 2.0f ) );
+			if ( auto v = buf["useSpecularMap"]; v.Exists() )
+				linkCheck( ImGui::Checkbox( "Specular Map", &v ) );
 			if ( auto v = buf["useNormalMap"]; v.Exists() )
 				linkCheck( ImGui::Checkbox( tag( "Normal Map" ), &v ) );
 			if ( auto v = buf["normalMapWeight"]; v.Exists() )
@@ -163,7 +165,7 @@ void App::DoFrame()
 
 			return bufferSet;
 		}
-	} probe;
+	};
 	
 	class MP : public ModelProbe
 	{
@@ -251,9 +253,9 @@ void App::DoFrame()
 	{
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
-		modelProbe.SpawnWindow( sponza );
-		//cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
-		//cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
+		//modelProbe.SpawnWindow( sponza );
+		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
+		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 		ShowRawInputWindow();
 	}
 	
