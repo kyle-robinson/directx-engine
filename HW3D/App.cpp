@@ -1,6 +1,8 @@
 #include "App.h"
 #include "Math.h"
 #include "Mesh.h"
+#include "Node.h"
+#include "ModelProbe.h"
 #include "DynamicConstant.h"
 #include "imgui/imgui.h"
 #include <memory>
@@ -121,7 +123,7 @@ void App::DoFrame()
 			camera.Rotate( delta->x, delta->y );
 	}
 
-	class Probe : public TechniqueProbe
+	class TP : public TechniqueProbe
 	{
 	public:
 		void OnSetTechnique() override
@@ -161,13 +163,61 @@ void App::DoFrame()
 			return bufferSet;
 		}
 	} probe;
-	//pLoaded->Accept( probe );
+	
+	class MP : public ModelProbe
+	{
+	public:
+		void SpawnWindow( Model& model )
+		{
+			if ( ImGui::Begin( "Model", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
+			{
+				ImGui::Columns( 2, nullptr, true );
+				model.Accept( *this );
+				ImGui::NextColumn();
+				if ( pSelectedNode != nullptr )
+				{
+
+				}
+				ImGui::End();
+			}
+		}
+	protected:
+		bool PushNode( Node& node ) override
+		{
+			// if no node selected, set id to non value
+			const int selectedId = ( pSelectedNode == nullptr ) ? -1 : pSelectedNode->GetID();
+			const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow |
+				( ( node.GetID() == selectedId ) ? ImGuiTreeNodeFlags_Selected : 0 ) |
+				( node.HasChildren() ? 0 : ImGuiTreeNodeFlags_Leaf );
+
+			// render node
+			const auto expanded = ImGui::TreeNodeEx(
+				(void*)(intptr_t)node.GetID(),
+				node_flags, node.GetName().c_str()
+			);
+
+			// processing for selected node
+			if ( ImGui::IsItemClicked() )
+				pSelectedNode = &node;
+
+			// signal if children should be recursed
+			return expanded;
+		}
+		void PopNode( Node& node ) override
+		{
+			ImGui::TreePop();
+		}
+	protected:
+		Node* pSelectedNode = nullptr;
+	};
+	static MP modelProbe;
 
 	// imgui
 	if ( wnd.Gfx().IsImGuiEnabled() )
 	{
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
+		modelProbe.SpawnWindow( sponza );
 		//cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 		//cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 		ShowRawInputWindow();

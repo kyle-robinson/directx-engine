@@ -286,6 +286,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelException.h" />
+    <ClInclude Include="ModelProbe.h" />
     <ClInclude Include="ModelWindow.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Node.h" />

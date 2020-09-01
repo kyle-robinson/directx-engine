@@ -1,5 +1,6 @@
 #include "Node.h"
 #include "Mesh.h"
+#include "ModelProbe.h"
 #include "imgui/imgui.h"
 
 Node::Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const DirectX::XMMATRIX& transform) noexcept(!IS_DEBUG)
@@ -70,4 +71,15 @@ void Node::AddChild(std::unique_ptr<Node> pChild) noexcept(!IS_DEBUG)
 int Node::GetID() const noexcept
 {
 	return id;
+}
+
+void Node::Accept( ModelProbe& probe )
+{
+	if ( probe.PushNode( *this ) )
+	{
+		for ( auto& cp : childPtrs )
+			cp->Accept( probe );
+
+		probe.PopNode( *this );
+	}
 }

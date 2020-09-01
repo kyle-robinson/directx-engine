@@ -59,6 +59,11 @@ void Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept
 	return {};
 }*/
 
+void Model::Accept( ModelProbe& probe )
+{
+	pRoot->Accept( probe );
+}
+
 std::unique_ptr<Node> Model::ParseNode( int& nextID, const aiNode& node, DirectX::FXMMATRIX additionalTransform ) noexcept
 {
 	const auto transform = additionalTransform * DirectX::XMMatrixTranspose(
