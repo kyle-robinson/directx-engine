@@ -29,7 +29,10 @@ public:
 protected:
 	virtual void OnSetStep() {}
 	virtual void OnSetTechnique() {}
-	virtual bool OnVisitBuffer( class Dcb::Buffer& ) = 0;
+	virtual bool OnVisitBuffer( class Dcb::Buffer& )
+	{
+		return false;
+	}
 protected:
 	class Step* pStep = nullptr;
 	class Technique* pTech = nullptr;
