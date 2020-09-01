@@ -22,7 +22,6 @@ namespace Bind
 
 	void InputLayout::Bind( Graphics& gfx ) noexcept
 	{
-		INFOMANAGER( gfx );
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->IASetInputLayout( pInputLayout.Get() ) );
 	}
 
