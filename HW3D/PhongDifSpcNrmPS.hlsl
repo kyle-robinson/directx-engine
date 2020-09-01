@@ -4,12 +4,12 @@
 
 cbuffer ObjectCBuf
 {
-    bool normalMapEnabled;
-    bool specularMapEnabled;
-    bool hasGloss;
-    float specularPowerConst;
+    bool useGlossAlpha;
     float3 specularColor;
-    float specularMapWeight;
+    float specularWeight;
+    float specularGloss;
+    bool useNormalMap;
+    float normalMapWeight;
 };
 
 Texture2D tex;
@@ -35,7 +35,7 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
     
     // sample normal from map
     viewNormal = normalize(viewNormal);
-    if ( normalMapEnabled )
+    if ( useNormalMap )
     {
         viewNormal = MapNormals(normalize(viewTan), normalize(viewBitan), viewNormal, tc, norm, smplr);
     }
@@ -51,24 +51,17 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 vi
 	
 	// specular - uniform or mapped
     float3 specularReflectionColor;
-    float specularPower = specularPowerConst;
-    if ( specularMapEnabled )
+    float specularPower = specularGloss;
+    const float4 specularSample = spec.Sample(smplr, tc);
+    specularReflectionColor = specularSample.rgb;
+    if ( useGlossAlpha )
     {
-        const float4 specularSample = spec.Sample(smplr, tc);
-        specularReflectionColor = specularSample.rgb * specularMapWeight;
-        if ( hasGloss )
-        {
-            specularPower = pow(2.0f, specularSample.a * 13.0f);
-        }
-    }
-    else
-    {
-        specularReflectionColor = specularColor;
+        specularPower = pow(2.0f, specularSample.a * 13.0f);
     }
     
     // specular reflected
-    const float3 specularReflected = Speculate(specularReflectionColor, 1.0f, viewNormal, lvd.vToL, viewFragPos, att, specularPower);
+    const float3 specularReflected = Speculate(diffuseColor * diffuseIntensity * specularReflectionColor, specularWeight, viewNormal, lvd.vToL, viewFragPos, att, specularPower);
     
 	// final color
-    return float4(saturate((ambient + diffuse) * dtex.rgb + specularReflected), dtex.a);
+    return float4(saturate((ambient + diffuse) * dtex.rgb + specularReflected), 1.0f);
 }

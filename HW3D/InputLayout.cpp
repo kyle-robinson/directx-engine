@@ -41,4 +41,9 @@ namespace Bind
 		using namespace std::string_literals;
 		return typeid( InputLayout ).name() + "#"s + layout.GetCode();
 	}
+
+	std::string InputLayout::GetUID() const noexcept
+	{
+		return GenerateUID( layout );
+	}
 }

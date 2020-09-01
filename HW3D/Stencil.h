@@ -1,5 +1,6 @@
 #pragma once
 #include "Bindable.h"
+#include "BindableCodex.h"
 #include "GraphicsThrowMacros.h"
 
 namespace Bind

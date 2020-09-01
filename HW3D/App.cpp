@@ -1,9 +1,13 @@
 #include "App.h"
 #include "Math.h"
+#include "Mesh.h"
+#include "DynamicConstant.h"
 #include "imgui/imgui.h"
-
 #include <memory>
 #include <algorithm>
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 
 App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
@@ -61,6 +65,7 @@ void App::DoFrame()
 
 	// objects
 	light.Submit( fc );
+	goblin.Submit( fc );
 	//cube.Submit( fc );
 	//cube2.Submit( fc );
 	pLoaded->Submit( fc, DirectX::XMMatrixIdentity() );

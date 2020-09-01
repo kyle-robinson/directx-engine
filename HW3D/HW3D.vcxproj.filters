@@ -127,6 +127,12 @@
     <Filter Include="Resource Files\Shaders\Lighting\Pixel\Old">
       <UniqueIdentifier>{f064b014-397d-44e9-bcfc-f48263585793}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Model">
+      <UniqueIdentifier>{c830c6aa-77f1-4610-9561-17f035600d6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Model">
+      <UniqueIdentifier>{6d8109ab-f505-488c-a8dc-f1b7f67286ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -176,9 +182,6 @@
     </ClCompile>
     <ClCompile Include="..\External\imgui\imgui_widgets.cpp">
       <Filter>Resource Files\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Drawables</Filter>
     </ClCompile>
     <ClCompile Include="NormalPlane.cpp">
       <Filter>Source Files\Drawables</Filter>
@@ -276,6 +279,21 @@
     <ClCompile Include="Material.cpp">
       <Filter>Source Files\DrawableEx</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelWindow.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelException.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConstantBuffers.h">
@@ -352,9 +370,6 @@
     </ClInclude>
     <ClInclude Include="..\External\imgui\imstb_truetype.h">
       <Filter>Resource Files\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files\Drawables</Filter>
     </ClInclude>
     <ClInclude Include="NormalPlane.h">
       <Filter>Header Files\Drawables</Filter>
@@ -481,6 +496,21 @@
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Header Files\DrawableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelException.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelWindow.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

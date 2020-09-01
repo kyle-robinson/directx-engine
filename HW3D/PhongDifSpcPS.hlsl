@@ -4,9 +4,10 @@
 
 cbuffer ObjectCBuf
 {
-    float specularPower;
-    bool hasGloss;
-    float specularMapWeight;
+    bool useGlossAlpha;
+    float3 specularColor;
+    float specularWeight;
+    float specularGloss;
 };
 
 Texture2D tex;
@@ -29,16 +30,16 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     const float3 diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lvd.dirToL, viewNormal);
 	
 	// specular - uniform or mapped
-    float specularPowerLoaded = specularPower;
+    float specularPowerLoaded = specularGloss;
     const float4 specularSample = spec.Sample(smplr, tc);
-    const float3 specularReflectionColor = specularSample.rgb * specularMapWeight;
-    if ( hasGloss )
+    const float3 specularReflectionColor = specularSample.rgb;
+    if ( useGlossAlpha )
     {
         specularPowerLoaded = pow(2.0f, specularSample.a * 13.0f);
     }
     
     // specular reflected
-    const float3 specularReflected = Speculate(specularReflectionColor, 1.0f, viewNormal, lvd.vToL, viewFragPos, att, specularPowerLoaded);
+    const float3 specularReflected = Speculate(diffuseColor * specularReflectionColor, specularWeight, viewNormal, lvd.vToL, viewFragPos, att, specularPowerLoaded);
 	
 	// final color
     return float4(saturate((ambient + diffuse) * tex.Sample(smplr, tc).rgb + specularReflected), 1.0f);

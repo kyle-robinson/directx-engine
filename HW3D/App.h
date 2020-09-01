@@ -4,7 +4,7 @@
 #include "Camera.h"
 #include "PointLight.h"
 #include "ImGuiManager.h"
-#include "Mesh.h"
+#include "Model.h"
 #include "NormalCube.h"
 #include "FrameCommander.h"
 #include "Material.h"
@@ -27,6 +27,7 @@ private:
 	FrameCommander fc;
 
 	//Model sponza{ wnd.Gfx(), "res\\models\\sponza\\sponza.obj", 1.0f / 20.0f };
+	Model goblin{ wnd.Gfx(), "res\\models\\goblin\\GoblinX.obj", 6.0f };
 	//NormalCube cube{ wnd.Gfx(), 4.0f };
 	//NormalCube cube2{ wnd.Gfx(), 4.0f };
 	

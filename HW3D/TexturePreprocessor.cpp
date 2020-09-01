@@ -1,7 +1,11 @@
 #include "TexturePreprocessor.h"
+#include "ModelException.h"
 #include "Math.h"
-#include "Mesh.h"
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 #include <sstream>
+#include <filesystem>
 
 void TexturePreprocessor::FlipAllYNormalsInObj( const std::string& path )
 {

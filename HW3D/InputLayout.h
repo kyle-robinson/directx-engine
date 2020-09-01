@@ -12,6 +12,7 @@ namespace Bind
 		const VertexMeta::VertexLayout GetLayout() const noexcept;
 		static std::shared_ptr<InputLayout> Resolve( Graphics& gfx, const VertexMeta::VertexLayout& layout, ID3DBlob* pVertexShaderByteCode );
 		static std::string GenerateUID( const VertexMeta::VertexLayout& layout, ID3DBlob* pVertexShaderByteCode = nullptr );
+		std::string GetUID() const noexcept override;
 	protected:
 		VertexMeta::VertexLayout layout;
 		Microsoft::WRL::ComPtr<ID3D11InputLayout> pInputLayout;

@@ -103,6 +103,11 @@ namespace VertexMeta
 		}
 	};
 
+	const char* VertexLayout::Element::GetCode() const noexcept
+	{
+		return Bridge<CodeLookup>( type );
+	}
+
 	template<VertexLayout::ElementType type> struct DescGenerate
 	{
 		static constexpr D3D11_INPUT_ELEMENT_DESC Execute( size_t offset ) noexcept
@@ -118,33 +123,6 @@ namespace VertexMeta
 	D3D11_INPUT_ELEMENT_DESC VertexLayout::Element::GetDesc() const noexcept(!IS_DEBUG)
 	{
 		return Bridge<DescGenerate>( type, GetOffset() );
-	}
-
-	const char* VertexLayout::Element::GetCode() const noexcept
-	{
-		switch ( type )
-		{
-		case Position2D:
-			return Map<Position2D>::code;
-		case Position3D:
-			return Map<Position3D>::code;
-		case Texture2D:
-			return Map<Texture2D>::code;
-		case Normal:
-			return Map<Normal>::code;
-		case Tangent:
-			return Map<Tangent>::code;
-		case Bitangent:
-			return Map<Bitangent>::code;
-		case Float3Color:
-			return Map<Float3Color>::code;
-		case Float4Color:
-			return Map<Float4Color>::code;
-		case BGRAColor:
-			return Map<BGRAColor>::code;
-		}
-		assert( "Invalid element type!" && false );
-		return "Invalid!";
 	}
 
 	// Vertex

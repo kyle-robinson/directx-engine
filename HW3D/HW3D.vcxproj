@@ -217,7 +217,11 @@
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MathX.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ModelException.cpp" />
+    <ClCompile Include="ModelWindow.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="NormalCube.cpp" />
     <ClCompile Include="NormalPlane.cpp" />
     <ClCompile Include="NullPixelShader.cpp" />
@@ -280,7 +284,11 @@
     <ClInclude Include="Math.h" />
     <ClInclude Include="MathX.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelException.h" />
+    <ClInclude Include="ModelWindow.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="NormalCube.h" />
     <ClInclude Include="NormalPlane.h" />
     <ClInclude Include="NullPixelShader.h" />
