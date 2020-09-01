@@ -148,18 +148,28 @@ void App::DoFrame()
 
 			if ( auto v = buf["scale"]; v.Exists() )
 				linkCheck( ImGui::SliderFloat( tag( "Scale" ), &v, 1.0f, 2.0f, "%.3f", 3.5f ) );
+
+			if ( auto v = buf["offset"]; v.Exists() )
+				linkCheck( ImGui::SliderFloat( tag( "offset" ), &v, 0.0f, 1.0f, "%.3f", 2.5f ) );
+
 			if ( auto v = buf["materialColor"]; v.Exists() )
 				linkCheck( ImGui::ColorPicker3( tag( "Color" ), reinterpret_cast<float*>( &static_cast<DirectX::XMFLOAT3&>( v ) ) ) );
+
 			if ( auto v = buf["specularColor"]; v.Exists() )
 				linkCheck( ImGui::ColorPicker3( tag( "Spec. Color" ), reinterpret_cast<float*>( &static_cast<DirectX::XMFLOAT3&>( v ) ) ) );
+			
 			if ( auto v = buf["specularGloss"]; v.Exists() )
 				linkCheck( ImGui::SliderFloat( tag( "Spec. Gloss" ), &v, 1.0f, 100.0f, "%.1f", 1.5f ) );
+			
 			if ( auto v = buf["specularWeight"]; v.Exists() )
 				linkCheck( ImGui::SliderFloat( tag( "Spec. Weight" ), &v, 0.0f, 2.0f ) );
+			
 			if ( auto v = buf["useSpecularMap"]; v.Exists() )
 				linkCheck( ImGui::Checkbox( "Specular Map", &v ) );
+			
 			if ( auto v = buf["useNormalMap"]; v.Exists() )
 				linkCheck( ImGui::Checkbox( tag( "Normal Map" ), &v ) );
+			
 			if ( auto v = buf["normalMapWeight"]; v.Exists() )
 				linkCheck( ImGui::SliderFloat( tag( "Normal Map Weight" ), &v, 1.0f, 2.0f ) );
 

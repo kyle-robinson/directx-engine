@@ -285,9 +285,6 @@
     <ClCompile Include="Model.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
-    <ClCompile Include="ModelWindow.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
     <ClCompile Include="ModelException.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
@@ -506,9 +503,6 @@
     <ClInclude Include="ModelException.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="ModelWindow.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
@@ -645,6 +639,9 @@
       <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
     </FxCompile>
     <FxCompile Include="PhongDifMskSpcNrmVS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="OffsetVS.hlsl">
       <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
     </FxCompile>
   </ItemGroup>

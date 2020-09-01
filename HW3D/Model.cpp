@@ -1,5 +1,4 @@
 #include "Model.h"
-#include "ModelWindow.h"
 #include "ModelException.h"
 #include "Node.h"
 #include "Mesh.h"

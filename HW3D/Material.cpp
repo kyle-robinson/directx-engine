@@ -141,49 +141,25 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 			draw.AddBindable( std::move( pvs ) );
 			draw.AddBindable( Bind::PixelShader::Resolve( gfx, "SolidPS.cso" ) );
 
-			Dcb::RawLayout lay;
-			lay.Add<Dcb::Float3>( "materialColor" );
-			auto buf = Dcb::Buffer( std::move( lay ) );
-			buf["materialColor"] = DirectX::XMFLOAT3{ 1.0f, 0.4f, 0.4f };
-			draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buf, 1u ) );
+			{
+				Dcb::RawLayout lay;
+				lay.Add<Dcb::Float3>( "materialColor" );
+				auto buf = Dcb::Buffer( std::move( lay ) );
+				buf["materialColor"] = DirectX::XMFLOAT3{ 1.0f, 0.4f, 0.4f };
+				draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buf, 1u ) );
+			}
+
+			{
+				Dcb::RawLayout lay;
+				lay.Add<Dcb::Float>("offset");
+				auto buf = Dcb::Buffer(std::move(lay));
+				buf["offset"] = 0.1f;
+				draw.AddBindable(std::make_shared<Bind::CachingPixelConstantBufferEx>(gfx, buf, 1u));
+			}
 
 			draw.AddBindable( Bind::InputLayout::Resolve( gfx, layout, pvsbc ) );
 
-			class TransformCbufScaling : public Bind::TransformCbuf
-			{
-			public:
-				TransformCbufScaling( Graphics& gfx, float scale = 1.04f ) : TransformCbuf( gfx ), buf( MakeLayout() )
-				{
-					buf["scale"] = scale;
-				}
-				void Accept( TechniqueProbe& probe ) override
-				{
-					probe.VisitBuffer( buf );
-				}
-				void Bind( Graphics& gfx ) noexcept override
-				{
-					const float scale = buf["scale"];
-					const auto scaleMatrix = DirectX::XMMatrixScaling( scale, scale, scale );
-					auto xf = GetTransforms( gfx );
-					xf.modelView = xf.modelView * scaleMatrix;
-					xf.modelViewProj = xf.modelViewProj * scaleMatrix;
-					UpdateBind( gfx, xf );
-				}
-				std::unique_ptr<Bind::CloningBindable> Clone() const noexcept override
-				{
-					return std::make_unique<TransformCbufScaling>( *this );
-				}
-			private:
-				static Dcb::RawLayout MakeLayout()
-				{
-					Dcb::RawLayout rawLay;
-					rawLay.Add<Dcb::Float>( "scale" );
-					return rawLay;
-				}
-			private:
-				Dcb::Buffer buf;
-			};
-			draw.AddBindable( std::make_shared<TransformCbufScaling>( gfx ) );
+			draw.AddBindable( std::make_shared<Bind::TransformCbuf>( gfx ) );
 
 			outline.AddStep( std::move( draw ) );
 		}
