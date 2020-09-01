@@ -2,6 +2,7 @@
 #include "Math.h"
 #include "Mesh.h"
 #include "Node.h"
+#include "MathX.h"
 #include "ModelProbe.h"
 #include "DynamicConstant.h"
 #include "imgui/imgui.h"
@@ -207,8 +208,41 @@ void App::DoFrame()
 		{
 			ImGui::TreePop();
 		}
-	protected:
+	private:
 		Node* pSelectedNode = nullptr;
+		struct TransformParameters
+		{
+			float xRot = 0.0f;
+			float yRot = 0.0f;
+			float zRot = 0.0f;
+			float x = 0.0f;
+			float y = 0.0f;
+			float z = 0.0f;
+		};
+		std::unordered_map<int, TransformParameters> transformParameters;
+	private:
+		TransformParameters& ResolveTransform() noexcept
+		{
+			const auto id = pSelectedNode->GetID();
+			auto i = transformParameters.find( id );
+			if ( i == transformParameters.end() )
+				return LoadTransform( id );
+			return i->second;
+		}
+		TransformParameters& LoadTransform( int id ) noexcept
+		{
+			const auto& applied = pSelectedNode->GetAppliedTransform();
+			const auto angles = ExtractEulerAngles( applied );
+			const auto translation = ExtractTranslation( applied );
+			TransformParameters tp;
+			tp.xRot = angles.x;
+			tp.yRot = angles.y;
+			tp.zRot = angles.z;
+			tp.x = translation.x;
+			tp.y = translation.y;
+			tp.z = translation.z;
+			return transformParameters.insert( { id, { tp } } ).first->second;
+		}
 	};
 	static MP modelProbe;
 

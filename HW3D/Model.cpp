@@ -3,6 +3,7 @@
 #include "ModelException.h"
 #include "Node.h"
 #include "Mesh.h"
+#include "MathX.h"
 #include "Material.h"
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>
@@ -31,11 +32,11 @@ Model::Model(Graphics& gfx, const std::string& pathString, const float scale)// 
 	for (size_t i = 0; i < pScene->mNumMeshes; i++)
 	{
 		const auto& mesh = *pScene->mMeshes[i];
-		meshPtrs.push_back( std::make_unique<Mesh>( gfx, materials[mesh.mMaterialIndex], mesh ) );
+		meshPtrs.push_back( std::make_unique<Mesh>( gfx, materials[mesh.mMaterialIndex], mesh, scale ) );
 	}
 
 	int nextID = 0;
-	pRoot = ParseNode( nextID, *pScene->mRootNode, DirectX::XMMatrixScaling( scale, scale, scale ) );
+	pRoot = ParseNode( nextID, *pScene->mRootNode, scale );
 }
 
 void Model::Submit(FrameCommander& frame) const noexcept(!IS_DEBUG)
@@ -64,13 +65,13 @@ void Model::Accept( ModelProbe& probe )
 	pRoot->Accept( probe );
 }
 
-std::unique_ptr<Node> Model::ParseNode( int& nextID, const aiNode& node, DirectX::FXMMATRIX additionalTransform ) noexcept
+std::unique_ptr<Node> Model::ParseNode( int& nextID, const aiNode& node, float scale ) noexcept
 {
-	const auto transform = additionalTransform * DirectX::XMMatrixTranspose(
+	const auto transform = ScaleTranslation( DirectX::XMMatrixTranspose(
 		DirectX::XMLoadFloat4x4(
 			reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation)
 		)
-	);
+	), scale );
 
 	std::vector<Mesh*> curMeshPtrs;
 	curMeshPtrs.reserve(node.mNumMeshes);
@@ -82,7 +83,7 @@ std::unique_ptr<Node> Model::ParseNode( int& nextID, const aiNode& node, DirectX
 
 	auto pNode = std::make_unique<Node>(nextID++, node.mName.C_Str(), std::move(curMeshPtrs), transform);
 	for (size_t i = 0; i < node.mNumChildren; i++)
-		pNode->AddChild( ParseNode( nextID, *node.mChildren[i], DirectX::XMMatrixIdentity() ) );
+		pNode->AddChild( ParseNode( nextID, *node.mChildren[i], scale ) );
 
 	return pNode;
 }

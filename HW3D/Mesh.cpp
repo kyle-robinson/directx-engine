@@ -9,7 +9,7 @@
 #include "ConstantBufferEx.h"
 #include "LayoutCodex.h"
 
-Mesh::Mesh( Graphics& gfx, const Material& mat, const aiMesh& mesh ) noexcept(!IS_DEBUG) : Drawable( gfx, mat, mesh ) { }
+Mesh::Mesh( Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale ) noexcept(!IS_DEBUG) : Drawable( gfx, mat, mesh, scale ) { }
 
 void Mesh::Submit( FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG)
 {

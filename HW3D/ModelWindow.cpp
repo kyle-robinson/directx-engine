@@ -118,39 +118,27 @@ void ModelWindow::ApplyParameters() noexcept(!IS_DEBUG)
 DirectX::XMMATRIX ModelWindow::GetTransform() const noexcept(!IS_DEBUG)
 {
 	assert(pSelectedNode != nullptr);
-	const auto& transform = transforms.at(pSelectedNode->GetID()).transformParams;
-
-	return
-		DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
-		DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
-}
-
-const Dcb::Buffer& ModelWindow::GetMaterial() const noexcept(!IS_DEBUG)
-{
-	assert(pSelectedNode != nullptr);
-	const auto& mat = transforms.at(pSelectedNode->GetID()).materialCBuf;
-	assert(mat);
-	return *mat;
+	return DirectX::XMMatrixIdentity();
 }
 
 bool ModelWindow::Transform() const noexcept(!IS_DEBUG)
 {
-	return pSelectedNode && transforms.at(pSelectedNode->GetID()).transformParamsBool;
+	return false;
 }
 
 void ModelWindow::ResetTransform() noexcept(!IS_DEBUG)
 {
-	transforms.at(pSelectedNode->GetID()).transformParamsBool = false;
+	//transforms.at(pSelectedNode->GetID()).transformParamsBool = false;
 }
 
 bool ModelWindow::Material() const noexcept(!IS_DEBUG)
 {
-	return pSelectedNode && transforms.at(pSelectedNode->GetID()).materialCBufBool;
+	return false;
 }
 
 void ModelWindow::ResetMaterial() noexcept(!IS_DEBUG)
 {
-	transforms.at(pSelectedNode->GetID()).materialCBufBool = false;
+	//transforms.at(pSelectedNode->GetID()).materialCBufBool = false;
 }
 
 bool ModelWindow::TransformMaterial() const noexcept(!IS_DEBUG)
