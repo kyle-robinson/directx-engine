@@ -28,10 +28,10 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 			initial.AddBindable( Texture::Resolve( gfx, "res\\textures\\brickwall.jpg" ) );
 			initial.AddBindable( Sampler::Resolve( gfx ) );
 
-			auto pvs = VertexShader::Resolve( gfx, "PhongVS.cso" );
+			auto pvs = VertexShader::Resolve( gfx, "PhongDifVS.cso" );
 			auto pvsbc = pvs->GetByteCode();
 			initial.AddBindable( std::move( pvs ) );
-			initial.AddBindable( PixelShader::Resolve( gfx, "PhongPS.cso" ) );
+			initial.AddBindable( PixelShader::Resolve( gfx, "PhongDifPS.cso" ) );
 
 			Dcb::RawLayout layout;
 			layout.Add<Dcb::Float>( "specularIntensity" );
