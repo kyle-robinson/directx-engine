@@ -11,7 +11,7 @@ float4 main( float2 uv : TexCoord ) : SV_Target
     const float dx = 1.0f / width;
     const float dy = 1.0f / height;
     float4 acc = float4( 0.0f, 0.0f, 0.0f, 0.0f );
-    for (int y = -r; x <= r; y++)
+    for (int y = -r; y <= r; y++)
     {
         for (int x = -r; x <= r; x++)
         {
