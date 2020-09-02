@@ -56,12 +56,12 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 	// gain access to back buffer (sub-resource)
 	Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
 	GFX_THROW_INFO(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer));
-	GFX_THROW_INFO(pDevice->CreateRenderTargetView(pBackBuffer.Get(), nullptr, pTarget.GetAddressOf()));
+	GFX_THROW_INFO( pDevice->CreateRenderTargetView( pBackBuffer.Get(), nullptr, &pTarget ) );
 
 	// configure viewports
 	D3D11_VIEWPORT vp;
-	vp.Width = (UINT)width;
-	vp.Height = (UINT)height;
+	vp.Width = (float)width;
+	vp.Height = (float)height;
 	vp.MinDepth = 0.0f;
 	vp.MaxDepth = 1.0f;
 	vp.TopLeftX = 0.0f;

@@ -139,6 +139,15 @@
     <Filter Include="Source Files\Graphics">
       <UniqueIdentifier>{a475cd71-8c4a-47ab-ae86-8408e9b4e6b5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Framebuffer">
+      <UniqueIdentifier>{558e2594-f2e8-40db-90dc-d3f801be22d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Framebuffer\Vertex">
+      <UniqueIdentifier>{9c54fb32-100d-49fa-9be7-6bc6738c5f2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Shaders\Framebuffer\Pixel">
+      <UniqueIdentifier>{aa0622c9-2afb-41eb-9a23-b3173d79551c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -664,6 +673,12 @@
     </FxCompile>
     <FxCompile Include="OffsetVS.hlsl">
       <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="FullscreenVS.hlsl">
+      <Filter>Resource Files\Shaders\Framebuffer\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="FullscreenPS.hlsl">
+      <Filter>Resource Files\Shaders\Framebuffer\Pixel</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
