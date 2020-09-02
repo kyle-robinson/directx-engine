@@ -103,20 +103,8 @@
     <Filter Include="Source Files\Macros">
       <UniqueIdentifier>{348fdccf-7014-47e3-8c5a-aef5b1ead2c7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\BindableEx">
-      <UniqueIdentifier>{b8ee7edc-cdd4-4708-bbf2-c05dadc5ac0b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Bindables">
       <UniqueIdentifier>{349ec208-c37d-4421-baf2-e216435005e1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\DrawableEx">
-      <UniqueIdentifier>{4488074c-2114-4117-b192-63cc61811f73}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\DrawableEx">
-      <UniqueIdentifier>{db95a852-2da9-455b-9653-02b9a2b66d98}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\BindableEx">
-      <UniqueIdentifier>{d519d8bd-d00c-4a6e-90af-24b38eb13732}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Jobs">
       <UniqueIdentifier>{a537f8d4-5e58-4c22-8f1e-b1ee09310df2}</UniqueIdentifier>
@@ -132,6 +120,24 @@
     </Filter>
     <Filter Include="Source Files\Model">
       <UniqueIdentifier>{6d8109ab-f505-488c-a8dc-f1b7f67286ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Bindables\BindableEx">
+      <UniqueIdentifier>{b8ee7edc-cdd4-4708-bbf2-c05dadc5ac0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Drawables\DrawableEx">
+      <UniqueIdentifier>{4488074c-2114-4117-b192-63cc61811f73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Graphics">
+      <UniqueIdentifier>{a20fcbe1-9e3e-478f-8fec-94896d4e2bc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Drawables\DrawableEx">
+      <UniqueIdentifier>{db95a852-2da9-455b-9653-02b9a2b66d98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Bindables\BindableEx">
+      <UniqueIdentifier>{d519d8bd-d00c-4a6e-90af-24b38eb13732}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Graphics">
+      <UniqueIdentifier>{a475cd71-8c4a-47ab-ae86-8408e9b4e6b5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -198,9 +204,6 @@
     <ClCompile Include="App.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
-    <ClCompile Include="Graphics.cpp">
-      <Filter>Source Files\Windows</Filter>
-    </ClCompile>
     <ClCompile Include="ImGuiManager.cpp">
       <Filter>Source Files\Windows</Filter>
     </ClCompile>
@@ -247,25 +250,22 @@
       <Filter>Source Files\Macros</Filter>
     </ClCompile>
     <ClCompile Include="TexturePreprocessor.cpp">
-      <Filter>Source Files\BindableEx</Filter>
+      <Filter>Source Files\Bindables\BindableEx</Filter>
     </ClCompile>
     <ClCompile Include="LayoutCodex.cpp">
-      <Filter>Source Files\BindableEx</Filter>
+      <Filter>Source Files\Bindables\BindableEx</Filter>
     </ClCompile>
     <ClCompile Include="DynamicConstant.cpp">
-      <Filter>Source Files\BindableEx</Filter>
-    </ClCompile>
-    <ClCompile Include="Bindable.cpp">
-      <Filter>Source Files\BindableEx</Filter>
+      <Filter>Source Files\Bindables\BindableEx</Filter>
     </ClCompile>
     <ClCompile Include="Drawable.cpp">
-      <Filter>Source Files\DrawableEx</Filter>
+      <Filter>Source Files\Drawables\DrawableEx</Filter>
     </ClCompile>
     <ClCompile Include="Vertex.cpp">
-      <Filter>Source Files\DrawableEx</Filter>
+      <Filter>Source Files\Drawables\DrawableEx</Filter>
     </ClCompile>
     <ClCompile Include="NullPixelShader.cpp">
-      <Filter>Source Files\BindableEx</Filter>
+      <Filter>Source Files\Bindables\BindableEx</Filter>
     </ClCompile>
     <ClCompile Include="Job.cpp">
       <Filter>Source Files\Jobs</Filter>
@@ -277,7 +277,7 @@
       <Filter>Source Files\Jobs</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>Source Files\DrawableEx</Filter>
+      <Filter>Source Files\Drawables\DrawableEx</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Model</Filter>
@@ -290,6 +290,18 @@
     </ClCompile>
     <ClCompile Include="Node.cpp">
       <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Graphics.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsResource.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="DepthStencil.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTarget.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -398,9 +410,6 @@
     <ClInclude Include="Keyboard.h">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
-    <ClInclude Include="Graphics.h">
-      <Filter>Header Files\Windows</Filter>
-    </ClInclude>
     <ClInclude Include="App.h">
       <Filter>Header Files\Windows</Filter>
     </ClInclude>
@@ -441,37 +450,37 @@
       <Filter>Header Files\Bindables</Filter>
     </ClInclude>
     <ClInclude Include="TexturePreprocessor.h">
-      <Filter>Header Files\BindableEx</Filter>
+      <Filter>Header Files\Bindables\BindableEx</Filter>
     </ClInclude>
     <ClInclude Include="LayoutCodex.h">
-      <Filter>Header Files\BindableEx</Filter>
+      <Filter>Header Files\Bindables\BindableEx</Filter>
     </ClInclude>
     <ClInclude Include="IndexedTriangleList.h">
-      <Filter>Header Files\BindableEx</Filter>
+      <Filter>Header Files\Bindables\BindableEx</Filter>
     </ClInclude>
     <ClInclude Include="DynamicConstant.h">
-      <Filter>Header Files\BindableEx</Filter>
+      <Filter>Header Files\Bindables\BindableEx</Filter>
     </ClInclude>
     <ClInclude Include="Color.h">
-      <Filter>Header Files\BindableEx</Filter>
+      <Filter>Header Files\Bindables\BindableEx</Filter>
     </ClInclude>
     <ClInclude Include="BindableCommon.h">
-      <Filter>Header Files\BindableEx</Filter>
+      <Filter>Header Files\Bindables\BindableEx</Filter>
     </ClInclude>
     <ClInclude Include="BindableCodex.h">
-      <Filter>Header Files\BindableEx</Filter>
+      <Filter>Header Files\Bindables\BindableEx</Filter>
     </ClInclude>
     <ClInclude Include="Vertex.h">
-      <Filter>Header Files\DrawableEx</Filter>
+      <Filter>Header Files\Drawables\DrawableEx</Filter>
     </ClInclude>
     <ClInclude Include="Drawable.h">
-      <Filter>Header Files\DrawableEx</Filter>
+      <Filter>Header Files\Drawables\DrawableEx</Filter>
     </ClInclude>
     <ClInclude Include="Bindable.h">
-      <Filter>Header Files\BindableEx</Filter>
+      <Filter>Header Files\Bindables\BindableEx</Filter>
     </ClInclude>
     <ClInclude Include="NullPixelShader.h">
-      <Filter>Header Files\BindableEx</Filter>
+      <Filter>Header Files\Bindables\BindableEx</Filter>
     </ClInclude>
     <ClInclude Include="FrameCommander.h">
       <Filter>Header Files\Jobs</Filter>
@@ -492,7 +501,7 @@
       <Filter>Header Files\Jobs</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
-      <Filter>Header Files\DrawableEx</Filter>
+      <Filter>Header Files\Drawables\DrawableEx</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Header Files\Model</Filter>
@@ -508,6 +517,18 @@
     </ClInclude>
     <ClInclude Include="ModelProbe.h">
       <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Graphics.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicsResource.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthStencil.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>Header Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

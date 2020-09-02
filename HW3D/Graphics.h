@@ -12,6 +12,8 @@
 #include <vector>
 #include <string>
 
+class DepthStencil;
+
 namespace Bind
 {
 	class Bindable;
@@ -19,7 +21,7 @@ namespace Bind
 
 class Graphics
 {
-	friend class Bind::Bindable;
+	friend class GraphicsResource;
 public:
 	class GfxException : public Exception
 	{
@@ -63,6 +65,8 @@ public:
 	~Graphics() = default;
 	void BeginFrame( float red, float green, float blue ) noexcept;
 	void EndFrame();
+	void BindSwapBuffer() noexcept;
+	void BindSwapBuffer( const DepthStencil& ds ) noexcept;
 	void DrawTriangle( float angle, float x, float y );
 	void DrawCube( float angle, float x, float z );
 	void DrawIndexed( UINT count ) noexcept(!IS_DEBUG);

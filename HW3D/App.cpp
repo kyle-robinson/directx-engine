@@ -14,8 +14,8 @@
 
 App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
-	cube.SetPos( { 2.0f, 0.0f, 0.0f } );
-	cube2.SetPos( { -2.0f, 0.0f, 0.0f } );
+	cube.SetPos( { 4.0f, 0.0f, 0.0f } );
+	cube2.SetPos( { -8.0f, 0.0f, 0.0f } );
 
 	/*{
 		std::string path = "res\\models\\brick_wall\\brick_wall.obj";
@@ -68,7 +68,7 @@ void App::DoFrame()
 
 	// objects
 	light.Submit( fc );
-	sponza.Submit( fc );
+	//sponza.Submit( fc );
 	//goblin.Submit( fc );
 	//backpack.Submit( fc );
 	cube.Submit( fc );
@@ -284,7 +284,7 @@ void App::DoFrame()
 	{
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
-		modelProbe.SpawnWindow( sponza );
+		//modelProbe.SpawnWindow( sponza );
 		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 		ShowRawInputWindow();
