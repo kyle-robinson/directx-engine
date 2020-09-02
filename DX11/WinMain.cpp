@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include "ErrorLogger.h"
 #include <string>
 
 #pragma comment( lib, "d3d11.lib" )
@@ -7,18 +7,18 @@
 class Window
 {
 public:
-	Window( int width, int height, const wchar_t* name );
+	Window( int width, int height, const std::wstring& name );
 	~Window() noexcept;
 	void ProcessMessages() noexcept;
 	HINSTANCE GetInstance() noexcept;
-	const wchar_t* GetName() noexcept;
+	const std::wstring& GetName() noexcept;
 	int GetWidth() const noexcept;
 	int GetHeight() const noexcept;
 private:
 	HWND hWindow;
 	HINSTANCE hInstance;
 	int width, height;
-	const wchar_t* windowName;
+	const std::wstring& windowName;
 	static LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept;
 };
 
@@ -29,7 +29,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR lpCmdLine
 	return 0;
 }
 
-Window::Window(int width, int height, const wchar_t* name) : width( width ), height( height ), windowName( name )
+Window::Window( int width, int height, const std::wstring& name ) : width( width ), height( height ), windowName( name )
 {
 	// register window
 	WNDCLASSEX wc = { 0 };
@@ -45,34 +45,34 @@ Window::Window(int width, int height, const wchar_t* name) : width( width ), hei
 	wc.lpszMenuName = nullptr;
 	wc.lpszClassName = L"DirectX 11 Window Class";
 	wc.hIconSm = nullptr;
-	RegisterClassEx(&wc);
+	RegisterClassEx( &wc );
 
 	// create window
 	hWindow = CreateWindow(
-		L"DirectX 11 Window Class", GetName(),
+		L"DirectX 11 Window Class", GetName().c_str(),
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT, CW_USEDEFAULT, GetWidth(), GetHeight(),
 		nullptr, nullptr, GetInstance(), nullptr
 	);
 
-	if (hWindow == nullptr)
-		throw MessageBoxA(hWindow, "Window Creation Exception", "Failed to create window!", MB_ICONERROR | MB_OK);
+	if ( hWindow == nullptr )
+		throw MessageBoxA( hWindow, "Window Creation Exception", "Failed to create window!", MB_ICONERROR | MB_OK );
 
-	ShowWindow(hWindow, SW_SHOWDEFAULT);
+	ShowWindow( hWindow, SW_SHOWDEFAULT );
 }
 
 Window::~Window()
 {
-	DestroyWindow(hWindow);
+	DestroyWindow( hWindow );
 }
 
 void Window::ProcessMessages() noexcept
 {
 	MSG msg = { 0 };
-	while (GetMessage(&msg, nullptr, 0, 0))
+	while ( GetMessage( &msg, nullptr, 0, 0 ) )
 	{
-		TranslateMessage(&msg);
-		DispatchMessage(&msg);
+		TranslateMessage( &msg );
+		DispatchMessage( &msg );
 	}
 }
 
@@ -81,7 +81,7 @@ HINSTANCE Window::GetInstance() noexcept
 	return hInstance;
 }
 
-const wchar_t* Window::GetName() noexcept
+const std::wstring& Window::GetName() noexcept
 {
 	return windowName;
 }
@@ -102,7 +102,7 @@ LRESULT CALLBACK Window::WindowProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 	{
 	case WM_CLOSE:
 	case WM_DESTROY:
-		PostQuitMessage(0);
+		PostQuitMessage( 0 );
 		return 0;
 
 	case WM_PAINT:
