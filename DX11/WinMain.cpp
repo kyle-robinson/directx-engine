@@ -1,6 +1,9 @@
 #include <Windows.h>
 #include <string>
 
+#pragma comment( lib, "d3d11.lib" )
+#pragma comment( lib, "DirectXTK.lib" )
+
 class Window
 {
 public:
