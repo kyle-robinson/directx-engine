@@ -69,13 +69,6 @@ public:
 			p.Reset();
 	}
 private:
-	static VertexMeta::VertexLayout MakeFullscreenQuadLayout()
-	{
-		VertexMeta::VertexLayout layout;
-		layout.Append( VertexMeta::VertexLayout::Position2D );
-		return layout;
-	}
-private:
 	std::array<Pass, 3> passes;
 	DepthStencil ds;
 	RenderTarget rt;
