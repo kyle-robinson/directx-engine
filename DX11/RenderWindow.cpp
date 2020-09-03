@@ -1,5 +1,25 @@
 #include "RenderWindow.h"
 
+LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept
+{
+	switch ( uMsg )
+	{
+		case WM_CLOSE:
+		case WM_DESTROY:
+			PostQuitMessage( 0 );
+			return 0;
+
+		case WM_PAINT:
+		{
+			PAINTSTRUCT ps;
+			HDC hdc = BeginPaint( hWnd, &ps );
+			FillRect( hdc, &ps.rcPaint, (HBRUSH)( COLOR_WINDOW + 2 ) );
+			EndPaint( hWnd, &ps );
+		}
+	}
+	return DefWindowProc( hWnd, uMsg, wParam, lParam );
+}
+
 bool RenderWindow::Initialize( HINSTANCE hInstance, const std::string& windowName, const std::string& windowClass, int width, int height )
 {
 	// register window class
@@ -18,8 +38,8 @@ bool RenderWindow::Initialize( HINSTANCE hInstance, const std::string& windowNam
 		this->windowClass_wide.c_str(),
 		this->windowTitle_wide.c_str(),
 		WS_OVERLAPPEDWINDOW,
-		0,
-		0,
+		100,
+		100,
 		this->width,
 		this->height,
 		NULL,
@@ -59,7 +79,7 @@ void RenderWindow::RegisterWindowClass() noexcept
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof( WNDCLASSEX );
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-	wc.lpfnWndProc = DefWindowProc;
+	wc.lpfnWndProc = WindowProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInstance;
