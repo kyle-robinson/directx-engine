@@ -83,37 +83,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 
 			draw.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
 
-			class TransformCbufScaling : public TransformCbuf
-			{
-			public:
-				TransformCbufScaling( Graphics& gfx, float scale = 1.03f ) : TransformCbuf( gfx ), buf( MakeLayout() )
-				{
-					buf["scale"] = scale;
-				}
-				void Accept( TechniqueProbe& probe ) override
-				{
-					probe.VisitBuffer( buf );
-				}
-				void Bind( Graphics& gfx ) noexcept override
-				{
-					const float scale = buf["scale"];
-					const auto scaleMatrix = DirectX::XMMatrixScaling( scale, scale, scale );
-					auto xf = GetTransforms( gfx );
-					xf.modelView = xf.modelView * scaleMatrix;
-					xf.modelViewProj = xf.modelViewProj * scaleMatrix;
-					UpdateBind( gfx, xf );
-				}
-			private:
-				static Dcb::RawLayout MakeLayout()
-				{
-					Dcb::RawLayout layout;
-					layout.Add<Dcb::Float>( "scale" );
-					return layout;
-				}
-			private:
-				Dcb::Buffer buf;
-			};
-			draw.AddBindable( std::make_shared<TransformCbufScaling>( gfx ) );
+			draw.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
 
 			outline.AddStep( std::move( draw ) );
 		}

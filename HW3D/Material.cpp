@@ -149,14 +149,6 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 				draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buf, 1u ) );
 			}
 
-			{
-				Dcb::RawLayout lay;
-				lay.Add<Dcb::Float>("offset");
-				auto buf = Dcb::Buffer(std::move(lay));
-				buf["offset"] = 0.1f;
-				draw.AddBindable(std::make_shared<Bind::CachingPixelConstantBufferEx>(gfx, buf, 1u));
-			}
-
 			draw.AddBindable( Bind::InputLayout::Resolve( gfx, layout, pvsbc ) );
 
 			draw.AddBindable( std::make_shared<Bind::TransformCbuf>( gfx ) );

@@ -1,6 +1,7 @@
 #include "RenderTarget.h"
 #include "DepthStencil.h"
 #include "GraphicsThrowMacros.h"
+#include <array>
 
 RenderTarget::RenderTarget( Graphics& gfx, UINT width, UINT height )
 {
@@ -54,4 +55,14 @@ void RenderTarget::BindAsTarget( Graphics& gfx ) const noexcept
 void RenderTarget::BindAsTarget( Graphics& gfx, const DepthStencil& depthStencil ) const noexcept
 {
 	GetContext( gfx )->OMSetRenderTargets( 1u, pTargetView.GetAddressOf(), depthStencil.pDepthStencilView.Get() );
+}
+
+void RenderTarget::Clear( Graphics& gfx, const std::array<float, 4>& color ) const noexcept
+{
+	GetContext( gfx )->ClearRenderTargetView( pTargetView.Get(), color.data() );
+}
+
+void RenderTarget::Clear( Graphics& gfx ) const noexcept
+{
+	Clear( gfx, { 0.0f, 0.0f, 0.0f, 0.0f } );
 }

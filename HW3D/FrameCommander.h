@@ -27,8 +27,10 @@ public:
 
 		// setup framebuffer shaders
 		pVShaderFull = Bind::VertexShader::Resolve( gfx, "FullscreenVS.cso" );
-		pPShaderFull = Bind::PixelShader::Resolve( gfx, "FullscreenPS.cso" );
+		pPShaderFull = Bind::PixelShader::Resolve( gfx, "BlurPS.cso" );
 		pILayoutFull = Bind::InputLayout::Resolve( gfx, layout, pVShaderFull->GetByteCode() );
+		pSamplerFull = Bind::Sampler::Resolve( gfx, false, true );
+		pBlenderFull = Bind::Blender::Resolve( gfx, true );
 	}
 	void Accept( Job job, size_t target ) noexcept
 	{
@@ -38,9 +40,11 @@ public:
 	{
 		// setup render target
 		ds.Clear( gfx );
-		rt.BindAsTarget( gfx, ds );
+		rt.Clear( gfx );
+		gfx.BindSwapBuffer( ds );
 
 		// main lighting pass
+		Bind::Blender::Resolve( gfx, false )->Bind( gfx );
 		Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Off )->Bind( gfx );
 		passes[0].Execute( gfx );
 
@@ -50,17 +54,21 @@ public:
 		passes[1].Execute( gfx );
 
 		// outline drawing pass
-		Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Mask )->Bind( gfx );
+		rt.BindAsTarget( gfx );
+		Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Off )->Bind( gfx );
 		passes[2].Execute( gfx );
 
 		// framebuffer pass
-		gfx.BindSwapBuffer();
+		gfx.BindSwapBuffer( ds );
 		rt.BindAsTexture( gfx, 0 );
 		pVBufferFull->Bind( gfx );
 		pIBufferFull->Bind( gfx );
 		pVShaderFull->Bind( gfx );
 		pPShaderFull->Bind( gfx );
 		pILayoutFull->Bind( gfx );
+		pSamplerFull->Bind( gfx );
+		pBlenderFull->Bind( gfx );
+		Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Mask )->Bind( gfx );
 		gfx.DrawIndexed( pIBufferFull->GetCount() );
 	}
 	void Reset() noexcept
@@ -77,4 +85,6 @@ private:
 	std::shared_ptr<Bind::VertexShader> pVShaderFull;
 	std::shared_ptr<Bind::PixelShader> pPShaderFull;
 	std::shared_ptr<Bind::InputLayout> pILayoutFull;
+	std::shared_ptr<Bind::Sampler> pSamplerFull;
+	std::shared_ptr<Bind::Blender> pBlenderFull;
 };

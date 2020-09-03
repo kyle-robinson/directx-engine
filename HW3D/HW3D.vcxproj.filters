@@ -677,7 +677,7 @@
     <FxCompile Include="FullscreenVS.hlsl">
       <Filter>Resource Files\Shaders\Framebuffer\Vertex</Filter>
     </FxCompile>
-    <FxCompile Include="FullscreenPS.hlsl">
+    <FxCompile Include="BlurPS.hlsl">
       <Filter>Resource Files\Shaders\Framebuffer\Pixel</Filter>
     </FxCompile>
   </ItemGroup>
