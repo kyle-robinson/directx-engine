@@ -2,7 +2,7 @@
 
 bool Engine::Initialize( HINSTANCE hInstance, const std::string& windowTitle, const std::string& windowClass, int width, int height ) noexcept
 {
-	return this->renderWindow.Initialize( hInstance, windowTitle, windowClass, width, height );
+	return this->renderWindow.Initialize( this, hInstance, windowTitle, windowClass, width, height );
 }
 
 bool Engine::ProcessMessages() noexcept

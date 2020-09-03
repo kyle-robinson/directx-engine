@@ -1,26 +1,7 @@
 #include "WindowContainer.h"
 #include "resource.h"
 
-LRESULT CALLBACK WindowProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam ) noexcept
-{
-	HCURSOR hCursor;
-	switch ( uMsg )
-	{
-		case WM_PAINT:
-		{
-			PAINTSTRUCT ps;
-			HDC hdc = BeginPaint( hWnd, &ps );
-			FillRect( hdc, &ps.rcPaint, (HBRUSH)( COLOR_WINDOW + 2 ) );
-			EndPaint( hWnd, &ps );
-			return 0;
-		}
-
-		default:
-			return DefWindowProc(hWnd, uMsg, wParam, lParam);
-	}
-}
-
-bool RenderWindow::Initialize( HINSTANCE hInstance, const std::string& windowName, const std::string& windowClass, int width, int height )
+bool RenderWindow::Initialize( WindowContainer* pWindowContainer, HINSTANCE hInstance, const std::string& windowName, const std::string& windowClass, int width, int height )
 {
 	// register window class
 	this->hInstance = hInstance;
@@ -45,7 +26,7 @@ bool RenderWindow::Initialize( HINSTANCE hInstance, const std::string& windowNam
 		NULL,
 		NULL,
 		this->hInstance,
-		nullptr
+		pWindowContainer
 	);
 
 	if ( this->hWnd == NULL )
@@ -60,6 +41,49 @@ bool RenderWindow::Initialize( HINSTANCE hInstance, const std::string& windowNam
 	SetFocus( this->hWnd );
 
 	return true;
+}
+
+LRESULT CALLBACK HandleMsgRedirect( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam ) noexcept
+{
+	switch ( uMsg )
+	{
+	case WM_CLOSE:
+		DestroyWindow( hWnd );
+		return 0;
+
+	// handle all other messages
+	default:
+	{
+		// get ptr to window class
+		WindowContainer* const pWindow = reinterpret_cast<WindowContainer*>( GetWindowLongPtr( hWnd, GWLP_USERDATA ) );
+		// forward messages to window class
+		return pWindow->WindowProc( hWnd, uMsg, wParam, lParam );
+	}
+	}
+}
+
+LRESULT CALLBACK HandleMsgSetup( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept
+{
+	HCURSOR hCursor;
+	switch ( uMsg )
+	{
+	case WM_NCCREATE:
+	{
+		const CREATESTRUCTW* const pCreate = reinterpret_cast<CREATESTRUCTW*>( lParam );
+		WindowContainer* pWindow = reinterpret_cast<WindowContainer*>( pCreate->lpCreateParams );
+		if (pWindow == nullptr)
+		{
+			ErrorLogger::Log( "ERROR::Pointer to window container is null during WM_NCCREATE!" );
+			exit( -1 );
+		}
+		SetWindowLongPtr( hWnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>( pWindow ) );
+		SetWindowLongPtr( hWnd, GWLP_WNDPROC, reinterpret_cast<LONG_PTR>( HandleMsgRedirect ) );
+		return pWindow->WindowProc( hWnd, uMsg, wParam, lParam );
+	}
+
+	default:
+		return DefWindowProc( hWnd, uMsg, wParam, lParam );
+	}
 }
 
 bool RenderWindow::ProcessMessages() noexcept
@@ -91,7 +115,7 @@ void RenderWindow::RegisterWindowClass() noexcept
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof( wc );
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-	wc.lpfnWndProc = WindowProc;
+	wc.lpfnWndProc = HandleMsgSetup;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInstance;
