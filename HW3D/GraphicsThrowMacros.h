@@ -22,3 +22,9 @@
 #else
 #define INFOMANAGER( gfx ) HRESULT hr; DxgiInfoManager& infoManager = GetInfoManager( ( gfx ) )
 #endif
+
+#ifdef NDEBUG
+#define INFOMANAGER_NOHR( gfx )
+#else
+#define INFOMANAGER_NOHR( gfx ) DxgiInfoManager& infoManager = GetInfoManager( ( gfx ) )
+#endif

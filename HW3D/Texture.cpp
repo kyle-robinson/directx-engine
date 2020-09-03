@@ -27,10 +27,6 @@ namespace Bind
 		textureDesc.CPUAccessFlags = 0u;
 		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_GENERATE_MIPS;
 
-		/*D3D11_SUBRESOURCE_DATA sd = { 0 };
-		sd.pSysMem = s.GetBufferPtr();
-		sd.SysMemPitch = s.GetWidth() * sizeof( Surface::Color );*/
-
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture;
 		GFX_THROW_INFO( GetDevice( gfx )->CreateTexture2D( &textureDesc, nullptr, &pTexture ) );
 
@@ -53,6 +49,7 @@ namespace Bind
 
 	void Texture::Bind( Graphics& gfx ) noexcept
 	{
+		INFOMANAGER_NOHR( gfx );
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->PSSetShaderResources( slot, 1u, pTextureView.GetAddressOf() ) );
 	}
 

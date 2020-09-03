@@ -16,7 +16,7 @@ public:
 		// setup fullscreen geometry
 		VertexMeta::VertexLayout layout;
 		layout.Append( VertexMeta::VertexLayout::Position2D );
-		VertexMeta::VertexBuffer buffer{ std::move( layout ) };
+		VertexMeta::VertexBuffer buffer{ layout };
 		buffer.EmplaceBack( DirectX::XMFLOAT2{ -1,  1 } );
 		buffer.EmplaceBack( DirectX::XMFLOAT2{  1,  1 } );
 		buffer.EmplaceBack( DirectX::XMFLOAT2{ -1, -1 } );
