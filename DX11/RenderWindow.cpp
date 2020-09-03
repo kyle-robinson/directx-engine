@@ -26,17 +26,17 @@ bool RenderWindow::Initialize( HINSTANCE hInstance, const std::string& windowNam
 	this->hInstance = hInstance;
 	this->width = width;
 	this->height = height;
-	this->windowTitle = windowTitle;
-	this->windowTitle_wide = StringConverter::StringToWide( windowTitle );
+	this->windowTitle = windowName;
+	this->windowTitle_Wide = StringConverter::StringToWide( windowName );
 	this->windowClass = windowClass;
-	this->windowClass_wide = StringConverter::StringToWide( windowClass );
+	this->windowClass_Wide = StringConverter::StringToWide( windowClass );
 
 	this->RegisterWindowClass();
 
 	// create window
 	this->hWnd = CreateWindow(
-		this->windowClass_wide.c_str(),
-		this->windowTitle_wide.c_str(),
+		this->windowClass_Wide.c_str(),
+		this->windowTitle_Wide.c_str(),
 		WS_OVERLAPPEDWINDOW,
 		100,
 		100,
@@ -46,7 +46,6 @@ bool RenderWindow::Initialize( HINSTANCE hInstance, const std::string& windowNam
 		NULL,
 		this->hInstance,
 		nullptr
-
 	);
 
 	if ( this->hWnd == NULL )
@@ -66,11 +65,24 @@ bool RenderWindow::Initialize( HINSTANCE hInstance, const std::string& windowNam
 bool RenderWindow::ProcessMessages() noexcept
 {
 	MSG msg = {};
-	while ( GetMessage( &msg, this->hWnd, 0u, 0u ) )
+	ZeroMemory( &msg, sizeof( MSG ) );
+	while ( PeekMessage( &msg, this->hWnd, 0u, 0u, PM_REMOVE ) )
 	{
 		TranslateMessage( &msg );
 		DispatchMessage( &msg );
 	}
+
+	// check if the window was closed
+	if ( msg.message == WM_NULL )
+	{
+		if ( !IsWindow( this->hWnd ) )
+		{
+			this->hWnd = NULL;
+			UnregisterClass( this->windowClass_Wide.c_str(), this->hInstance );
+			return false;
+		}
+	}
+
 	return true;
 }
 
@@ -87,7 +99,7 @@ void RenderWindow::RegisterWindowClass() noexcept
 	wc.hCursor = NULL;
 	wc.hbrBackground = NULL;
 	wc.lpszMenuName = NULL;
-	wc.lpszClassName = windowClass_wide.c_str();
+	wc.lpszClassName = windowClass_Wide.c_str();
 	wc.hIconSm = NULL;
 	RegisterClassEx( &wc );
 }
@@ -96,7 +108,7 @@ RenderWindow::~RenderWindow() noexcept
 {
 	if ( this->hWnd != NULL )
 	{
-		UnregisterClass( this->windowClass_wide.c_str(), this->hInstance );
+		UnregisterClass( this->windowClass_Wide.c_str(), this->hInstance );
 		DestroyWindow( this->hWnd );
 	}
 }

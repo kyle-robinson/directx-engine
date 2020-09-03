@@ -8,6 +8,9 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR lpCmdLine
 {
 	RenderWindow wnd;
 	wnd.Initialize( hInstance, "DirectX 11 Engine Window", "WindowClass", 1280, 720 );
-	wnd.ProcessMessages();
+	while ( wnd.ProcessMessages() == true )
+	{
+
+	}
 	return 0;
 }

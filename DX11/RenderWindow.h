@@ -12,8 +12,8 @@ private:
 	HWND hWnd = NULL;
 	HINSTANCE hInstance = NULL;
 	std::string windowTitle = "";
-	std::wstring windowTitle_wide = L"";
+	std::wstring windowTitle_Wide = L"";
 	std::string windowClass = "";
-	std::wstring windowClass_wide = L"";
+	std::wstring windowClass_Wide = L"";
 	int width, height;
 };
