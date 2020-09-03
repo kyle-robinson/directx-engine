@@ -1,13 +1,15 @@
 #include "RenderWindow.h"
+#include "resource.h"
 
-LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept
+LRESULT WINAPI RenderWindow::WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) noexcept
 {
 	switch ( uMsg )
 	{
 		case WM_CLOSE:
-		case WM_DESTROY:
+		{
 			PostQuitMessage( 0 );
 			return 0;
+		}
 
 		case WM_PAINT:
 		{
@@ -15,6 +17,19 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 			HDC hdc = BeginPaint( hWnd, &ps );
 			FillRect( hdc, &ps.rcPaint, (HBRUSH)( COLOR_WINDOW + 2 ) );
 			EndPaint( hWnd, &ps );
+			break;
+		}
+
+		case WM_MOUSEHOVER:
+		{
+			LoadCursor( this->hInstance, (LPCWSTR)IDI_ANICURSOR1 );
+			break;
+		}
+
+		case WM_LBUTTONDOWN:
+		{
+			LoadCursor( this->hInstance, (LPCWSTR)IDI_ANICURSOR2 );
+			break;
 		}
 	}
 	return DefWindowProc( hWnd, uMsg, wParam, lParam );
@@ -38,8 +53,8 @@ bool RenderWindow::Initialize( HINSTANCE hInstance, const std::string& windowNam
 		this->windowClass_Wide.c_str(),
 		this->windowTitle_Wide.c_str(),
 		WS_OVERLAPPEDWINDOW,
-		100,
-		100,
+		CW_USEDEFAULT,
+		CW_USEDEFAULT,
 		this->width,
 		this->height,
 		NULL,
@@ -91,16 +106,16 @@ void RenderWindow::RegisterWindowClass() noexcept
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof( WNDCLASSEX );
 	wc.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-	wc.lpfnWndProc = WindowProc;
+	wc.lpfnWndProc = (WNDPROC)WindowProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInstance;
-	wc.hIcon = NULL;
-	wc.hCursor = NULL;
+	wc.hIcon = static_cast<HICON>( LoadImage( this->hInstance, MAKEINTRESOURCE( IDI_ICON1 ), IMAGE_ICON, 32, 32, 0 ) );
+	wc.hCursor = LoadCursor( this->hInstance, (LPCWSTR)IDI_ANICURSOR1 );
 	wc.hbrBackground = NULL;
 	wc.lpszMenuName = NULL;
 	wc.lpszClassName = windowClass_Wide.c_str();
-	wc.hIconSm = NULL;
+	wc.hIconSm = static_cast<HICON>( LoadImage( this->hInstance, MAKEINTRESOURCE( IDI_ICON1 ), IMAGE_ICON, 16, 16, 0 ) );
 	RegisterClassEx( &wc );
 }
 

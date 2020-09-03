@@ -9,6 +9,7 @@ public:
 	~RenderWindow() noexcept;
 private:
 	void RegisterWindowClass() noexcept;
+	LRESULT WINAPI WindowProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam ) noexcept;
 	HWND hWnd = NULL;
 	HINSTANCE hInstance = NULL;
 	std::string windowTitle = "";

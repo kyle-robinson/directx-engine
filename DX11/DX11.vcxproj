@@ -167,15 +167,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="ErrorLogger.cpp" />
     <ClCompile Include="RenderWindow.cpp" />
     <ClCompile Include="StringConverter.cpp" />
+    <ClCompile Include="WindowContainer.cpp" />
     <ClCompile Include="WinMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine.h" />
     <ClInclude Include="ErrorLogger.h" />
     <ClInclude Include="RenderWindow.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="StringConverter.h" />
+    <ClInclude Include="WindowContainer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DX11.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Directx.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\cursors\WoW_Normal.ani" />
+    <None Include="res\cursors\WoW_Select.ani" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
