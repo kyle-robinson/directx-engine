@@ -539,6 +539,9 @@
     <ClInclude Include="RenderTarget.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="Blurring.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -676,6 +679,9 @@
     </FxCompile>
     <FxCompile Include="FullscreenVS.hlsl">
       <Filter>Resource Files\Shaders\Framebuffer\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="BlurOutlinePS.hlsl">
+      <Filter>Resource Files\Shaders\Framebuffer\Pixel</Filter>
     </FxCompile>
     <FxCompile Include="BlurPS.hlsl">
       <Filter>Resource Files\Shaders\Framebuffer\Pixel</Filter>
