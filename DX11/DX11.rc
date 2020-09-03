@@ -60,9 +60,9 @@ IDI_ICON1               ICON                    "Directx.ico"
 // ANICURSOR
 //
 
-IDR_ANICURSOR1          ANICURSOR               "res\\cursors\\WoW_Normal.ani"
+IDI_ANICURSOR1          ANICURSOR               "res\\cursors\\WoW_Normal.ani"
 
-IDR_ANICURSOR2          ANICURSOR               "res\\cursors\\WoW_Select.ani"
+IDI_ANICURSOR2          ANICURSOR               "res\\cursors\\WoW_Select.ani"
 
 #endif    // English (United Kingdom) resources
 /////////////////////////////////////////////////////////////////////////////

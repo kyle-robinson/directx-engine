@@ -1,4 +1,4 @@
-#include "RenderWindow.h"
+#include "Engine.h"
 #include <string>
 
 #pragma comment( lib, "d3d11.lib" )
@@ -6,9 +6,9 @@
 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE prevInstance, LPSTR lpCmdLine, int nShowCmd )
 {
-	RenderWindow wnd;
-	wnd.Initialize( hInstance, "DirectX 11 Engine Window", "WindowClass", 1280, 720 );
-	while ( wnd.ProcessMessages() == true )
+	Engine engine;
+	engine.Initialize( hInstance, "DirectX 11 Engine Window", "WindowClass", 1280, 720 );
+	while ( engine.ProcessMessages() == true )
 	{
 
 	}
