@@ -15,7 +15,7 @@ public:
 		ds( gfx, gfx.GetWidth(), gfx.GetHeight() ),
 		rt1( gfx, gfx.GetWidth(), gfx.GetHeight() ),
 		rt2( gfx, gfx.GetWidth(), gfx.GetHeight() ),
-		blur( gfx )
+		blur( gfx, 7, 2.6f, "BlurOutlinePS.cso" )
 	{
 		// setup fullscreen geometry
 		VertexMeta::VertexLayout layout;
@@ -33,6 +33,7 @@ public:
 		pVShaderFull = Bind::VertexShader::Resolve( gfx, "FullscreenVS.cso" );
 		pILayoutFull = Bind::InputLayout::Resolve( gfx, layout, pVShaderFull->GetByteCode() );
 		pSamplerFull = Bind::Sampler::Resolve( gfx, false, true );
+		pBlenderMerge = Bind::Blender::Resolve( gfx, true );
 	}
 	void Accept( Job job, size_t target ) noexcept
 	{
@@ -43,12 +44,22 @@ public:
 		// setup render target
 		ds.Clear( gfx );
 		rt1.Clear( gfx );
-		rt1.BindAsTarget( gfx, ds );
+		gfx.BindSwapBuffer( ds );
 
 		// main lighting pass
 		Bind::Blender::Resolve( gfx, false )->Bind( gfx );
 		Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Off )->Bind( gfx );
 		passes[0].Execute( gfx );
+
+		// outline masking pass
+		Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Write )->Bind( gfx );
+		Bind::NullPixelShader::Resolve( gfx )->Bind( gfx );
+		passes[1].Execute( gfx );
+
+		// outline drawing pass
+		rt1.BindAsTarget( gfx );
+		Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Off )->Bind( gfx );
+		passes[2].Execute( gfx );
 
 		// framebuffer h-pass
 		rt2.BindAsTarget( gfx );
@@ -65,8 +76,10 @@ public:
 		gfx.DrawIndexed( pIBufferFull->GetCount() );
 
 		// framebuffer v-pass
-		gfx.BindSwapBuffer();
+		gfx.BindSwapBuffer( ds );
 		rt2.BindAsTexture( gfx, 0u );
+		pBlenderMerge->Bind( gfx );
+		Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Mask )->Bind( gfx );
 		blur.SetVertical( gfx );
 		gfx.DrawIndexed( pIBufferFull->GetCount() );
 	}
@@ -86,4 +99,5 @@ private:
 	std::shared_ptr<Bind::VertexShader> pVShaderFull;
 	std::shared_ptr<Bind::InputLayout> pILayoutFull;
 	std::shared_ptr<Bind::Sampler> pSamplerFull;
+	std::shared_ptr<Bind::Blender> pBlenderMerge;
 };

@@ -6,8 +6,8 @@
 class Blurring
 {
 public:
-	Blurring( Graphics& gfx, int radius = 7, float sigma = 2.6f )
-		: shader( gfx, "BlurPS.cso" ), kcb( gfx, 0u ), ccb( gfx, 1u )
+	Blurring( Graphics& gfx, int radius = 7, float sigma = 2.6f, const char* shader = "BlurPS.cso" )
+		: shader( gfx, shader ), kcb( gfx, 0u ), ccb( gfx, 1u )
 	{
 		SetKernelGauss( gfx, radius, sigma );
 	}
