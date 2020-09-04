@@ -287,6 +287,7 @@ void App::DoFrame()
 		//modelProbe.SpawnWindow( sponza );
 		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
+		fc.ShowWindows( wnd.Gfx() );
 		ShowRawInputWindow();
 	}
 	

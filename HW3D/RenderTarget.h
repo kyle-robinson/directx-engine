@@ -14,6 +14,7 @@ public:
 	void Clear( Graphics& gfx, const std::array<float, 4>& color ) const noexcept;
 	void Clear( Graphics& gfx ) const noexcept;
 private:
+	UINT width, height;
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> pTextureView;
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pTargetView;
 };

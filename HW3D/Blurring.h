@@ -25,56 +25,52 @@ public:
 	{
 		ccb.Update( gfx, { FALSE } );
 	}
-	void ShowWindow( Graphics& gfx )
+	void RenderWidgets( Graphics& gfx )
 	{
-		if( ImGui::Begin( "Blur", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
+		bool filterChanged = false;
 		{
-			bool filterChanged = false;
+			const char* items[] = { "Gauss", "Box" };
+			static const char* curItem = items[0];
+			if ( ImGui::BeginCombo( "Filter Type", curItem ) )
 			{
-				const char* items[] = { "Gauss", "Box" };
-				static const char* curItem = items[0];
-				if ( ImGui::BeginCombo( "Filter Type", curItem ) )
+				for ( int n = 0; n < std::size( items ); n++ )
 				{
-					for ( int n = 0; n < std::size( items ); n++ )
+					const bool isSelected = ( curItem == items[n] );
+					if ( ImGui::Selectable( items[n], isSelected ) )
 					{
-						const bool isSelected = ( curItem == items[n] );
-						if ( ImGui::Selectable( items[n], isSelected ) )
+						filterChanged = true;
+						curItem = items[n];
+						if ( curItem == items[0] )
 						{
-							filterChanged = true;
-							curItem = items[n];
-							if ( curItem == items[0] )
-							{
-								kernelType = KernelType::Gauss;
-							}
-							else if ( curItem == items[1] )
-							{
-								kernelType = KernelType::Box;
-							}
+							kernelType = KernelType::Gauss;
 						}
-						if ( isSelected )
+						else if ( curItem == items[1] )
 						{
-							ImGui::SetItemDefaultFocus();
+							kernelType = KernelType::Box;
 						}
 					}
-					ImGui::EndCombo();
+					if ( isSelected )
+					{
+						ImGui::SetItemDefaultFocus();
+					}
 				}
-			}
-
-			bool radChange = ImGui::SliderInt( "Radius", &radius, 0, 15 );
-			bool sigChange = ImGui::SliderFloat( "Sigma", &sigma, 0.1f, 10.0f );
-			if ( radChange || sigChange || filterChanged )
-			{
-				if ( kernelType == KernelType::Gauss )
-				{
-					SetKernelGauss( gfx, radius, sigma );
-				}
-				else if ( kernelType == KernelType::Box )
-				{
-					SetKernelBox( gfx, radius );
-				}
+				ImGui::EndCombo();
 			}
 		}
-		ImGui::End();
+
+		bool radChange = ImGui::SliderInt( "Radius", &radius, 0, 15 );
+		bool sigChange = ImGui::SliderFloat( "Sigma", &sigma, 0.1f, 10.0f );
+		if ( radChange || sigChange || filterChanged )
+		{
+			if ( kernelType == KernelType::Gauss )
+			{
+				SetKernelGauss( gfx, radius, sigma );
+			}
+			else if ( kernelType == KernelType::Box )
+			{
+				SetKernelBox( gfx, radius );
+			}
+		}
 	}
 	void SetKernelGauss( Graphics& gfx, int radius, float sigma ) noexcept(!IS_DEBUG)
 	{
