@@ -12,17 +12,20 @@
 
 class Graphics;
 
-class BlurOutlineDrawPass : public RenderQueuePass
+namespace Rgph
 {
-public:
-	BlurOutlineDrawPass( Graphics& gfx, std::string name, unsigned int width, unsigned int height ) :
-		RenderQueuePass( std::move( name ) )
+	class BlurOutlineDrawPass : public RenderQueuePass
 	{
-		renderTarget = std::make_unique<Bind::ShaderInputRenderTarget>( gfx, width / 2, height / 2,0 );
-		AddBind( Bind::VertexShader::Resolve( gfx, "Solid_VS.cso" ) );
-		AddBind( Bind::PixelShader::Resolve( gfx, "Solid_PS.cso" ) );
-		AddBind( Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Mask ) );
-		AddBind( Bind::Blender::Resolve( gfx, false ) );
-		RegisterOutput( ImmutableOutput<Bind::RenderTarget>::Make( "scratchOut", renderTarget ) );
-	}
-};
+	public:
+		BlurOutlineDrawPass(Graphics& gfx, std::string name, unsigned int width, unsigned int height) :
+			RenderQueuePass(std::move(name))
+		{
+			renderTarget = std::make_unique<Bind::ShaderInputRenderTarget>(gfx, width / 2, height / 2, 0);
+			AddBind(Bind::VertexShader::Resolve(gfx, "Solid_VS.cso"));
+			AddBind(Bind::PixelShader::Resolve(gfx, "Solid_PS.cso"));
+			AddBind(Bind::Stencil::Resolve(gfx, Bind::Stencil::Mode::Mask));
+			AddBind(Bind::Blender::Resolve(gfx, false));
+			RegisterOutput(ImmutableOutput<Bind::RenderTarget>::Make("scratchOut", renderTarget));
+		}
+	};
+}

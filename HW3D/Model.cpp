@@ -76,7 +76,7 @@ std::unique_ptr<Node> Model::ParseNode( int& nextID, const aiNode& node, float s
 	return pNode;
 }
 
-void Model::LinkTechniques( RenderGraph& rg )
+void Model::LinkTechniques( Rgph::RenderGraph& rg )
 {
 	for ( auto& pMesh : meshPtrs )
 	{

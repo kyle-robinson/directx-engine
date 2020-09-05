@@ -5,8 +5,12 @@
 
 class TechniqueProbe;
 class Material;
-class RenderGraph;
 struct aiMesh;
+
+namespace Rgph
+{
+	class RenderGraph;
+}
 
 namespace Bind
 {
@@ -28,7 +32,7 @@ public:
 	void Bind( Graphics& gfx ) const noexcept(!IS_DEBUG);
 	void Accept( TechniqueProbe& );
 	UINT GetIndexCount() const noexcept(!IS_DEBUG);
-	void LinkTechniques( RenderGraph& );
+	void LinkTechniques( Rgph::RenderGraph& );
 	virtual ~Drawable();
 protected:
 	std::vector<Technique> techniques;

@@ -11,15 +11,18 @@ namespace Bind
 	class RenderTarget;
 }
 
-class BlurOutlineRG : public RenderGraph
+namespace Rgph
 {
-public:
-	BlurOutlineRG( Graphics& gfx );
-private:
-	void SetKernelGauss( int radius, float sigma ) noexcept(!IS_DEBUG);
-	static constexpr int maxRadius = 7;
-	static constexpr int radius = 4;
-	static constexpr float sigma = 2.0f;
-	std::shared_ptr<Bind::CachingPixelConstantBufferEx> blurControl;
-	std::shared_ptr<Bind::CachingPixelConstantBufferEx> blurDirection;
-};
+	class BlurOutlineRG : public RenderGraph
+	{
+	public:
+		BlurOutlineRG(Graphics& gfx);
+	private:
+		void SetKernelGauss(int radius, float sigma) noexcept(!IS_DEBUG);
+		static constexpr int maxRadius = 7;
+		static constexpr int radius = 4;
+		static constexpr float sigma = 2.0f;
+		std::shared_ptr<Bind::CachingPixelConstantBufferEx> blurControl;
+		std::shared_ptr<Bind::CachingPixelConstantBufferEx> blurDirection;
+	};
+}

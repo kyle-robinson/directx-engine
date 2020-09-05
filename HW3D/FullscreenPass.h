@@ -9,9 +9,12 @@ namespace Bind
 	class InputLayout;
 }
 
-class FullscreenPass : public BindingPass
+namespace Rgph
 {
-public:
-	FullscreenPass( const std::string& name, Graphics& gfx ) noexcept(!IS_DEBUG);
-	void Execute( Graphics& gfx ) const noexcept(!IS_DEBUG) override;
-};
+	class FullscreenPass : public BindingPass
+	{
+	public:
+		FullscreenPass(const std::string& name, Graphics& gfx) noexcept(!IS_DEBUG);
+		void Execute(Graphics& gfx) const noexcept(!IS_DEBUG) override;
+	};
+}

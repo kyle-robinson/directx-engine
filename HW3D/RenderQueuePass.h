@@ -3,13 +3,17 @@
 #include "Job.h"
 #include <vector>
 
-class RenderQueuePass : public BindingPass
+namespace Rgph
 {
-public:
-	using BindingPass::BindingPass;
-	void Accept(Job job) noexcept;
-	void Execute(Graphics& gfx) const noexcept(!IS_DEBUG) override;
-	void Reset() noexcept(!IS_DEBUG) override;
-private:
-	std::vector<Job> jobs;
-};
+	class RenderQueuePass : public BindingPass
+	{
+	public:
+		using BindingPass::BindingPass;
+		void Accept(Job job) noexcept;
+		void Execute(Graphics& gfx) const noexcept(!IS_DEBUG) override;
+		void Reset() noexcept(!IS_DEBUG) override;
+	private:
+		std::vector<Job> jobs;
+	};
+
+}

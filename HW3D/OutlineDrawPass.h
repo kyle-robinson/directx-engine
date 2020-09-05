@@ -9,19 +9,22 @@
 
 class Graphics;
 
-class OutlineDrawPass : public RenderQueuePass
+namespace Rgph
 {
-public:
-	OutlineDrawPass( Graphics& gfx, std::string name ) :
-		RenderQueuePass( std::move( name ) )
+	class OutlineDrawPass : public RenderQueuePass
 	{
-		RegisterInput( BufferInput<Bind::RenderTarget>::Make( "renderTarget", renderTarget) );
-		RegisterInput( BufferInput<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
-		RegisterOutput( BufferOutput<Bind::RenderTarget>::Make( "renderTarget", renderTarget ) );
-		RegisterOutput( BufferOutput<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
-		AddBind( Bind::VertexShader::Resolve( gfx, "SolidVS.cso" ) );
-		AddBind( Bind::PixelShader::Resolve( gfx, "SolidPS.cso" ) );
-		AddBind( Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Mask ) );
-		AddBind( Bind::Rasterizer::Resolve( gfx, false ) );
-	}
-};
+	public:
+		OutlineDrawPass(Graphics& gfx, std::string name) :
+			RenderQueuePass(std::move(name))
+		{
+			RegisterInput(BufferInput<Bind::RenderTarget>::Make("renderTarget", renderTarget));
+			RegisterInput(BufferInput<Bind::DepthStencil>::Make("depthStencil", depthStencil));
+			RegisterOutput(BufferOutput<Bind::RenderTarget>::Make("renderTarget", renderTarget));
+			RegisterOutput(BufferOutput<Bind::DepthStencil>::Make("depthStencil", depthStencil));
+			AddBind(Bind::VertexShader::Resolve(gfx, "SolidVS.cso"));
+			AddBind(Bind::PixelShader::Resolve(gfx, "SolidPS.cso"));
+			AddBind(Bind::Stencil::Resolve(gfx, Bind::Stencil::Mode::Mask));
+			AddBind(Bind::Rasterizer::Resolve(gfx, false));
+		}
+	};
+}

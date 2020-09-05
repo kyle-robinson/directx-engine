@@ -23,7 +23,7 @@ Step::Step( const Step& src ) noexcept :
 
 void Step::Submit( const Drawable& drawable ) const
 {
-	pTargetPass->Accept( Job{ this, &drawable } );
+	pTargetPass->Accept( Rgph::Job{ this, &drawable } );
 }
 
 void Step::InitializeParentReferences( const Drawable& parent ) noexcept
@@ -52,7 +52,7 @@ void Step::Accept(TechniqueProbe& probe)
 		pb->Accept(probe);
 }
 
-void Step::Link( RenderGraph& rg )
+void Step::Link( Rgph::RenderGraph& rg )
 {
 	assert( pTargetPass == nullptr );
 	pTargetPass = &rg.GetRenderQueue( targetPassName );

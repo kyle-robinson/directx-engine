@@ -7,7 +7,6 @@
 #include "Model.h"
 #include "NormalCube.h"
 #include "RenderGraph.h"
-#include "ScaleOutlineRG.h"
 #include "BlurOutlineRG.h"
 
 class App
@@ -26,7 +25,7 @@ private:
 	Timer timer;
 	Camera camera;
 	PointLight light;
-	RenderGraph rg{ wnd.Gfx() };
+	Rgph::RenderGraph rg{ wnd.Gfx() };
 
 	//Model sponza{ wnd.Gfx(), "res\\models\\sponza\\sponza.obj", 1.0f / 20.0f };
 	//Model goblin{ wnd.Gfx(), "res\\models\\goblin\\GoblinX.obj", 4.0f };

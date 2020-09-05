@@ -11,90 +11,93 @@
 #include "DynamicConstant.h"
 #include "Math.h"
 
-BlurOutlineRG::BlurOutlineRG( Graphics& gfx ) :
-	RenderGraph( gfx )
+namespace Rgph
 {
-	{
-		auto pass = std::make_unique<BufferClearPass>( "clear" );
-		pass->SetInputSource( "renderTarget","$.backbuffer" );
-		pass->SetInputSource( "depthStencil","$.masterDepth" );
-		AppendPass( std::move( pass ) );
-	}
-	{
-		auto pass = std::make_unique<LambertianPass>( gfx,"lambertian" );
-		pass->SetInputSource( "renderTarget","clear.renderTarget" );
-		pass->SetInputSource( "depthStencil","clear.depthStencil" );
-		AppendPass( std::move( pass ) );
-	}
-	{
-		auto pass = std::make_unique<OutlineMaskPass>( gfx,"outlineMask" );
-		pass->SetInputSource( "depthStencil","lambertian.depthStencil" );
-		AppendPass( std::move( pass ) );
-	}
-
-	// setup blur constant buffers
+	BlurOutlineRG::BlurOutlineRG(Graphics& gfx) :
+		RenderGraph(gfx)
 	{
 		{
-			Dcb::RawLayout l;
-			l.Add<Dcb::Integer>( "nTaps" );
-			l.Add<Dcb::Array>( "coefficients" );
-			l["coefficients"].Set<Dcb::Float>( maxRadius * 2 + 1 );
-			Dcb::Buffer buf{ std::move( l ) };
-			blurControl = std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx,buf,0 );
-			SetKernelGauss( radius,sigma );
-			AddGlobalSource( ImmutableOutput<Bind::CachingPixelConstantBufferEx>::Make( "blurControl",blurControl ) );
+			auto pass = std::make_unique<BufferClearPass>("clear");
+			pass->SetInputSource("renderTarget", "$.backbuffer");
+			pass->SetInputSource("depthStencil", "$.masterDepth");
+			AppendPass(std::move(pass));
 		}
 		{
-			Dcb::RawLayout l;
-			l.Add<Dcb::Bool>( "isHorizontal" );
-			Dcb::Buffer buf{ std::move( l ) };
-			blurDirection = std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx,buf,1 );
-			AddGlobalSource( ImmutableOutput<Bind::CachingPixelConstantBufferEx>::Make( "blurDirection",blurDirection ) );
+			auto pass = std::make_unique<LambertianPass>(gfx, "lambertian");
+			pass->SetInputSource("renderTarget", "clear.renderTarget");
+			pass->SetInputSource("depthStencil", "clear.depthStencil");
+			AppendPass(std::move(pass));
 		}
+		{
+			auto pass = std::make_unique<OutlineMaskPass>(gfx, "outlineMask");
+			pass->SetInputSource("depthStencil", "lambertian.depthStencil");
+			AppendPass(std::move(pass));
+		}
+
+		// setup blur constant buffers
+		{
+			{
+				Dcb::RawLayout l;
+				l.Add<Dcb::Integer>("nTaps");
+				l.Add<Dcb::Array>("coefficients");
+				l["coefficients"].Set<Dcb::Float>(maxRadius * 2 + 1);
+				Dcb::Buffer buf{ std::move(l) };
+				blurControl = std::make_shared<Bind::CachingPixelConstantBufferEx>(gfx, buf, 0);
+				SetKernelGauss(radius, sigma);
+				AddGlobalSource(ImmutableOutput<Bind::CachingPixelConstantBufferEx>::Make("blurControl", blurControl));
+			}
+			{
+				Dcb::RawLayout l;
+				l.Add<Dcb::Bool>("isHorizontal");
+				Dcb::Buffer buf{ std::move(l) };
+				blurDirection = std::make_shared<Bind::CachingPixelConstantBufferEx>(gfx, buf, 1);
+				AddGlobalSource(ImmutableOutput<Bind::CachingPixelConstantBufferEx>::Make("blurDirection", blurDirection));
+			}
+		}
+
+		{
+			auto pass = std::make_unique<BlurOutlineDrawPass>(gfx, "outlineDraw", gfx.GetWidth(), gfx.GetHeight());
+			AppendPass(std::move(pass));
+		}
+		{
+			auto pass = std::make_unique<HorizontalBlurPass>("horizontal", gfx, gfx.GetWidth(), gfx.GetHeight());
+			pass->SetInputSource("scratchIn", "outlineDraw.scratchOut");
+			pass->SetInputSource("control", "$.blurControl");
+			pass->SetInputSource("direction", "$.blurDirection");
+			AppendPass(std::move(pass));
+		}
+		{
+			auto pass = std::make_unique<VerticalBlurPass>("vertical", gfx);
+			pass->SetInputSource("renderTarget", "lambertian.renderTarget");
+			pass->SetInputSource("depthStencil", "outlineMask.depthStencil");
+			pass->SetInputSource("scratchIn", "horizontal.scratchOut");
+			pass->SetInputSource("control", "$.blurControl");
+			pass->SetInputSource("direction", "$.blurDirection");
+			AppendPass(std::move(pass));
+		}
+		SetSinkTarget("backbuffer", "vertical.renderTarget");
+
+		Finalize();
 	}
 
+	void BlurOutlineRG::SetKernelGauss(int radius, float sigma) noexcept(!IS_DEBUG)
 	{
-		auto pass = std::make_unique<BlurOutlineDrawPass>( gfx,"outlineDraw",gfx.GetWidth(),gfx.GetHeight() );
-		AppendPass( std::move( pass ) );
+		assert(radius <= maxRadius);
+		auto k = blurControl->GetBuffer();
+		const int nTaps = radius * 2 + 1;
+		k["nTaps"] = nTaps;
+		float sum = 0.0f;
+		for (int i = 0; i < nTaps; i++)
+		{
+			const auto x = float(i - radius);
+			const auto g = gauss(x, sigma);
+			sum += g;
+			k["coefficients"][i] = g;
+		}
+		for (int i = 0; i < nTaps; i++)
+		{
+			k["coefficients"][i] = (float)k["coefficients"][i] / sum;
+		}
+		blurControl->SetBuffer(k);
 	}
-	{
-		auto pass = std::make_unique<HorizontalBlurPass>( "horizontal",gfx,gfx.GetWidth(),gfx.GetHeight() );
-		pass->SetInputSource( "scratchIn","outlineDraw.scratchOut" );
-		pass->SetInputSource( "control","$.blurControl" );
-		pass->SetInputSource( "direction","$.blurDirection" );
-		AppendPass( std::move( pass ) );
-	}
-	{
-		auto pass = std::make_unique<VerticalBlurPass>( "vertical",gfx );
-		pass->SetInputSource( "renderTarget","lambertian.renderTarget" );
-		pass->SetInputSource( "depthStencil","outlineMask.depthStencil" );
-		pass->SetInputSource( "scratchIn","horizontal.scratchOut" );
-		pass->SetInputSource( "control","$.blurControl" );
-		pass->SetInputSource( "direction","$.blurDirection" );
-		AppendPass( std::move( pass ) );
-	}
-	SetSinkTarget( "backbuffer","vertical.renderTarget" );
-
-	Finalize();
-}
-
-void BlurOutlineRG::SetKernelGauss( int radius,float sigma ) noexcept(!IS_DEBUG)
-{
-	assert( radius <= maxRadius );
-	auto k = blurControl->GetBuffer();
-	const int nTaps = radius * 2 + 1;
-	k["nTaps"] = nTaps;
-	float sum = 0.0f;
-	for( int i = 0; i < nTaps; i++ )
-	{
-		const auto x = float( i - radius );
-		const auto g = gauss( x,sigma );
-		sum += g;
-		k["coefficients"][i] = g;
-	}
-	for( int i = 0; i < nTaps; i++ )
-	{
-		k["coefficients"][i] = (float)k["coefficients"][i] / sum;
-	}
-	blurControl->SetBuffer( k );
 }

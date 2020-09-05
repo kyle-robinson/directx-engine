@@ -6,10 +6,14 @@
 
 class Node;
 class Mesh;
-class RenderGraph;
 struct aiMesh;
 struct aiMaterial;
 struct aiNode;
+
+namespace Rgph
+{
+	class RenderGraph;
+}
 
 class Model
 {
@@ -18,7 +22,7 @@ public:
 	void Submit() const noexcept(!IS_DEBUG);
 	void SetRootTransform(DirectX::FXMMATRIX tf) noexcept;
 	void Accept( class ModelProbe& probe );
-	void LinkTechniques( RenderGraph& );
+	void LinkTechniques( Rgph::RenderGraph& );
 	~Model() noexcept;
 private:
 	std::unique_ptr<Node> ParseNode( int& nextID, const aiNode& node, float scale ) noexcept;

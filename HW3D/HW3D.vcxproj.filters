@@ -587,9 +587,6 @@
     <ClInclude Include="RenderTarget.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Blurring.h">
-      <Filter>Header Files\Bindables</Filter>
-    </ClInclude>
     <ClInclude Include="RGCompileException.h">
       <Filter>Header Files\Exceptions</Filter>
     </ClInclude>
