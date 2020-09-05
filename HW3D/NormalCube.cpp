@@ -1,7 +1,6 @@
 #include "NormalCube.h"
 #include "BindableCommon.h"
 #include "Cube.h"
-#include "TransformCbufDouble.h"
 #include "ConstantBufferEx.h"
 #include "DynamicConstant.h"
 #include "TechniqueProbe.h"
@@ -23,7 +22,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 	{
 		Technique shade( "Shading" );
 		{
-			Step initial( 0 );
+			Step initial( "lambertian" );
 
 			initial.AddBindable( Texture::Resolve( gfx, "res\\textures\\brickwall.jpg" ) );
 			initial.AddBindable( Sampler::Resolve( gfx ) );
@@ -52,7 +51,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 		AddTechnique( std::move( shade ) );
 	}
 
-	{
+	/*{
 		Technique outline( "Outline" );
 		{
 			Step mask( 1 );
@@ -88,7 +87,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 			outline.AddStep( std::move( draw ) );
 		}
 		AddTechnique( std::move( outline ) );
-	}
+	}*/
 }
 
 void NormalCube::SetPos( DirectX::XMFLOAT3 pos ) noexcept

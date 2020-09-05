@@ -12,11 +12,10 @@
 #include <vector>
 #include <string>
 
-class DepthStencil;
-
 namespace Bind
 {
 	class Bindable;
+	class RenderTarget;
 }
 
 class Graphics
@@ -65,10 +64,6 @@ public:
 	~Graphics() = default;
 	void BeginFrame( float red, float green, float blue ) noexcept;
 	void EndFrame();
-	void BindSwapBuffer() noexcept;
-	void BindSwapBuffer( const DepthStencil& ds ) noexcept;
-	void DrawTriangle( float angle, float x, float y );
-	void DrawCube( float angle, float x, float z );
 	void DrawIndexed( UINT count ) noexcept(!IS_DEBUG);
 	void SetProjection( DirectX::FXMMATRIX proj ) noexcept;
 	DirectX::XMMATRIX GetProjection() const noexcept;
@@ -79,6 +74,7 @@ public:
 	bool IsImGuiEnabled() const noexcept;
 	UINT GetWidth() const noexcept;
 	UINT GetHeight() const noexcept;
+	std::shared_ptr<Bind::RenderTarget> GetTarget();
 private:
 	bool imguiEnabled = true;
 	DirectX::XMMATRIX projection;
@@ -91,5 +87,5 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11Device> pDevice;
 	Microsoft::WRL::ComPtr<IDXGISwapChain> pSwap;
 	Microsoft::WRL::ComPtr<ID3D11DeviceContext> pContext;
-	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> pTarget;
+	std::shared_ptr<Bind::RenderTarget> pTarget;
 };

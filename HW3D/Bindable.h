@@ -1,9 +1,9 @@
 #pragma once
-#include "Graphics.h"
 #include "GraphicsResource.h"
 
 class Drawable;
 class TechniqueProbe;
+class Graphics;
 
 namespace Bind
 {

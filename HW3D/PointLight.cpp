@@ -1,5 +1,4 @@
 #include "PointLight.h"
-#include "FrameCommander.h"
 #include "imgui/imgui.h"
 
 PointLight::PointLight( Graphics& gfx, float radius ) : mesh( gfx, radius ), cbuf( gfx )
@@ -45,10 +44,10 @@ void PointLight::Reset() noexcept
 	};
 }
 
-void PointLight::Submit( FrameCommander& frame ) const noexcept(!IS_DEBUG)
+void PointLight::Submit() const noexcept(!IS_DEBUG)
 {
 	mesh.SetPos( cbData.lightPos );
-	mesh.Submit( frame );
+	mesh.Submit();
 }
 
 void PointLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
@@ -59,4 +58,9 @@ void PointLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
 	DirectX::XMStoreFloat3( &dataCopy.lightPos, DirectX::XMVector3Transform( pos, view ) ); // transform position using view matrix to local position
 	cbuf.Update( gfx, dataCopy ); // update copied data using new local position matrix - light position is now relative to camera
 	cbuf.Bind( gfx );
+}
+
+void PointLight::LinkTechniques( RenderGraph& rg )
+{
+	mesh.LinkTechniques( rg );
 }

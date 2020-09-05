@@ -1,7 +1,6 @@
 #include "NormalPlane.h"
 #include "BindableCommon.h"
 #include "Plane.h"
-#include "TransformCbufDouble.h"
 #include "imgui/imgui.h"
 
 NormalPlane::NormalPlane( Graphics& gfx, float size )

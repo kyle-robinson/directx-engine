@@ -14,7 +14,7 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 	// phong
 	{
 		Technique phong{ "Phong" };
-		Step step( 0 );
+		Step step( "lambertian" );
 		std::string shaderCode = "Phong";
 		aiString texFileName;
 
@@ -120,7 +120,7 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 		techniques.push_back( std::move( phong ) );
 	}
 	// outline
-	{
+	/*{
 		Technique outline( "Outline", false );
 		{
 			Step mask( 1 );
@@ -156,7 +156,7 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 			outline.AddStep( std::move( draw ) );
 		}
 		techniques.push_back( std::move( outline ) );
-	}
+	}*/
 }
 
 VertexMeta::VertexBuffer Material::ExtractVertices( const aiMesh& mesh ) const noexcept

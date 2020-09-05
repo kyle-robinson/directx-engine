@@ -148,6 +148,12 @@
     <Filter Include="Resource Files\Shaders\Framebuffer\Pixel">
       <UniqueIdentifier>{aa0622c9-2afb-41eb-9a23-b3173d79551c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Jobs\Passes">
+      <UniqueIdentifier>{889e67df-6581-44fd-826e-083a9eb2f3c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Jobs\Passes">
+      <UniqueIdentifier>{2163c5c6-a2d3-42f2-9bc2-f134da703e87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -200,9 +206,6 @@
     </ClCompile>
     <ClCompile Include="NormalPlane.cpp">
       <Filter>Source Files\Drawables</Filter>
-    </ClCompile>
-    <ClCompile Include="TransformCbufDouble.cpp">
-      <Filter>Source Files\Bindables</Filter>
     </ClCompile>
     <ClCompile Include="NormalCube.cpp">
       <Filter>Source Files\Drawables</Filter>
@@ -315,11 +318,32 @@
     <ClCompile Include="Pass.cpp">
       <Filter>Source Files\Jobs</Filter>
     </ClCompile>
-    <ClCompile Include="FrameCommander.cpp">
-      <Filter>Source Files\Jobs</Filter>
-    </ClCompile>
     <ClCompile Include="RGCompileException.cpp">
       <Filter>Source Files\Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="BindingPass.cpp">
+      <Filter>Source Files\Bindables\BindableEx</Filter>
+    </ClCompile>
+    <ClCompile Include="BufferClearPass.cpp">
+      <Filter>Source Files\Jobs\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="FullscreenPass.cpp">
+      <Filter>Source Files\Jobs\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="PassOutput.cpp">
+      <Filter>Source Files\Jobs\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="PassInput.cpp">
+      <Filter>Source Files\Jobs\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderGraph.cpp">
+      <Filter>Source Files\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderQueuePass.cpp">
+      <Filter>Source Files\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="StepLinkingProbe.cpp">
+      <Filter>Source Files\Jobs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -400,9 +424,6 @@
     </ClInclude>
     <ClInclude Include="NormalPlane.h">
       <Filter>Header Files\Drawables</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformCbufDouble.h">
-      <Filter>Header Files\Bindables</Filter>
     </ClInclude>
     <ClInclude Include="NormalCube.h">
       <Filter>Header Files\Drawables</Filter>
@@ -500,9 +521,6 @@
     <ClInclude Include="NullPixelShader.h">
       <Filter>Header Files\Bindables\BindableEx</Filter>
     </ClInclude>
-    <ClInclude Include="FrameCommander.h">
-      <Filter>Header Files\Jobs</Filter>
-    </ClInclude>
     <ClInclude Include="Job.h">
       <Filter>Header Files\Jobs</Filter>
     </ClInclude>
@@ -553,6 +571,36 @@
     </ClInclude>
     <ClInclude Include="RGCompileException.h">
       <Filter>Header Files\Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferResource.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="BindingPass.h">
+      <Filter>Header Files\Bindables\BindableEx</Filter>
+    </ClInclude>
+    <ClInclude Include="BufferClearPass.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="FullscreenPass.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="LambertianPass.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="PassOutput.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="PassInput.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderGraph.h">
+      <Filter>Header Files\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderQueuePass.h">
+      <Filter>Header Files\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="StepLinkingProbe.h">
+      <Filter>Header Files\Jobs</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

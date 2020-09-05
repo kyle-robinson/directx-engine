@@ -17,10 +17,10 @@ Drawable::Drawable( Graphics& gfx, const Material& mat, const aiMesh& mesh, floa
 		AddTechnique( std::move( t ) );
 }
 
-void Drawable::Submit( FrameCommander& frame ) const noexcept
+void Drawable::Submit() const noexcept
 {
 	for ( const auto& tech : techniques )
-		tech.Submit( frame, *this );
+		tech.Submit( *this );
 }
 
 void Drawable::AddTechnique( Technique tech_in ) noexcept
@@ -45,6 +45,14 @@ void Drawable::Accept( TechniqueProbe& probe )
 UINT Drawable::GetIndexCount() const noexcept(!IS_DEBUG)
 {
 	return pIndices->GetCount();
+}
+
+void Drawable::LinkTechniques( RenderGraph& rg )
+{
+	for ( auto& tech : techniques )
+	{
+		tech.Link( rg );
+	}
 }
 
 Drawable::~Drawable() {}

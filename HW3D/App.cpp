@@ -6,6 +6,8 @@
 #include "ModelProbe.h"
 #include "DynamicConstant.h"
 #include "TechniqueProbe.h"
+#include "BufferClearPass.h"
+#include "LambertianPass.h"
 #include "imgui/imgui.h"
 #include <memory>
 #include <algorithm>
@@ -17,6 +19,27 @@ App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
 	cube.SetPos( { 4.0f, 0.0f, 0.0f } );
 	cube2.SetPos( { -8.0f, 0.0f, 0.0f } );
+
+	{
+		{
+			auto bcp = std::make_unique<BufferClearPass>( "clear" );
+			bcp->SetInputSource( "renderTarget","$.backbuffer" );
+			bcp->SetInputSource( "depthStencil","$.masterDepth" );
+			rg.AppendPass( std::move( bcp ) );
+		}
+		{
+			auto lp = std::make_unique<LambertianPass>( "lambertian" );
+			lp->SetInputSource( "renderTarget","clear.renderTarget" );
+			lp->SetInputSource( "depthStencil","clear.depthStencil" );
+			rg.AppendPass( std::move( lp ) );
+		}
+		rg.SetSinkTarget( "backbuffer","lambertian.renderTarget" );
+		rg.Finalize();
+
+		cube.LinkTechniques( rg );
+		cube2.LinkTechniques( rg );
+		light.LinkTechniques( rg );
+	}
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 400.0f ) );
 }
@@ -54,14 +77,14 @@ void App::DoFrame()
 	light.Bind( wnd.Gfx(), camera.GetMatrix() );
 
 	// objects
-	light.Submit( fc );
-	//sponza.Submit( fc );
-	//goblin.Submit( fc );
-	//backpack.Submit( fc );
-	cube.Submit( fc );
-	cube2.Submit( fc );
+	light.Submit();
+	//sponza.Submit();
+	//goblin.Submit();
+	//backpack.Submit();
+	cube.Submit();
+	cube2.Submit();
 
-	fc.Execute( wnd.Gfx() );
+	rg.Execute( wnd.Gfx() );
 
 	// raw mouse input
 	while ( const auto& e = wnd.kbd.ReadKey() )
@@ -273,12 +296,11 @@ void App::DoFrame()
 		//modelProbe.SpawnWindow( sponza );
 		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
-		fc.ShowWindows( wnd.Gfx() );
 		ShowRawInputWindow();
 	}
 	
 	wnd.Gfx().EndFrame();
-	fc.Reset();
+	rg.Reset();
 }
 
 void App::ShowRawInputWindow()

@@ -38,10 +38,10 @@ Model::Model(Graphics& gfx, const std::string& pathString, const float scale)// 
 	pRoot = ParseNode( nextID, *pScene->mRootNode, scale );
 }
 
-void Model::Submit(FrameCommander& frame) const noexcept(!IS_DEBUG)
+void Model::Submit() const noexcept(!IS_DEBUG)
 {
 	//pWindow->ApplyParameters();
-	pRoot->Submit(frame, DirectX::XMMatrixIdentity());
+	pRoot->Submit(DirectX::XMMatrixIdentity());
 }
 
 /*void Model::ShowControlWindow(Graphics& gfx, const char* windowName) noexcept

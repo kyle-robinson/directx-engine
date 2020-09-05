@@ -6,8 +6,8 @@
 #include "ImGuiManager.h"
 #include "Model.h"
 #include "NormalCube.h"
-#include "FrameCommander.h"
 #include "Material.h"
+#include "RenderGraph.h"
 
 class App
 {
@@ -24,7 +24,7 @@ private:
 	Timer timer;
 	Camera camera;
 	PointLight light;
-	FrameCommander fc{ wnd.Gfx() };
+	RenderGraph rg{ wnd.Gfx() };
 
 	//Model sponza{ wnd.Gfx(), "res\\models\\sponza\\sponza.obj", 1.0f / 20.0f };
 	//Model goblin{ wnd.Gfx(), "res\\models\\goblin\\GoblinX.obj", 4.0f };

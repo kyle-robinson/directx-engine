@@ -10,7 +10,7 @@ Node::Node(int id, const std::string& name, std::vector<Mesh*> meshPtrs, const D
 	DirectX::XMStoreFloat4x4(&appliedTransform, DirectX::XMMatrixIdentity());
 }
 
-void Node::Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform) const noexcept(!IS_DEBUG)
+void Node::Submit(DirectX::FXMMATRIX accumulatedTransform) const noexcept(!IS_DEBUG)
 {
 	const auto built =
 		DirectX::XMLoadFloat4x4(&baseTransform) *
@@ -18,10 +18,10 @@ void Node::Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulatedTransform
 		accumulatedTransform;
 
 	for (const auto pm : meshPtrs)
-		pm->Submit(frame, built);
+		pm->Submit(built);
 
 	for (const auto& pc : childPtrs)
-		pc->Submit(frame, built);
+		pc->Submit(built);
 }
 
 /*void Node::RenderTree(Node*& pSelectedNode) const noexcept
