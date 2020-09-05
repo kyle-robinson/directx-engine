@@ -14,7 +14,7 @@ namespace Bind
 		void BindAsBuffer( Graphics& gfx, BufferResource* depthStencil ) noexcept(!IS_DEBUG) override;
 		void BindAsBuffer( Graphics& gfx, DepthStencil* depthStencil ) noexcept(!IS_DEBUG);
 		void Clear( Graphics& gfx ) noexcept(!IS_DEBUG) override;
-		void Clear( Graphics& gfx,const std::array<float,4>& color ) noexcept;
+		void Clear( Graphics& gfx,const std::array<float,4>& color ) noexcept(!IS_DEBUG);
 		UINT GetWidth() const noexcept;
 		UINT GetHeight() const noexcept;
 	private:

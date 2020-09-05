@@ -72,7 +72,7 @@ namespace Bind
 		BindAsBuffer(gfx, depthStencil ? depthStencil->pDepthStencilView.Get() : nullptr);
 	}
 
-	void RenderTarget::BindAsBuffer(Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView) noexcept(!IS_DEBUG)
+	void RenderTarget::BindAsBuffer(Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView) noexcept
 	{
 		INFOMANAGER_NOHR( gfx );
 		GFX_THROW_INFO_ONLY( GetContext(gfx)->OMSetRenderTargets( 1, pTargetView.GetAddressOf(), pDepthStencilView ) );
@@ -130,12 +130,13 @@ namespace Bind
 		));
 	}
 
-	void ShaderInputRenderTarget::Bind(Graphics& gfx) noexcept
+	void ShaderInputRenderTarget::Bind(Graphics& gfx) noexcept(!IS_DEBUG)
 	{
-		GetContext(gfx)->PSSetShaderResources(slot, 1, pShaderResourceView.GetAddressOf());
+		INFOMANAGER_NOHR( gfx );
+		GFX_THROW_INFO_ONLY( GetContext(gfx)->PSSetShaderResources(slot, 1, pShaderResourceView.GetAddressOf()) );
 	}
 
-	void OutputOnlyRenderTarget::Bind(Graphics& gfx) noexcept
+	void OutputOnlyRenderTarget::Bind(Graphics& gfx) noexcept(!IS_DEBUG)
 	{
 		assert("Cannot bind OuputOnlyRenderTarget as shader input" && false);
 	}

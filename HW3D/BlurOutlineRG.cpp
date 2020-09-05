@@ -6,7 +6,7 @@
 #include "PassOutput.h"
 #include "HorizontalBlurPass.h"
 #include "VerticalBlurPass.h"
-#include "BlurOutlineDrawPass"
+#include "BlurOutlineDrawPass.h"
 #include "RenderTarget.h"
 #include "DynamicConstant.h"
 #include "Math.h"

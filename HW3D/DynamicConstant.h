@@ -147,7 +147,7 @@ namespace Dcb
 		template<Type typeAdded>
 		LayoutElement& Set( size_t size ) noexcept(!IS_DEBUG)
 		{
-			Set( typeAdded, size );
+			return Set( typeAdded, size );
 		}
 
 		// returns offset of leaf type for read/write
