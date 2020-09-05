@@ -336,12 +336,6 @@
     <ClCompile Include="FullscreenPass.cpp">
       <Filter>Source Files\Jobs\Passes</Filter>
     </ClCompile>
-    <ClCompile Include="PassOutput.cpp">
-      <Filter>Source Files\Jobs\Passes</Filter>
-    </ClCompile>
-    <ClCompile Include="PassInput.cpp">
-      <Filter>Source Files\Jobs\Passes</Filter>
-    </ClCompile>
     <ClCompile Include="RenderGraph.cpp">
       <Filter>Source Files\Jobs</Filter>
     </ClCompile>
@@ -365,6 +359,12 @@
     </ClCompile>
     <ClCompile Include="BlurOutlineRG.cpp">
       <Filter>Source Files\Jobs\Graphs</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files\Jobs\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Sink.cpp">
+      <Filter>Source Files\Jobs\Passes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -605,12 +605,6 @@
     <ClInclude Include="LambertianPass.h">
       <Filter>Header Files\Jobs\Passes</Filter>
     </ClInclude>
-    <ClInclude Include="PassOutput.h">
-      <Filter>Header Files\Jobs\Passes</Filter>
-    </ClInclude>
-    <ClInclude Include="PassInput.h">
-      <Filter>Header Files\Jobs\Passes</Filter>
-    </ClInclude>
     <ClInclude Include="RenderGraph.h">
       <Filter>Header Files\Jobs</Filter>
     </ClInclude>
@@ -645,6 +639,12 @@
       <Filter>Header Files\Jobs\Graphs</Filter>
     </ClInclude>
     <ClInclude Include="BlurOutlineDrawPass.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Sink.h">
       <Filter>Header Files\Jobs\Passes</Filter>
     </ClInclude>
   </ItemGroup>

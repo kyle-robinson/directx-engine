@@ -1,6 +1,6 @@
 #include "VerticalBlurPass.h"
-#include "PassInput.h"
-#include "PassOutput.h"
+#include "Sink.h"
+#include "Source.h"
 #include "PixelShader.h"
 #include "Blender.h"
 #include "Stencil.h"
@@ -14,14 +14,14 @@ namespace Rgph
 		AddBind( Bind::Blender::Resolve( gfx, true ) );
 		AddBind( Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Mask ) );
 
-		RegisterInput( ImmutableInput<Bind::Bindable>::Make( "scratchIn", blurScratchIn ) );
-		RegisterInput( ImmutableInput<Bind::Bindable>::Make( "control", control ) );
-		RegisterInput( ImmutableInput<Bind::CachingPixelConstantBufferEx>::Make( "direction", direction ) );
-		RegisterInput( BufferInput<Bind::RenderTarget>::Make( "renderTarget", renderTarget ) );
-		RegisterInput( BufferInput<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
+		RegisterSink( DirectBindableSink<Bind::Bindable>::Make( "scratchIn", blurScratchIn ) );
+		RegisterSink( DirectBindableSink<Bind::Bindable>::Make( "control", control ) );
+		RegisterSink( DirectBindableSink<Bind::CachingPixelConstantBufferEx>::Make( "direction", direction ) );
+		RegisterSink( DirectBufferSink<Bind::RenderTarget>::Make( "renderTarget", renderTarget ) );
+		RegisterSink( DirectBufferSink<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
 
-		RegisterOutput( BufferOutput<Bind::RenderTarget>::Make( "renderTarget", renderTarget ) );
-		RegisterOutput( BufferOutput<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
+		RegisterSource( DirectBufferSource<Bind::RenderTarget>::Make( "renderTarget", renderTarget ) );
+		RegisterSource( DirectBufferSource<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
 	}
 
 	void VerticalBlurPass::Execute( Graphics& gfx ) const noexcept(!IS_DEBUG)

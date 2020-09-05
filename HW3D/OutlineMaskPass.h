@@ -17,8 +17,8 @@ namespace Rgph
 		OutlineMaskPass(Graphics& gfx, std::string name) :
 			RenderQueuePass(std::move(name))
 		{
-			RegisterInput(BufferInput<Bind::DepthStencil>::Make("depthStencil", depthStencil));
-			RegisterOutput(BufferOutput<Bind::DepthStencil>::Make("depthStencil", depthStencil));
+			RegisterSink(DirectBufferSink<Bind::DepthStencil>::Make("depthStencil", depthStencil));
+			RegisterSource(DirectBufferSource<Bind::DepthStencil>::Make("depthStencil", depthStencil));
 			AddBind(Bind::VertexShader::Resolve(gfx, "SolidVS.cso"));
 			AddBind(Bind::NullPixelShader::Resolve(gfx));
 			AddBind(Bind::Stencil::Resolve(gfx, Bind::Stencil::Mode::Write));

@@ -11,25 +11,25 @@ namespace Rgph
 	{
 		{
 			auto pass = std::make_unique<BufferClearPass>("clear");
-			pass->SetInputSource("renderTarget", "$.backbuffer");
-			pass->SetInputSource("depthStencil", "$.masterDepth");
+			pass->SetSinkLinkage("renderTarget", "$.backbuffer");
+			pass->SetSinkLinkage("depthStencil", "$.masterDepth");
 			AppendPass(std::move(pass));
 		}
 		{
 			auto pass = std::make_unique<LambertianPass>(gfx, "lambertian");
-			pass->SetInputSource("renderTarget", "clear.renderTarget");
-			pass->SetInputSource("depthStencil", "clear.depthStencil");
+			pass->SetSinkLinkage("renderTarget", "clear.renderTarget");
+			pass->SetSinkLinkage("depthStencil", "clear.depthStencil");
 			AppendPass(std::move(pass));
 		}
 		{
 			auto pass = std::make_unique<OutlineMaskPass>(gfx, "outlineMask");
-			pass->SetInputSource("depthStencil", "lambertian.depthStencil");
+			pass->SetSinkLinkage("depthStencil", "lambertian.depthStencil");
 			AppendPass(std::move(pass));
 		}
 		{
 			auto pass = std::make_unique<OutlineDrawPass>(gfx, "outlineDraw");
-			pass->SetInputSource("renderTarget", "lambertian.renderTarget");
-			pass->SetInputSource("depthStencil", "outlineMask.depthStencil");
+			pass->SetSinkLinkage("renderTarget", "lambertian.renderTarget");
+			pass->SetSinkLinkage("depthStencil", "outlineMask.depthStencil");
 			AppendPass(std::move(pass));
 		}
 		SetSinkTarget("backbuffer", "outlineDraw.renderTarget");

@@ -1,8 +1,8 @@
 #include "HorizontalBlurPass.h"
 #include "PixelShader.h"
 #include "RenderTarget.h"
-#include "PassInput.h"
-#include "PassOutput.h"
+#include "Sink.h"
+#include "Source.h"
 #include "Blender.h"
 
 namespace Rgph
@@ -13,12 +13,12 @@ namespace Rgph
 		AddBind(Bind::PixelShader::Resolve(gfx, "BlurOutline_PS.cso"));
 		AddBind(Bind::Blender::Resolve(gfx, false));
 
-		RegisterInput(ImmutableInput<Bind::Bindable>::Make("control", control));
-		RegisterInput(ImmutableInput<Bind::CachingPixelConstantBufferEx>::Make("direction", direction));
-		RegisterInput(ImmutableInput<Bind::Bindable>::Make("scratchIn", blurScratchIn));
+		RegisterSink(DirectBindableSink<Bind::Bindable>::Make("control", control));
+		RegisterSink(DirectBindableSink<Bind::CachingPixelConstantBufferEx>::Make("direction", direction));
+		RegisterSink(DirectBindableSink<Bind::Bindable>::Make("scratchIn", blurScratchIn));
 
 		renderTarget = std::make_shared<Bind::ShaderInputRenderTarget>(gfx, width / 2, height / 2, 0u);
-		RegisterOutput(ImmutableOutput<Bind::RenderTarget>::Make("scratchOut", renderTarget));
+		RegisterSource(DirectBindableSource<Bind::RenderTarget>::Make("scratchOut", renderTarget));
 	}
 
 	void HorizontalBlurPass::Execute(Graphics& gfx) const noexcept(!IS_DEBUG)

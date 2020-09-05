@@ -4,7 +4,7 @@
 #include "VertexShader.h"
 #include "Stencil.h"
 #include "Rasterizer.h"
-#include "PassOutput.h"
+#include "Source.h"
 #include "RenderTarget.h"
 #include "Blender.h"
 #include "Job.h"
@@ -25,7 +25,7 @@ namespace Rgph
 			AddBind(Bind::PixelShader::Resolve(gfx, "Solid_PS.cso"));
 			AddBind(Bind::Stencil::Resolve(gfx, Bind::Stencil::Mode::Mask));
 			AddBind(Bind::Blender::Resolve(gfx, false));
-			RegisterOutput(ImmutableOutput<Bind::RenderTarget>::Make("scratchOut", renderTarget));
+			RegisterSource(DirectBindableSource<Bind::RenderTarget>::Make("scratchOut", renderTarget));
 		}
 	};
 }

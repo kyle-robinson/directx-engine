@@ -17,10 +17,10 @@ namespace Rgph
 		OutlineDrawPass(Graphics& gfx, std::string name) :
 			RenderQueuePass(std::move(name))
 		{
-			RegisterInput(BufferInput<Bind::RenderTarget>::Make("renderTarget", renderTarget));
-			RegisterInput(BufferInput<Bind::DepthStencil>::Make("depthStencil", depthStencil));
-			RegisterOutput(BufferOutput<Bind::RenderTarget>::Make("renderTarget", renderTarget));
-			RegisterOutput(BufferOutput<Bind::DepthStencil>::Make("depthStencil", depthStencil));
+			RegisterSink(DirectBufferSink<Bind::RenderTarget>::Make("renderTarget", renderTarget));
+			RegisterSink(DirectBufferSink<Bind::DepthStencil>::Make("depthStencil", depthStencil));
+			RegisterSource(DirectBufferSource<Bind::RenderTarget>::Make("renderTarget", renderTarget));
+			RegisterSource(DirectBufferSource<Bind::DepthStencil>::Make("depthStencil", depthStencil));
 			AddBind(Bind::VertexShader::Resolve(gfx, "SolidVS.cso"));
 			AddBind(Bind::PixelShader::Resolve(gfx, "SolidPS.cso"));
 			AddBind(Bind::Stencil::Resolve(gfx, Bind::Stencil::Mode::Mask));
