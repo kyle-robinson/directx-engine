@@ -1,5 +1,4 @@
 #pragma once
-#include "TechniqueProbe.h"
 #include "Step.h"
 #include <vector>
 
@@ -7,31 +6,14 @@ class Technique
 {
 public:
 	Technique() = default;
-	Technique( std::string name, bool startActive = true ) noexcept : name( name ), active( startActive ) { }
+	Technique( std::string name, bool startActive = true ) noexcept;
 	void Submit( class FrameCommander& frame, const class Drawable& drawable ) const noexcept;
-	void AddStep( Step step ) noexcept
-	{
-		steps.push_back( std::move( step ) );
-	}
-	bool IsActive() const noexcept
-	{
-		return active;
-	}
-	void SetActiveState( bool active_in ) noexcept
-	{
-		active = active_in;
-	}
+	void AddStep( Step step ) noexcept;
+	bool IsActive() const noexcept;
+	void SetActiveState( bool active_in ) noexcept;
 	void InitializeParentReference( const class Drawable& parent ) noexcept;
-	void Accept( TechniqueProbe& probe )
-	{
-		probe.SetTechnique( this );
-		for ( auto& s : steps )
-			s.Accept( probe );
-	}
-	const std::string& GetName() const noexcept
-	{
-		return name;
-	}
+	void Accept( TechniqueProbe& probe );
+	const std::string& GetName() const noexcept;
 private:
 	bool active = true;
 	std::vector<Step> steps;

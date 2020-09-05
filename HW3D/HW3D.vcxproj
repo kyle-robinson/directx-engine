@@ -207,6 +207,7 @@
     <ClCompile Include="DxgiInfoManager.cpp" />
     <ClCompile Include="DynamicConstant.cpp" />
     <ClCompile Include="Exception.cpp" />
+    <ClCompile Include="FrameCommander.cpp" />
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="GraphicsResource.cpp" />
     <ClCompile Include="ImGuiManager.cpp" />
@@ -225,6 +226,7 @@
     <ClCompile Include="NormalCube.cpp" />
     <ClCompile Include="NormalPlane.cpp" />
     <ClCompile Include="NullPixelShader.cpp" />
+    <ClCompile Include="Pass.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Rasterizer.cpp" />

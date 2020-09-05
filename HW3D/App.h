@@ -31,8 +31,7 @@ private:
 	//Model backpack{ wnd.Gfx(), "res\\models\\backpack\\backpack.obj", 4.0f };
 	NormalCube cube{ wnd.Gfx(), 4.0f };
 	NormalCube cube2{ wnd.Gfx(), 4.0f };
-	
-	//std::unique_ptr<Mesh> pLoaded;
+
 	std::string commandLine;
 	int x = 0, y = 0;
 };

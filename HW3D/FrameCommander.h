@@ -9,6 +9,16 @@
 #include <array>
 #include <optional>
 
+namespace Bind
+{
+	class VertexBuffer;
+	class IndexBuffer;
+	class VertexShader;
+	class InputLayout;
+	class Sampler;
+	class Blender;
+}
+
 class FrameCommander
 {
 public:
