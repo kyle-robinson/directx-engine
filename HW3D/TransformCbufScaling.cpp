@@ -24,6 +24,11 @@ namespace Bind
 		UpdateBind( gfx,xf );
 	}
 
+	std::unique_ptr<CloningBindable> TransformCbufScaling::Clone() const noexcept
+	{
+		return std::make_unique<TransformCbufScaling>( *this );
+	}
+
 	Dcb::RawLayout TransformCbufScaling::MakeLayout()
 	{
 		Dcb::RawLayout layout;

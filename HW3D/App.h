@@ -6,7 +6,6 @@
 #include "ImGuiManager.h"
 #include "Model.h"
 #include "NormalCube.h"
-#include "Material.h"
 #include "RenderGraph.h"
 
 class App
@@ -16,7 +15,8 @@ public:
 	~App();
 	int Init();
 private:
-	void DoFrame();
+	void DoFrame( float dt );
+	void HandleInput( float dt );
 	void ShowRawInputWindow();
 private:
 	ImGuiManager imgui;
