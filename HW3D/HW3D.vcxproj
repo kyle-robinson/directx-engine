@@ -231,6 +231,7 @@
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Rasterizer.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
+    <ClCompile Include="RGCompileException.cpp" />
     <ClCompile Include="Sampler.cpp" />
     <ClCompile Include="SolidSphere.cpp" />
     <ClCompile Include="Step.cpp" />
@@ -305,6 +306,7 @@
     <ClInclude Include="Rasterizer.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="RGCompileException.h" />
     <ClInclude Include="Sampler.h" />
     <ClInclude Include="SolidSphere.h" />
     <ClInclude Include="Sphere.h" />

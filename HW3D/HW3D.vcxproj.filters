@@ -316,7 +316,10 @@
       <Filter>Source Files\Jobs</Filter>
     </ClCompile>
     <ClCompile Include="FrameCommander.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Jobs</Filter>
+    </ClCompile>
+    <ClCompile Include="RGCompileException.cpp">
+      <Filter>Source Files\Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -547,6 +550,9 @@
     </ClInclude>
     <ClInclude Include="Blurring.h">
       <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="RGCompileException.h">
+      <Filter>Header Files\Exceptions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
