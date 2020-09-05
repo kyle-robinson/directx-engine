@@ -15,5 +15,4 @@ namespace Rgph
 	private:
 		std::vector<Job> jobs;
 	};
-
 }

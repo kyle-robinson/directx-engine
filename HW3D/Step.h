@@ -26,7 +26,7 @@ public:
 	void Bind( Graphics& gfx ) const noexcept(!IS_DEBUG);
 	void InitializeParentReferences( const class Drawable& parent ) noexcept;
 	void Accept( TechniqueProbe& probe );
-	void Link(Rgph::RenderGraph& rg );
+	void Link( Rgph::RenderGraph& rg );
 private:
 	std::string targetPassName;
 	Rgph::RenderQueuePass* pTargetPass = nullptr;
