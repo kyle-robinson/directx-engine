@@ -13,13 +13,12 @@
 #include <typeinfo>
 #include <type_traits>
 
-class PassOutput;
-
 namespace Bind
 {
 	class Bindable;
-	class BufferResource;
 }
+
+class Pass;
 
 class PassInput
 {

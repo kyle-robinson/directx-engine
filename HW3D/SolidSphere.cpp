@@ -33,7 +33,6 @@ SolidSphere::SolidSphere( Graphics& gfx, float radius )
 
 		initial.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
 		initial.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
-		initial.AddBindable( Blender::Resolve( gfx, false ) );
 		initial.AddBindable( Rasterizer::Resolve( gfx, false ) );
 
 		solid.AddStep( std::move( initial ) );

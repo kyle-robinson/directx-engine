@@ -345,6 +345,9 @@
     <ClCompile Include="StepLinkingProbe.cpp">
       <Filter>Source Files\Jobs</Filter>
     </ClCompile>
+    <ClCompile Include="TransformCbufScaling.cpp">
+      <Filter>Source Files\Bindables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConstantBuffers.h">
@@ -601,6 +604,15 @@
     </ClInclude>
     <ClInclude Include="StepLinkingProbe.h">
       <Filter>Header Files\Jobs</Filter>
+    </ClInclude>
+    <ClInclude Include="OutlineMaskPass.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="OutlineDrawPass.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformCbufScaling.h">
+      <Filter>Header Files\Bindables</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

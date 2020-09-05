@@ -25,6 +25,6 @@ public:
 	void Link( RenderGraph& rg );
 private:
 	std::string targetPassName;
-	RenderQueuePass* pTargetPass;
+	RenderQueuePass* pTargetPass = nullptr;
 	std::vector<std::shared_ptr<Bind::Bindable>> bindables;
 };

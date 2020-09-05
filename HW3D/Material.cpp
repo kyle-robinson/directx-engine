@@ -1,6 +1,9 @@
 #include "Material.h"
+#include "Stencil.h"
+#include "BindableCommon.h"
 #include "DynamicConstant.h"
 #include "ConstantBufferEx.h"
+#include "TransformCbufScaling.h"
 
 Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesystem::path& path ) noexcept(!IS_DEBUG)
 	: modelPath( path.string() )
@@ -120,10 +123,10 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 		techniques.push_back( std::move( phong ) );
 	}
 	// outline
-	/*{
+	{
 		Technique outline( "Outline", false );
 		{
-			Step mask( 1 );
+			Step mask( "outlineMask" );
 
 			auto pvs = Bind::VertexShader::Resolve( gfx, "SolidVS.cso" );
 			auto pvsbc = pvs->GetByteCode();
@@ -134,7 +137,7 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 			outline.AddStep( std::move( mask ) );
 		}
 		{
-			Step draw( 2 );
+			Step draw( "outlineDraw" );
 
 			auto pvs = Bind::VertexShader::Resolve( gfx, "SolidVS.cso" );
 			auto pvsbc = pvs->GetByteCode();
@@ -151,12 +154,12 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 
 			draw.AddBindable( Bind::InputLayout::Resolve( gfx, layout, pvsbc ) );
 
-			draw.AddBindable( std::make_shared<Bind::TransformCbuf>( gfx ) );
+			draw.AddBindable( std::make_shared<Bind::TransformCbufScaling>( gfx, 1.04f ) );
 
 			outline.AddStep( std::move( draw ) );
 		}
 		techniques.push_back( std::move( outline ) );
-	}*/
+	}
 }
 
 VertexMeta::VertexBuffer Material::ExtractVertices( const aiMesh& mesh ) const noexcept

@@ -1,6 +1,8 @@
 #include "BufferClearPass.h"
 #include "RenderTarget.h"
 #include "DepthStencil.h"
+#include "PassInput.h"
+#include "PassOutput.h"
 
 BufferClearPass::BufferClearPass( std::string name ) :
 	Pass( std::move( name ) )

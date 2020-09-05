@@ -1,16 +1,24 @@
 #include "App.h"
 #include "Math.h"
+#include "MathX.h"
+
 #include "Mesh.h"
 #include "Node.h"
-#include "MathX.h"
+
 #include "ModelProbe.h"
 #include "DynamicConstant.h"
 #include "TechniqueProbe.h"
+
 #include "BufferClearPass.h"
 #include "LambertianPass.h"
+#include "OutlineDrawPass.h"
+#include "OutlineMaskPass.h"
+
 #include "imgui/imgui.h"
+
 #include <memory>
 #include <algorithm>
+
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
@@ -22,23 +30,35 @@ App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 
 	{
 		{
-			auto bcp = std::make_unique<BufferClearPass>( "clear" );
-			bcp->SetInputSource( "renderTarget","$.backbuffer" );
-			bcp->SetInputSource( "depthStencil","$.masterDepth" );
-			rg.AppendPass( std::move( bcp ) );
+			auto pass = std::make_unique<BufferClearPass>( "clear" );
+			pass->SetInputSource( "renderTarget","$.backbuffer" );
+			pass->SetInputSource( "depthStencil","$.masterDepth" );
+			rg.AppendPass( std::move( pass ) );
 		}
 		{
-			auto lp = std::make_unique<LambertianPass>( "lambertian" );
-			lp->SetInputSource( "renderTarget","clear.renderTarget" );
-			lp->SetInputSource( "depthStencil","clear.depthStencil" );
-			rg.AppendPass( std::move( lp ) );
+			auto pass = std::make_unique<LambertianPass>( wnd.Gfx(),"lambertian" );
+			pass->SetInputSource( "renderTarget","clear.renderTarget" );
+			pass->SetInputSource( "depthStencil","clear.depthStencil" );
+			rg.AppendPass( std::move( pass ) );
 		}
-		rg.SetSinkTarget( "backbuffer","lambertian.renderTarget" );
+		{
+			auto pass = std::make_unique<OutlineMaskPass>( wnd.Gfx(),"outlineMask" );
+			pass->SetInputSource( "depthStencil","lambertian.depthStencil" );
+			rg.AppendPass( std::move( pass ) );
+		}
+		{
+			auto pass = std::make_unique<OutlineDrawPass>( wnd.Gfx(),"outlineDraw" );
+			pass->SetInputSource( "renderTarget","lambertian.renderTarget" );
+			pass->SetInputSource( "depthStencil","outlineMask.depthStencil" );
+			rg.AppendPass( std::move( pass ) );
+		}
+		rg.SetSinkTarget( "backbuffer","outlineDraw.renderTarget" );
 		rg.Finalize();
 
 		cube.LinkTechniques( rg );
 		cube2.LinkTechniques( rg );
 		light.LinkTechniques( rg );
+		//sponza.LinkTechniques( rg );
 	}
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 400.0f ) );

@@ -8,7 +8,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/postprocess.h>
 
-Model::Model(Graphics& gfx, const std::string& pathString, const float scale)// : pWindow(std::make_unique<ModelWindow>())
+Model::Model(Graphics& gfx, const std::string& pathString, const float scale)
 {
 	Assimp::Importer importer;
 	const auto pScene = importer.ReadFile(
@@ -40,24 +40,13 @@ Model::Model(Graphics& gfx, const std::string& pathString, const float scale)// 
 
 void Model::Submit() const noexcept(!IS_DEBUG)
 {
-	//pWindow->ApplyParameters();
 	pRoot->Submit(DirectX::XMMatrixIdentity());
 }
-
-/*void Model::ShowControlWindow(Graphics& gfx, const char* windowName) noexcept
-{
-	pWindow->Show(gfx, windowName, *pRoot);
-}*/
 
 void Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept
 {
 	pRoot->SetAppliedTransform(tf);
 }
-
-/*std::unique_ptr<Mesh> Model::ParseMesh(Graphics& gfx, const aiMesh& mesh, const aiMaterial* const* pMaterials, const std::filesystem::path& path, float scale)
-{
-	return {};
-}*/
 
 void Model::Accept( ModelProbe& probe )
 {
@@ -85,6 +74,14 @@ std::unique_ptr<Node> Model::ParseNode( int& nextID, const aiNode& node, float s
 		pNode->AddChild( ParseNode( nextID, *node.mChildren[i], scale ) );
 
 	return pNode;
+}
+
+void Model::LinkTechniques( RenderGraph& rg )
+{
+	for ( auto& pMesh : meshPtrs )
+	{
+		pMesh->LinkTechniques( rg );
+	}
 }
 
 Model::~Model() noexcept { }

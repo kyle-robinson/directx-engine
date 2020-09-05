@@ -4,6 +4,7 @@
 #include "ConstantBufferEx.h"
 #include "DynamicConstant.h"
 #include "TechniqueProbe.h"
+#include "TransformCbufScaling.h"
 #include "imgui/imgui.h"
 
 NormalCube::NormalCube( Graphics& gfx, float size )
@@ -19,6 +20,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 	pIndices = IndexBuffer::Resolve( gfx, geometryTag, model.indices );
 	pTopology = Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST );
 
+	auto tcb = std::make_shared<TransformCbuf>( gfx );
 	{
 		Technique shade( "Shading" );
 		{
@@ -44,34 +46,27 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 			initial.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buf, 1u ) );
 
 			initial.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
-			initial.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
+			initial.AddBindable( Rasterizer::Resolve( gfx, false ) );
+			initial.AddBindable( tcb );
 
 			shade.AddStep( std::move( initial ) );
 		}
 		AddTechnique( std::move( shade ) );
 	}
 
-	/*{
+	{
 		Technique outline( "Outline" );
 		{
-			Step mask( 1 );
+			Step mask( "outlineMask" );
 
-			auto pvs = VertexShader::Resolve( gfx, "SolidVS.cso" );
-			auto pvsbc = pvs->GetByteCode();
-			mask.AddBindable( std::move( pvs ) );
+			mask.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), VertexShader::Resolve( gfx, "SolidVS.cso" )->GetByteCode() ) );
 
-			mask.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
-			mask.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
+			mask.AddBindable( std::move( tcb ) );
 
 			outline.AddStep( std::move( mask ) );
 		}
 		{
-			Step draw( 2 );
-
-			auto pvs = VertexShader::Resolve( gfx, "SolidVS.cso" );
-			auto pvsbc = pvs->GetByteCode();
-			draw.AddBindable( std::move( pvs ) );
-			draw.AddBindable( PixelShader::Resolve( gfx, "SolidPS.cso" ) );
+			Step draw( "outlineDraw" );
 
 			Dcb::RawLayout layout;
 			layout.Add<Dcb::Float4>( "color" );
@@ -80,14 +75,14 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 			buf["color"] = DirectX::XMFLOAT4{ 1.0f, 0.4f, 0.4f, 1.0f };
 			draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buf, 1u ) );
 
-			draw.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
+			draw.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), VertexShader::Resolve( gfx, "SolidVS.cso" )->GetByteCode() ) );
 
-			draw.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
+			draw.AddBindable( std::make_shared<TransformCbufScaling>( gfx, 1.04f ) );
 
 			outline.AddStep( std::move( draw ) );
 		}
 		AddTechnique( std::move( outline ) );
-	}*/
+	}
 }
 
 void NormalCube::SetPos( DirectX::XMFLOAT3 pos ) noexcept

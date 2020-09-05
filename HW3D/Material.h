@@ -1,5 +1,5 @@
 #pragma once
-#include "BindableCommon.h"
+#include "Vertex.h"
 #include "Technique.h"
 #include "Graphics.h"
 #include <filesystem>
@@ -7,6 +7,12 @@
 
 struct aiMaterial;
 struct aiMesh;
+
+namespace Bind
+{
+	class VertexBuffer;
+	class IndexBuffer;
+}
 
 class Material
 {

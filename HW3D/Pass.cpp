@@ -3,12 +3,16 @@
 #include "StringConverter.h"
 #include "RenderTarget.h"
 #include "DepthStencil.h"
+#include "PassInput.h"
+#include "PassOutput.h"
 #include <sstream>
 
 Pass::Pass( std::string name ) noexcept
 	:
 	name( std::move( name ) )
 {}
+
+Pass::~Pass() { }
 
 void Pass::Reset() noexcept(!IS_DEBUG) {}
 
