@@ -14,7 +14,7 @@ class HorizontalBlurPass : public FullscreenPass
 {
 public:
 	HorizontalBlurPass( std::string name, Graphics& gfx, unsigned int width, unsigned int height );
-	void Execute( Graphics& gfx ) const noexcept override;
+	void Execute( Graphics& gfx ) const noexcept(!IS_DEBUG) override;
 private:
 	std::shared_ptr<Bind::Bindable> blurScratchIn;
 	std::shared_ptr<Bind::Bindable> control;

@@ -24,7 +24,7 @@ namespace Bind
 		GFX_THROW_INFO( GetDevice( gfx )->CreateBlendState( &blendDesc, &pBlender ) );
 	}
 
-	void Blender::Bind( Graphics& gfx ) noexcept
+	void Blender::Bind( Graphics& gfx ) noexcept(!IS_DEBUG)
 	{
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->OMSetBlendState( pBlender.Get(), nullptr, 0xFFFFFFFFu ) );
 	}

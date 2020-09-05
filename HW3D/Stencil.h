@@ -40,9 +40,10 @@ namespace Bind
 
 			GFX_THROW_INFO( GetDevice( gfx )->CreateDepthStencilState( &dsDesc, &pStencil ) );
 		}
-		void Bind( Graphics& gfx ) noexcept override
+		void Bind( Graphics& gfx ) noexcept(!IS_DEBUG) override
 		{
-			GetContext( gfx )->OMSetDepthStencilState( pStencil.Get(), 0xFF );
+			INFOMANAGER_NOHR( gfx );
+			GFX_THROW_INFO_ONLY( GetContext( gfx )->OMSetDepthStencilState( pStencil.Get(), 0xFF ) );
 		}
 		static std::shared_ptr<Stencil> Resolve( Graphics& gfx, Mode mode )
 		{

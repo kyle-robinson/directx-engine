@@ -14,7 +14,7 @@ namespace Bind
 		probe.VisitBuffer( buffer );
 	}
 
-	void TransformCbufScaling::Bind( Graphics& gfx ) noexcept
+	void TransformCbufScaling::Bind( Graphics& gfx ) noexcept(!IS_DEBUG)
 	{
 		const float scale = buffer["scale"];
 		const auto scaleMatrix = DirectX::XMMatrixScaling( scale,scale,scale );

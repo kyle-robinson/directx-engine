@@ -8,7 +8,7 @@ namespace Bind
 			pVcbuf = std::make_unique<VertexConstantBuffer<Transforms>>( gfx, slot );
 	}
 
-	void TransformCbuf::Bind( Graphics& gfx ) noexcept
+	void TransformCbuf::Bind( Graphics& gfx ) noexcept(!IS_DEBUG)
 	{
 		UpdateBind( gfx, GetTransforms( gfx ) );
 	}

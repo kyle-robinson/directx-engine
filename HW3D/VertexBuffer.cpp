@@ -25,7 +25,7 @@ namespace Bind
 		GFX_THROW_INFO(GetDevice(gfx)->CreateBuffer(&bd, &sd, &pVertexBuffer));
 	}
 
-	void VertexBuffer::Bind( Graphics& gfx ) noexcept
+	void VertexBuffer::Bind( Graphics& gfx ) noexcept(!IS_DEBUG)
 	{
 		const UINT offset = 0u;
 		INFOMANAGER( gfx );

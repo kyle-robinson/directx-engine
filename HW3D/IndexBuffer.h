@@ -8,7 +8,7 @@ namespace Bind
 	public:
 		IndexBuffer( Graphics& gfx, const std::vector<unsigned short>& indices );
 		IndexBuffer( Graphics& gfx, std::string tag, const std::vector<unsigned short>& indices );
-		void Bind( Graphics& gfx ) noexcept override;
+		void Bind( Graphics& gfx ) noexcept(!IS_DEBUG) override;
 		UINT GetCount() const noexcept;
 		static std::shared_ptr<IndexBuffer> Resolve( Graphics& gfx, const std::string& tag, const std::vector<unsigned short>& indices );
 		template<typename...Ignore>

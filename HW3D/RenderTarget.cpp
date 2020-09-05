@@ -55,26 +55,27 @@ namespace Bind
 		GFX_THROW_INFO( GetDevice( gfx )->CreateRenderTargetView( pTexture, &rtvDesc, &pTargetView ) );
 	}
 
-	void RenderTarget::BindAsBuffer(Graphics& gfx) noexcept
+	void RenderTarget::BindAsBuffer(Graphics& gfx) noexcept(!IS_DEBUG)
 	{
 		ID3D11DepthStencilView* const null = nullptr;
 		BindAsBuffer(gfx, null);
 	}
 
-	void RenderTarget::BindAsBuffer(Graphics& gfx, BufferResource* depthStencil) noexcept
+	void RenderTarget::BindAsBuffer(Graphics& gfx, BufferResource* depthStencil) noexcept(!IS_DEBUG)
 	{
 		assert(dynamic_cast<DepthStencil*>(depthStencil) != nullptr);
 		BindAsBuffer(gfx, static_cast<DepthStencil*>(depthStencil));
 	}
 
-	void RenderTarget::BindAsBuffer(Graphics& gfx, DepthStencil* depthStencil) noexcept
+	void RenderTarget::BindAsBuffer(Graphics& gfx, DepthStencil* depthStencil) noexcept(!IS_DEBUG)
 	{
 		BindAsBuffer(gfx, depthStencil ? depthStencil->pDepthStencilView.Get() : nullptr);
 	}
 
-	void RenderTarget::BindAsBuffer(Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView) noexcept
+	void RenderTarget::BindAsBuffer(Graphics& gfx, ID3D11DepthStencilView* pDepthStencilView) noexcept(!IS_DEBUG)
 	{
-		GetContext(gfx)->OMSetRenderTargets(1, pTargetView.GetAddressOf(), pDepthStencilView);
+		INFOMANAGER_NOHR( gfx );
+		GFX_THROW_INFO_ONLY( GetContext(gfx)->OMSetRenderTargets( 1, pTargetView.GetAddressOf(), pDepthStencilView ) );
 
 		// configure viewport
 		D3D11_VIEWPORT vp;
@@ -84,15 +85,16 @@ namespace Bind
 		vp.MaxDepth = 1.0f;
 		vp.TopLeftX = 0.0f;
 		vp.TopLeftY = 0.0f;
-		GetContext(gfx)->RSSetViewports(1u, &vp);
+		GFX_THROW_INFO_ONLY( GetContext(gfx)->RSSetViewports(1u, &vp) );
 	}
 
-	void RenderTarget::Clear(Graphics& gfx, const std::array<float, 4>& color) noexcept
+	void RenderTarget::Clear(Graphics& gfx, const std::array<float, 4>& color) noexcept(!IS_DEBUG)
 	{
-		GetContext(gfx)->ClearRenderTargetView(pTargetView.Get(), color.data());
+		INFOMANAGER_NOHR( gfx );
+		GFX_THROW_INFO_ONLY( GetContext(gfx)->ClearRenderTargetView(pTargetView.Get(), color.data()) );
 	}
 
-	void RenderTarget::Clear(Graphics& gfx) noexcept
+	void RenderTarget::Clear(Graphics& gfx) noexcept(!IS_DEBUG)
 	{
 		Clear(gfx, { 0.0f,0.0f,0.0f,0.0f });
 	}

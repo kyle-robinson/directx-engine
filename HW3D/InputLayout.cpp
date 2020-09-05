@@ -20,7 +20,7 @@ namespace Bind
 		) );
 	}
 
-	void InputLayout::Bind( Graphics& gfx ) noexcept
+	void InputLayout::Bind( Graphics& gfx ) noexcept(!IS_DEBUG)
 	{
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->IASetInputLayout( pInputLayout.Get() ) );
 	}

@@ -22,7 +22,7 @@ VerticalBlurPass::VerticalBlurPass( std::string name, Graphics& gfx ) :
 	RegisterOutput( BufferOutput<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
 }
 
-void VerticalBlurPass::Execute( Graphics& gfx ) const noexcept
+void VerticalBlurPass::Execute( Graphics& gfx ) const noexcept(!IS_DEBUG)
 {
 	auto buffer = direction->GetBuffer();
 	buffer["isHorizontal"] = false;

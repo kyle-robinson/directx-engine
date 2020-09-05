@@ -29,7 +29,7 @@ void Drawable::AddTechnique( Technique tech_in ) noexcept
 	techniques.push_back( std::move( tech_in ) );
 }
 
-void Drawable::Bind( Graphics& gfx ) const noexcept
+void Drawable::Bind( Graphics& gfx ) const noexcept(!IS_DEBUG)
 {
 	pIndices->Bind( gfx );
 	pTopology->Bind( gfx );

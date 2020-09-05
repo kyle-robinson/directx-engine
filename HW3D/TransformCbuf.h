@@ -8,7 +8,7 @@ namespace Bind
 	{
 	public:
 		TransformCbuf( Graphics& gfx, UINT slot = 0u );
-		void Bind( Graphics& gfx ) noexcept override;
+		void Bind( Graphics& gfx ) noexcept(!IS_DEBUG) override;
 		void InitializeParentReference( const Drawable& parent ) noexcept override;
 		std::unique_ptr<CloningBindable> Clone() const noexcept override;
 	protected:

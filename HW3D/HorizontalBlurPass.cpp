@@ -19,7 +19,7 @@ HorizontalBlurPass::HorizontalBlurPass( std::string name,Graphics& gfx,unsigned 
 	RegisterOutput( ImmutableOutput<Bind::RenderTarget>::Make( "scratchOut", renderTarget ) );
 }
 
-void HorizontalBlurPass::Execute( Graphics& gfx ) const noexcept
+void HorizontalBlurPass::Execute( Graphics& gfx ) const noexcept(!IS_DEBUG)
 {
 	auto buf = direction->GetBuffer();
 	buf["isHorizontal"] = true;

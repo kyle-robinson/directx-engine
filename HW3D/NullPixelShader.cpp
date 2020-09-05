@@ -7,7 +7,7 @@ namespace Bind
 {
 	NullPixelShader::NullPixelShader( Graphics& gfx ) { }
 
-	void NullPixelShader::Bind( Graphics& gfx ) noexcept
+	void NullPixelShader::Bind( Graphics& gfx ) noexcept(!IS_DEBUG)
 	{
 		GetContext( gfx )->PSSetShader( nullptr, nullptr, 0u );
 	}

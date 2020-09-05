@@ -24,7 +24,7 @@ FullscreenPass::FullscreenPass( const std::string& name, Graphics& gfx ) noexcep
 	AddBind( Bind::Rasterizer::Resolve( gfx, false ) );
 }
 
-void FullscreenPass::Execute( Graphics& gfx ) const noexcept
+void FullscreenPass::Execute( Graphics& gfx ) const noexcept(!IS_DEBUG)
 {
 	BindAll( gfx );
 	gfx.DrawIndexed( 6u );
