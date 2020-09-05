@@ -9,7 +9,7 @@
 #include <sstream>
 #include <shellapi.h>
 
-App::App( const std::string& commandLine ) : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
+App::App( const std::string& commandLine ) : wnd( 1920, 1080, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
 	if ( this->commandLine != "" )
 	{

@@ -52,6 +52,8 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 		&pContext
 	) );
 
+	pSwap->SetFullscreenState( true, nullptr );
+
 	// gain access to back buffer (sub-resource)
 	Microsoft::WRL::ComPtr<ID3D11Resource> pBackBuffer;
 	GFX_THROW_INFO(pSwap->GetBuffer(0, __uuidof(ID3D11Resource), &pBackBuffer));
