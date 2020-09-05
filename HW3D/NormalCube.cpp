@@ -4,7 +4,6 @@
 #include "ConstantBufferEx.h"
 #include "DynamicConstant.h"
 #include "TechniqueProbe.h"
-#include "TransformCbufScaling.h"
 #include "imgui/imgui.h"
 
 NormalCube::NormalCube( Graphics& gfx, float size )
@@ -77,7 +76,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 
 			draw.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), VertexShader::Resolve( gfx, "SolidVS.cso" )->GetByteCode() ) );
 
-			draw.AddBindable( std::make_shared<TransformCbufScaling>( gfx, 1.04f ) );
+			draw.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
 
 			outline.AddStep( std::move( draw ) );
 		}

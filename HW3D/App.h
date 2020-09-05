@@ -7,6 +7,8 @@
 #include "Model.h"
 #include "NormalCube.h"
 #include "RenderGraph.h"
+#include "ScaleOutlineRG.h"
+#include "BlurOutlineRG.h"
 
 class App
 {

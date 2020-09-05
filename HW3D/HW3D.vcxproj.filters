@@ -154,6 +154,12 @@
     <Filter Include="Source Files\Jobs\Passes">
       <UniqueIdentifier>{2163c5c6-a2d3-42f2-9bc2-f134da703e87}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Jobs\Graphs">
+      <UniqueIdentifier>{6dc327ba-c30f-4713-a8de-324bc9d4266f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Jobs\Graphs">
+      <UniqueIdentifier>{35e5cacc-b2d1-4da1-aef3-353140d94434}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -347,6 +353,18 @@
     </ClCompile>
     <ClCompile Include="TransformCbufScaling.cpp">
       <Filter>Source Files\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleOutlineRG.cpp">
+      <Filter>Source Files\Jobs\Graphs</Filter>
+    </ClCompile>
+    <ClCompile Include="VerticalBlurPass.cpp">
+      <Filter>Source Files\Jobs\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="HorizontalBlurPass.cpp">
+      <Filter>Source Files\Jobs\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="BlurOutlineRG.cpp">
+      <Filter>Source Files\Jobs\Graphs</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -616,6 +634,21 @@
     </ClInclude>
     <ClInclude Include="ModelProbeWindow.h">
       <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleOutlineRG.h">
+      <Filter>Header Files\Jobs\Graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="VerticalBlurPass.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="HorizontalBlurPass.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="BlurOutlineRG.h">
+      <Filter>Header Files\Jobs\Graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="BlurOutlineDrawPass.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

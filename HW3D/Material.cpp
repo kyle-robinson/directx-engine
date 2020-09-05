@@ -146,7 +146,7 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 
 			draw.AddBindable( Bind::InputLayout::Resolve( gfx, layout, Bind::VertexShader::Resolve( gfx, "SolidVS.cso" )->GetByteCode() ) );
 
-			draw.AddBindable( std::make_shared<Bind::TransformCbufScaling>( gfx, 1.04f ) );
+			draw.AddBindable( std::make_shared<Bind::TransformCbuf>( gfx ) );
 
 			outline.AddStep( std::move( draw ) );
 		}
