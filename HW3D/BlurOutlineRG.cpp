@@ -23,7 +23,7 @@ namespace Rgph
 		}
 		{
 			auto pass = std::make_unique<BufferClearPass>("clearDS");
-			pass->SetSinkLinkage("buffer", "$.backbuffer");
+			pass->SetSinkLinkage("buffer", "$.masterDepth");
 			AppendPass(std::move(pass));
 		}
 		{

@@ -6,7 +6,6 @@
 #include "ImGuiManager.h"
 #include "Model.h"
 #include "NormalCube.h"
-#include "RenderGraph.h"
 #include "BlurOutlineRG.h"
 
 class App
@@ -25,9 +24,9 @@ private:
 	Timer timer;
 	Camera camera;
 	PointLight light;
-	Rgph::RenderGraph rg{ wnd.Gfx() };
+	Rgph::BlurOutlineRG rg{ wnd.Gfx() };
 
-	//Model sponza{ wnd.Gfx(), "res\\models\\sponza\\sponza.obj", 1.0f / 20.0f };
+	Model sponza{ wnd.Gfx(), "res\\models\\sponza\\sponza.obj", 1.0f / 20.0f };
 	//Model goblin{ wnd.Gfx(), "res\\models\\goblin\\GoblinX.obj", 4.0f };
 	//Model backpack{ wnd.Gfx(), "res\\models\\backpack\\backpack.obj", 4.0f };
 	NormalCube cube{ wnd.Gfx(), 4.0f };

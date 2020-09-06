@@ -21,8 +21,8 @@ namespace Rgph
 			RenderQueuePass(std::move(name))
 		{
 			renderTarget = std::make_unique<Bind::ShaderInputRenderTarget>(gfx, width / 2, height / 2, 0);
-			AddBind(Bind::VertexShader::Resolve(gfx, "Solid_VS.cso"));
-			AddBind(Bind::PixelShader::Resolve(gfx, "Solid_PS.cso"));
+			AddBind(Bind::VertexShader::Resolve(gfx, "SolidVS.cso"));
+			AddBind(Bind::PixelShader::Resolve(gfx, "SolidPS.cso"));
 			AddBind(Bind::Stencil::Resolve(gfx, Bind::Stencil::Mode::Mask));
 			AddBind(Bind::Blender::Resolve(gfx, false));
 			RegisterSource(DirectBindableSource<Bind::RenderTarget>::Make("scratchOut", renderTarget));

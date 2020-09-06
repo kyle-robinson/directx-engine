@@ -19,7 +19,7 @@ App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 	cube.LinkTechniques( rg );
 	cube2.LinkTechniques( rg );
 	light.LinkTechniques( rg );
-	//sponza.LinkTechniques( rg );
+	sponza.LinkTechniques( rg );
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 400.0f ) );
 }
@@ -108,7 +108,7 @@ void App::DoFrame( float dt )
 
 	// objects
 	light.Submit();
-	//sponza.Submit();
+	sponza.Submit();
 	//goblin.Submit();
 	//backpack.Submit();
 	cube.Submit();
@@ -122,7 +122,7 @@ void App::DoFrame( float dt )
 		static MP modelProbe;
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
-		//modelProbe.SpawnWindow( sponza );
+		modelProbe.SpawnWindow( sponza );
 		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 		ShowRawInputWindow();
