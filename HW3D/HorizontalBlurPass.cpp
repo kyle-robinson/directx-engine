@@ -5,6 +5,7 @@
 #include "Sink.h"
 #include "Source.h"
 #include "Blender.h"
+#include "Sampler.h"
 
 namespace Rgph
 {
@@ -13,6 +14,7 @@ namespace Rgph
 	{
 		AddBind(Bind::PixelShader::Resolve(gfx, "BlurOutline_PS.cso"));
 		AddBind(Bind::Blender::Resolve(gfx, false));
+		AddBind(Bind::Sampler::Resolve(gfx, Bind::Sampler::Type::Point, true));
 
 		AddBindSink<Bind::RenderTarget>( "control" );
 		AddBindSink<Bind::CachingPixelConstantBufferEx>( "scratchIn" );
