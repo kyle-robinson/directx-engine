@@ -46,9 +46,9 @@ namespace Rgph
 				l.Add<Dcb::Array>("coefficients");
 				l["coefficients"].Set<Dcb::Float>(maxRadius * 2 + 1);
 				Dcb::Buffer buf{ std::move(l) };
-				blurControl = std::make_shared<Bind::CachingPixelConstantBufferEx>(gfx, buf, 0);
+				blurKernel = std::make_shared<Bind::CachingPixelConstantBufferEx>(gfx, buf, 0);
 				SetKernelGauss(radius, sigma);
-				AddGlobalSource(DirectBindableSource<Bind::CachingPixelConstantBufferEx>::Make("blurControl", blurControl));
+				AddGlobalSource(DirectBindableSource<Bind::CachingPixelConstantBufferEx>::Make("blurKernel", blurKernel));
 			}
 			{
 				Dcb::RawLayout l;
@@ -66,7 +66,7 @@ namespace Rgph
 		{
 			auto pass = std::make_unique<HorizontalBlurPass>("horizontal", gfx, gfx.GetWidth(), gfx.GetHeight());
 			pass->SetSinkLinkage("scratchIn", "outlineDraw.scratchOut");
-			pass->SetSinkLinkage("control", "$.blurControl");
+			pass->SetSinkLinkage("kernel", "$.blurKernel");
 			pass->SetSinkLinkage("direction", "$.blurDirection");
 			AppendPass(std::move(pass));
 		}
@@ -75,7 +75,7 @@ namespace Rgph
 			pass->SetSinkLinkage("renderTarget", "lambertian.renderTarget");
 			pass->SetSinkLinkage("depthStencil", "outlineMask.depthStencil");
 			pass->SetSinkLinkage("scratchIn", "horizontal.scratchOut");
-			pass->SetSinkLinkage("control", "$.blurControl");
+			pass->SetSinkLinkage("kernel", "$.blurKernel");
 			pass->SetSinkLinkage("direction", "$.blurDirection");
 			AppendPass(std::move(pass));
 		}
@@ -87,7 +87,7 @@ namespace Rgph
 	void BlurOutlineRG::SetKernelGauss(int radius, float sigma) noexcept(!IS_DEBUG)
 	{
 		assert(radius <= maxRadius);
-		auto k = blurControl->GetBuffer();
+		auto k = blurKernel->GetBuffer();
 		const int nTaps = radius * 2 + 1;
 		k["nTaps"] = nTaps;
 		float sum = 0.0f;
@@ -102,6 +102,6 @@ namespace Rgph
 		{
 			k["coefficients"][i] = (float)k["coefficients"][i] / sum;
 		}
-		blurControl->SetBuffer(k);
+		blurKernel->SetBuffer(k);
 	}
 }

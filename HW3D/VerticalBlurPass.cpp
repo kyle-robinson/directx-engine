@@ -11,13 +11,13 @@ namespace Rgph
 	VerticalBlurPass::VerticalBlurPass( std::string name, Graphics& gfx ) :
 		FullscreenPass( std::move( name ), gfx )
 	{
-		AddBind( Bind::PixelShader::Resolve( gfx, "BlurOutline_PS.cso" ) );
+		AddBind( Bind::PixelShader::Resolve( gfx, "BlurOutlinePS.cso" ) );
 		AddBind( Bind::Blender::Resolve( gfx, true ) );
 		AddBind( Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Mask ) );
 		AddBind( Bind::Sampler::Resolve( gfx, Bind::Sampler::Type::Bilinear, true ) );
 
 		AddBindSink<Bind::RenderTarget>( "scratchIn" );
-		AddBindSink<Bind::CachingPixelConstantBufferEx>( "control" );
+		AddBindSink<Bind::CachingPixelConstantBufferEx>( "kernel" );
 		RegisterSink( DirectBindableSink<Bind::CachingPixelConstantBufferEx>::Make( "direction", direction ) );
 		RegisterSink( DirectBufferSink<Bind::RenderTarget>::Make( "renderTarget", renderTarget ) );
 		RegisterSink( DirectBufferSink<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );

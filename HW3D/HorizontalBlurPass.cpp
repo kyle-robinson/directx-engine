@@ -12,12 +12,12 @@ namespace Rgph
 	HorizontalBlurPass::HorizontalBlurPass(std::string name, Graphics& gfx, unsigned int width, unsigned int height) :
 		FullscreenPass(std::move(name), gfx)
 	{
-		AddBind(Bind::PixelShader::Resolve(gfx, "BlurOutline_PS.cso"));
+		AddBind(Bind::PixelShader::Resolve(gfx, "BlurOutlinePS.cso"));
 		AddBind(Bind::Blender::Resolve(gfx, false));
 		AddBind(Bind::Sampler::Resolve(gfx, Bind::Sampler::Type::Point, true));
 
-		AddBindSink<Bind::RenderTarget>( "control" );
-		AddBindSink<Bind::CachingPixelConstantBufferEx>( "scratchIn" );
+		AddBindSink<Bind::RenderTarget>( "scratchIn" );
+		AddBindSink<Bind::CachingPixelConstantBufferEx>( "kernel" );
 		RegisterSink( DirectBindableSink<Bind::CachingPixelConstantBufferEx>::Make( "direction", direction ) );
 
 		renderTarget = std::make_shared<Bind::ShaderInputRenderTarget>(gfx, width / 2, height / 2, 0u);
