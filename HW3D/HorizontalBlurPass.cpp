@@ -1,4 +1,5 @@
 #include "HorizontalBlurPass.h"
+#include "ConstantBufferEx.h"
 #include "PixelShader.h"
 #include "RenderTarget.h"
 #include "Sink.h"
@@ -13,9 +14,9 @@ namespace Rgph
 		AddBind(Bind::PixelShader::Resolve(gfx, "BlurOutline_PS.cso"));
 		AddBind(Bind::Blender::Resolve(gfx, false));
 
-		RegisterSink(DirectBindableSink<Bind::Bindable>::Make("control", control));
-		RegisterSink(DirectBindableSink<Bind::CachingPixelConstantBufferEx>::Make("direction", direction));
-		RegisterSink(DirectBindableSink<Bind::Bindable>::Make("scratchIn", blurScratchIn));
+		AddBindSink<Bind::RenderTarget>( "control" );
+		AddBindSink<Bind::CachingPixelConstantBufferEx>( "scratchIn" );
+		RegisterSink( DirectBindableSink<Bind::CachingPixelConstantBufferEx>::Make( "direction", direction ) );
 
 		renderTarget = std::make_shared<Bind::ShaderInputRenderTarget>(gfx, width / 2, height / 2, 0u);
 		RegisterSource(DirectBindableSource<Bind::RenderTarget>::Make("scratchOut", renderTarget));
@@ -27,8 +28,6 @@ namespace Rgph
 		buf["isHorizontal"] = true;
 		direction->SetBuffer(buf);
 
-		blurScratchIn->Bind(gfx);
-		control->Bind(gfx);
 		direction->Bind(gfx);
 		FullscreenPass::Execute(gfx);
 	}
