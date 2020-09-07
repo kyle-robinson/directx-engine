@@ -16,12 +16,19 @@ namespace Rgph
 	class BlurOutlineRG : public RenderGraph
 	{
 	public:
-		BlurOutlineRG(Graphics& gfx);
+		BlurOutlineRG( Graphics& gfx );
+		void RenderWidgets( Graphics& gfx );
 	private:
-		void SetKernelGauss(int radius, float sigma) noexcept(!IS_DEBUG);
+		void SetKernelGauss( int radius, float sigma ) noexcept(!IS_DEBUG);
+		void SetKernelBox( int radius ) noexcept(!IS_DEBUG);
+		enum class KernelType
+		{
+			Gauss,
+			Box
+		} kernelType = KernelType::Gauss;
 		static constexpr int maxRadius = 7;
-		static constexpr int radius = 4;
-		static constexpr float sigma = 2.0f;
+		int radius = 4;
+		float sigma = 2.0f;
 		std::shared_ptr<Bind::CachingPixelConstantBufferEx> blurKernel;
 		std::shared_ptr<Bind::CachingPixelConstantBufferEx> blurDirection;
 	};

@@ -10,6 +10,7 @@
 #include "RenderTarget.h"
 #include "DynamicConstant.h"
 #include "Math.h"
+#include "imgui/imgui.h"
 
 namespace Rgph
 {
@@ -41,11 +42,11 @@ namespace Rgph
 		// setup blur constant buffers
 		{
 			{
-				Dcb::RawLayout l;
-				l.Add<Dcb::Integer>("nTaps");
-				l.Add<Dcb::Array>("coefficients");
-				l["coefficients"].Set<Dcb::Float>(maxRadius * 2 + 1);
-				Dcb::Buffer buf{ std::move(l) };
+				Dcb::RawLayout layout;
+				layout.Add<Dcb::Integer>("nTaps");
+				layout.Add<Dcb::Array>("coefficients");
+				layout["coefficients"].Set<Dcb::Float>(maxRadius * 2 + 1);
+				Dcb::Buffer buf{ std::move(layout) };
 				blurKernel = std::make_shared<Bind::CachingPixelConstantBufferEx>(gfx, buf, 0);
 				SetKernelGauss(radius, sigma);
 				AddGlobalSource(DirectBindableSource<Bind::CachingPixelConstantBufferEx>::Make("blurKernel", blurKernel));
@@ -84,24 +85,83 @@ namespace Rgph
 		Finalize();
 	}
 
-	void BlurOutlineRG::SetKernelGauss(int radius, float sigma) noexcept(!IS_DEBUG)
+	void BlurOutlineRG::RenderWidgets( Graphics& gfx )
 	{
-		assert(radius <= maxRadius);
-		auto k = blurKernel->GetBuffer();
+		if ( ImGui::Begin( "Kernel", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
+		{
+			bool filterChanged = false;
+			{
+				const char* items[] = { "Gauss", "Box" };
+				static const char* curItem = items[0];
+				if ( ImGui::BeginCombo( "Filter Type", curItem ) )
+				{
+					for ( int n = 0; n < std::size( items ); n++ )
+					{
+						const bool isSelected = ( curItem == items[n] );
+						if ( ImGui::Selectable( items[n], isSelected ) )
+						{
+							filterChanged = true;
+							curItem = items[n];
+							
+							if ( curItem == items[0] )
+								kernelType = KernelType::Gauss;
+							else if ( curItem == items[1] )
+								kernelType = KernelType::Box;
+
+							if ( isSelected )
+								ImGui::SetItemDefaultFocus();
+						}
+					}
+					ImGui::EndCombo();
+				}
+
+				bool radChange = ImGui::SliderInt( "Radius", &radius, 0, maxRadius );
+				bool sigChange = ImGui::SliderFloat( "Sigma", &sigma, 0.1f, 10.0f );
+				if ( radChange || sigChange || filterChanged )
+				{
+					if ( kernelType == KernelType::Gauss )
+						SetKernelGauss( radius, sigma );
+					else if ( kernelType == KernelType::Box )
+						SetKernelBox( radius );
+				}
+			}
+		}
+		ImGui::End();
+	}
+
+	void BlurOutlineRG::SetKernelGauss( int radius, float sigma ) noexcept(!IS_DEBUG)
+	{
+		assert( radius <= maxRadius );
+		auto kernel = blurKernel->GetBuffer();
 		const int nTaps = radius * 2 + 1;
-		k["nTaps"] = nTaps;
+		kernel["nTaps"] = nTaps;
 		float sum = 0.0f;
-		for (int i = 0; i < nTaps; i++)
+		
+		for ( int i = 0; i < nTaps; i++ )
 		{
 			const auto x = float(i - radius);
 			const auto g = gauss(x, sigma);
 			sum += g;
-			k["coefficients"][i] = g;
+			kernel["coefficients"][i] = g;
 		}
-		for (int i = 0; i < nTaps; i++)
-		{
-			k["coefficients"][i] = (float)k["coefficients"][i] / sum;
-		}
-		blurKernel->SetBuffer(k);
+		
+		for ( int i = 0; i < nTaps; i++ )
+			kernel["coefficients"][i] = (float)kernel["coefficients"][i] / sum;
+
+		blurKernel->SetBuffer( kernel );
+	}
+
+	void BlurOutlineRG::SetKernelBox( int radius ) noexcept(!IS_DEBUG)
+	{
+		assert( radius <= maxRadius );
+		auto kernel = blurKernel->GetBuffer();
+		const int nTaps = radius * 2 + 1;
+		kernel["nTaps"] = nTaps;
+		const float coefficients = 1.0f / nTaps;
+		
+		for ( int i = 0; i < nTaps; i++ )
+			kernel["coefficients"][i] = coefficients;
+
+		blurKernel->SetBuffer( kernel );
 	}
 }

@@ -125,6 +125,7 @@ void App::DoFrame( float dt )
 		modelProbe.SpawnWindow( sponza, "Sponza" );
 		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
+		rg.RenderWidgets( wnd.Gfx() );
 		ShowRawInputWindow();
 	}
 	
