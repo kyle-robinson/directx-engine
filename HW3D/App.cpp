@@ -1,4 +1,5 @@
 #include "App.h"
+#include "Math.h"
 
 #include "ModelProbeWindow.h"
 
@@ -15,11 +16,26 @@ App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
 	cube.SetPos( { 4.0f, 0.0f, 0.0f } );
 	cube2.SetPos( { -8.0f, 0.0f, 0.0f } );
+	nanosuit.SetRootTransform(
+		DirectX::XMMatrixRotationY( PI / 2.0f ) *
+		DirectX::XMMatrixTranslation( 27.0f, -0.56f, 1.7f )
+	);
+	goblin.SetRootTransform(
+		DirectX::XMMatrixRotationY( -PI / 2.0f ) *
+		DirectX::XMMatrixTranslation( -8.0f, 10.0f, 0.0f )
+	);
+	backpack.SetRootTransform(
+		DirectX::XMMatrixRotationY( PI / 0.5f ) *
+		DirectX::XMMatrixTranslation( 10.0f, 5.0f, 10.0f )
+	);
 
 	cube.LinkTechniques( rg );
 	cube2.LinkTechniques( rg );
 	light.LinkTechniques( rg );
 	sponza.LinkTechniques( rg );
+	nanosuit.LinkTechniques( rg );
+	goblin.LinkTechniques( rg );
+	backpack.LinkTechniques( rg );
 
 	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 400.0f ) );
 }
@@ -109,8 +125,9 @@ void App::DoFrame( float dt )
 	// objects
 	light.Submit();
 	sponza.Submit();
-	//goblin.Submit();
-	//backpack.Submit();
+	nanosuit.Submit();
+	goblin.Submit();
+	backpack.Submit();
 	cube.Submit();
 	cube2.Submit();
 
@@ -119,10 +136,18 @@ void App::DoFrame( float dt )
 	// imgui
 	if ( wnd.Gfx().IsImGuiEnabled() )
 	{
-		static MP modelProbe;
+		static MP sponzaProbe;
+		static MP nanosuitProbe;
+		static MP goblinProbe;
+		static MP backpackProbe;
+
+		sponzaProbe.SpawnWindow( sponza, "Sponza" );
+		nanosuitProbe.SpawnWindow( nanosuit, "Nanosuit" );
+		goblinProbe.SpawnWindow( goblin, "Goblin" );
+		backpackProbe.SpawnWindow( backpack, "Backpack" );
+		
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
-		modelProbe.SpawnWindow( sponza, "Sponza" );
 		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 		rg.RenderWidgets( wnd.Gfx() );

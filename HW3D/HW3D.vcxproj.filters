@@ -791,6 +791,12 @@
     <FxCompile Include="BlurPS.hlsl">
       <Filter>Resource Files\Shaders\Framebuffer\Pixel</Filter>
     </FxCompile>
+    <FxCompile Include="PhongDifMskSpcVS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Vertex</Filter>
+    </FxCompile>
+    <FxCompile Include="PhongDifMskSpcPS.hlsl">
+      <Filter>Resource Files\Shaders\Lighting\Pixel</Filter>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HW3D.rc">

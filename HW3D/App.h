@@ -27,8 +27,9 @@ private:
 	Rgph::BlurOutlineRG rg{ wnd.Gfx() };
 
 	Model sponza{ wnd.Gfx(), "res\\models\\sponza\\sponza.obj", 1.0f / 20.0f };
-	//Model goblin{ wnd.Gfx(), "res\\models\\goblin\\GoblinX.obj", 4.0f };
-	//Model backpack{ wnd.Gfx(), "res\\models\\backpack\\backpack.obj", 4.0f };
+	Model nanosuit{ wnd.Gfx(), "res\\models\\nanosuit\\nanosuit.obj", 4.0f };
+	Model goblin{ wnd.Gfx(), "res\\models\\goblin\\GoblinX.obj", 4.0f };
+	Model backpack{ wnd.Gfx(), "res\\models\\backpack\\backpack.obj", 4.0f };
 	NormalCube cube{ wnd.Gfx(), 4.0f };
 	NormalCube cube2{ wnd.Gfx(), 4.0f };
 
