@@ -2,8 +2,8 @@
 #include "Math.h"
 #include "imgui/imgui.h"
 
-Camera::Camera( DirectX::XMFLOAT3 initialPos, float initialPitch, float initialYaw ) noexcept :
-	initialPos( initialPos ), initialPitch( initialPitch ), initialYaw( initialYaw )
+Camera::Camera( std::string name, DirectX::XMFLOAT3 initialPos, float initialPitch, float initialYaw ) noexcept :
+	name( std::move( name ) ), initialPos( initialPos ), initialPitch( initialPitch ), initialYaw( initialYaw )
 {
 	Reset();
 }
@@ -25,33 +25,29 @@ DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 	return DirectX::XMMatrixLookAtLH( camPosition, camTarget, DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
 }
 
-void Camera::SpawnControlWindow() noexcept
+void Camera::SpawnControlWidgets() noexcept
 {
-	if ( ImGui::Begin( "Camera", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
+	if ( ImGui::CollapsingHeader( "Position" ) )
 	{
-		if ( ImGui::CollapsingHeader( "Position" ) )
-		{
-			ImGui::SliderFloat( "X", &pos.x, -80.0f, 80.0f, "%.1f" );
-			ImGui::SliderFloat( "Y", &pos.y, -80.0f, 80.0f, "%.1f" );
-			ImGui::SliderFloat( "Z", &pos.z, -80.0f, 80.0f, "%.1f" );
-		}
-
-		if ( ImGui::CollapsingHeader( "Orientation" ) )
-		{
-			ImGui::SliderAngle( "Pitch", &pitch, 0.995f * -90.0f, 0.995f * 90.0f );
-			ImGui::SliderAngle( "Yaw", &yaw, -180.0f, 180.0f );
-		}
-
-		if ( ImGui::CollapsingHeader( "Speed" ) )
-		{
-			ImGui::SliderFloat( "Movement", &travelSpeed, 1.0f, 20.0f, "%.1f" );
-			ImGui::SliderFloat( "Rotation", &rotationSpeed, 0.0001f, 0.01f );
-		}
-		
-		if ( ImGui::Button( "Reset" ) )
-			Reset();
+		ImGui::SliderFloat( "X", &pos.x, -80.0f, 80.0f, "%.1f" );
+		ImGui::SliderFloat( "Y", &pos.y, -80.0f, 80.0f, "%.1f" );
+		ImGui::SliderFloat( "Z", &pos.z, -80.0f, 80.0f, "%.1f" );
 	}
-	ImGui::End();
+
+	if ( ImGui::CollapsingHeader( "Orientation" ) )
+	{
+		ImGui::SliderAngle( "Pitch", &pitch, 0.995f * -90.0f, 0.995f * 90.0f );
+		ImGui::SliderAngle( "Yaw", &yaw, -180.0f, 180.0f );
+	}
+
+	if ( ImGui::CollapsingHeader( "Speed" ) )
+	{
+		ImGui::SliderFloat( "Movement", &travelSpeed, 1.0f, 20.0f, "%.1f" );
+		ImGui::SliderFloat( "Rotation", &rotationSpeed, 0.0001f, 0.01f );
+	}
+		
+	if ( ImGui::Button( "Reset" ) )
+		Reset();
 }
 
 void Camera::Reset() noexcept
@@ -83,4 +79,9 @@ void Camera::Translate( DirectX::XMFLOAT3 translation ) noexcept
 		pos.y + translation.y,
 		pos.z + translation.z
 	};
+}
+
+const std::string& Camera::GetName() const noexcept
+{
+	return name;
 }

@@ -10,17 +10,21 @@ namespace Bind
 	{
 		INFOMANAGER( gfx );
 
+		const auto d3dLayout = layout.GetD3DLayout();
+		const auto pByteCode = vs.GetByteCode();
+
 		GFX_THROW_INFO( GetDevice( gfx )->CreateInputLayout(
-			layout_in.GetD3DLayout().data(),
-			(UINT)layout_in.GetD3DLayout().size(),
-			vs.GetByteCode()->GetBufferPointer(),
-			vs.GetByteCode()->GetBufferSize(),
+			d3dLayout.data(),
+			(UINT)d3dLayout.size(),
+			pByteCode->GetBufferPointer(),
+			pByteCode->GetBufferSize(),
 			&pInputLayout
 		) );
 	}
 
 	void InputLayout::Bind( Graphics& gfx ) noexcept(!IS_DEBUG)
 	{
+		INFOMANAGER_NOHR( gfx );
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->IASetInputLayout( pInputLayout.Get() ) );
 	}
 

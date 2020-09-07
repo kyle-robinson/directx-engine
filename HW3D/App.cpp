@@ -1,4 +1,5 @@
 #include "App.h"
+#include "Camera.h"
 
 #include "ModelProbeWindow.h"
 
@@ -13,6 +14,9 @@
 
 App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
 {
+	cameras.AddCamera( std::make_unique<Camera>( "A", DirectX::XMFLOAT3{ -13.5f, 6.0f, 3.5f }, 0.0f, PI / 2.0f ) );
+	cameras.AddCamera( std::make_unique<Camera>( "B", DirectX::XMFLOAT3{ -13.5f, 28.8f, -6.4f }, PI / 180.0f * 13.0f, PI / 180.0f * 61.0f ) );
+	
 	cube.SetPos( { 4.0f, 0.0f, 0.0f } );
 	cube2.SetPos( { -8.0f, 0.0f, 0.0f } );
 	nanosuit.SetRootTransform(
@@ -93,24 +97,24 @@ void App::HandleInput( float dt )
 	if (!wnd.CursorEnabled())
 	{
 		if (wnd.kbd.KeyIsPressed('W'))
-			camera.Translate({ 0.0f, 0.0f, dt });
+			cameras.GetCamera().Translate({ 0.0f, 0.0f, dt });
 		if (wnd.kbd.KeyIsPressed('A'))
-			camera.Translate({ -dt, 0.0f, 0.0f });
+			cameras.GetCamera().Translate({ -dt, 0.0f, 0.0f });
 		if (wnd.kbd.KeyIsPressed('S'))
-			camera.Translate({ 0.0f, 0.0f, -dt });
+			cameras.GetCamera().Translate({ 0.0f, 0.0f, -dt });
 		if (wnd.kbd.KeyIsPressed('D'))
-			camera.Translate({ dt, 0.0f, 0.0f });
+			cameras.GetCamera().Translate({ dt, 0.0f, 0.0f });
 		if (wnd.kbd.KeyIsPressed('R'))
-			camera.Translate({ 0.0f, dt, 0.0f });
+			cameras.GetCamera().Translate({ 0.0f, dt, 0.0f });
 		if (wnd.kbd.KeyIsPressed('F'))
-			camera.Translate({ 0.0f, -dt, 0.0f });
+			cameras.GetCamera().Translate({ 0.0f, -dt, 0.0f });
 	}
 
 	// camera rotation
 	while (const auto delta = wnd.mouse.ReadRawDelta())
 	{
 		if (!wnd.CursorEnabled())
-			camera.Rotate(delta->x, delta->y);
+			cameras.GetCamera().Rotate(delta->x, delta->y);
 	}
 }
 
@@ -118,8 +122,8 @@ void App::DoFrame( float dt )
 {
 	// setup
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
-	wnd.Gfx().SetCamera( camera.GetMatrix() );
-	light.Bind( wnd.Gfx(), camera.GetMatrix() );
+	wnd.Gfx().SetCamera( cameras.GetCamera().GetMatrix() );
+	light.Bind( wnd.Gfx(), cameras.GetCamera().GetMatrix() );
 
 	// objects
 	light.Submit();
@@ -145,7 +149,7 @@ void App::DoFrame( float dt )
 		goblinProbe.SpawnWindow( goblin, "Goblin" );
 		backpackProbe.SpawnWindow( backpack, "Backpack" );
 		
-		camera.SpawnControlWindow();
+		cameras.SpawnControlWindow();
 		light.SpawnControlWindow();
 		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );

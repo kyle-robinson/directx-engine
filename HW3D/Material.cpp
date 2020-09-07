@@ -86,9 +86,9 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 			step.AddBindable( std::make_shared<Bind::TransformCbuf>( gfx, 0u ) );
 			step.AddBindable( Bind::Blender::Resolve( gfx, false ) );
 			auto pvs = Bind::VertexShader::Resolve( gfx, shaderCode + "VS.cso" );
+			step.AddBindable( Bind::InputLayout::Resolve( gfx, layout, *pvs ) );
 			step.AddBindable( std::move( pvs ) );
 			step.AddBindable( Bind::PixelShader::Resolve( gfx, shaderCode + "PS.cso" ) );
-			step.AddBindable( Bind::InputLayout::Resolve( gfx, layout, *pvs ) );
 			if ( hasTexture )
 				step.AddBindable( Bind::Sampler::Resolve( gfx ) );
 			// PS Material CBuf

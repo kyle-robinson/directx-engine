@@ -56,7 +56,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 		{
 			Step mask( "outlineMask" );
 
-			mask.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), VertexShader::Resolve( gfx, "SolidVS.cso" )->GetByteCode() ) );
+			mask.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), *VertexShader::Resolve( gfx, "SolidVS.cso" ) ) );
 
 			mask.AddBindable( std::move( tcb ) );
 
@@ -72,7 +72,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 			buf["color"] = DirectX::XMFLOAT4{ 1.0f, 0.4f, 0.4f, 1.0f };
 			draw.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buf, 1u ) );
 
-			draw.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), VertexShader::Resolve( gfx, "SolidVS.cso" )->GetByteCode() ) );
+			draw.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), *VertexShader::Resolve( gfx, "SolidVS.cso" ) ) );
 
 			draw.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
 

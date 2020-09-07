@@ -28,6 +28,6 @@ void SplitStringIter(const std::string& s, const std::string& delim, Iter out)
 	}
 }
 
-inline std::vector<std::string> SplitString( const std::string& s, const std::string& delim );
+std::vector<std::string> SplitString( const std::string& s, const std::string& delim );
 
 bool StringContains( std::string_view haystack, std::string_view needle );

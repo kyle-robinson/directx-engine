@@ -27,7 +27,7 @@ std::string ToNarrow( const std::wstring& wide )
 	return narrow;
 }
 
-inline std::vector<std::string> SplitString( const std::string& s, const std::string& delim )
+std::vector<std::string> SplitString( const std::string& s, const std::string& delim )
 {
 	std::vector<std::string> strings;
 	SplitStringIter( s, delim, std::back_inserter( strings ) );

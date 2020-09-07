@@ -160,6 +160,12 @@
     <Filter Include="Source Files\Jobs\Graphs">
       <UniqueIdentifier>{35e5cacc-b2d1-4da1-aef3-353140d94434}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Objects\Camera">
+      <UniqueIdentifier>{0b860711-5d55-47fb-9cfe-70c79d09a84b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Camera">
+      <UniqueIdentifier>{cddb9a14-9de4-4612-aea6-862687c38b83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -250,9 +256,6 @@
       <Filter>Source Files\Exceptions</Filter>
     </ClCompile>
     <ClCompile Include="PointLight.cpp">
-      <Filter>Source Files\Objects</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
     <ClCompile Include="MathX.cpp">
@@ -365,6 +368,12 @@
     </ClCompile>
     <ClCompile Include="Sink.cpp">
       <Filter>Source Files\Jobs\Passes</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files\Objects\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraContainer.cpp">
+      <Filter>Source Files\Objects\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -483,9 +492,6 @@
       <Filter>Header Files\Exceptions</Filter>
     </ClInclude>
     <ClInclude Include="PointLight.h">
-      <Filter>Header Files\Objects</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
       <Filter>Header Files\Objects</Filter>
     </ClInclude>
     <ClInclude Include="ImGuiManager.h">
@@ -646,6 +652,12 @@
     </ClInclude>
     <ClInclude Include="Sink.h">
       <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files\Objects\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraContainer.h">
+      <Filter>Header Files\Objects\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
 #include "Math.h"
 #include "Window.h"
 #include "Timer.h"
-#include "Camera.h"
+#include "CameraContainer.h"
 #include "PointLight.h"
 #include "ImGuiManager.h"
 #include "Model.h"
@@ -23,7 +23,7 @@ private:
 	ImGuiManager imgui;
 	Window wnd;
 	Timer timer;
-	Camera camera{ { -13.f, 6.0f, 3.5f }, 0.0f, PI / 2.0f };
+	CameraContainer cameras;
 	PointLight light;
 	Rgph::BlurOutlineRG rg{ wnd.Gfx() };
 
