@@ -1,0 +1,11 @@
+{
+"enabled": false,
+"commands" : [
+{
+    "command": "publish",
+        "params" : {
+        "dest": "D:\\OneDrive - Staffordshire University\\GitHub\\Games-and-Graphical-Systems\\DirectX Tutorials\\directx-tutorials\\HW3D\\publish"
+    }
+}
+]
+}

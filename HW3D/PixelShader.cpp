@@ -32,7 +32,7 @@ namespace Bind
 
 	std::shared_ptr<PixelShader> PixelShader::Resolve( Graphics& gfx, const std::string& path )
 	{
-		return Codex::Resolve<PixelShader>( gfx, path );
+		return Codex::Resolve<PixelShader>( gfx, "res\\shaders\\cso\\" + path );
 	}
 
 	std::string PixelShader::GenerateUID( const std::string& path )

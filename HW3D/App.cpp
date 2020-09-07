@@ -12,7 +12,8 @@
 #include <memory>
 #include <algorithm>
 
-App::App() : wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() )
+App::App( const std::string& commandLine ) :
+	wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() ), scriptCommander( TokenizeQuoted( commandLine ) )
 {
 	cameras.AddCamera( std::make_unique<Camera>( "A", DirectX::XMFLOAT3{ -13.5f, 6.0f, 3.5f }, 0.0f, PI / 2.0f ) );
 	cameras.AddCamera( std::make_unique<Camera>( "B", DirectX::XMFLOAT3{ -13.5f, 28.8f, -6.4f }, PI / 180.0f * 13.0f, PI / 180.0f * 61.0f ) );

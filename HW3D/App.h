@@ -8,11 +8,12 @@
 #include "Model.h"
 #include "NormalCube.h"
 #include "BlurOutlineRG.h"
+#include "ScriptCommander.h"
 
 class App
 {
 public:
-	App();
+	App( const std::string& commandLine );
 	~App();
 	int Init();
 private:
@@ -21,6 +22,7 @@ private:
 	void ShowRawInputWindow();
 private:
 	ImGuiManager imgui;
+	ScriptCommander scriptCommander;
 	Window wnd;
 	Timer timer;
 	CameraContainer cameras;

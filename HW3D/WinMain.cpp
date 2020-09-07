@@ -8,7 +8,7 @@ int CALLBACK WinMain(
 {
 	try
 	{
-		return App{}.Init();
+		return App{ lpCmdLine }.Init();
 	}
 	catch ( const Exception& e )
 	{

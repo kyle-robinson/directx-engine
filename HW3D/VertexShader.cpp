@@ -33,7 +33,7 @@ namespace Bind
 
 	std::shared_ptr<VertexShader> VertexShader::Resolve( Graphics& gfx, const std::string& path )
 	{
-		return Codex::Resolve<VertexShader>( gfx, path );
+		return Codex::Resolve<VertexShader>( gfx, "res\\shaders\\cso\\" + path );
 	}
 
 	std::string VertexShader::GenerateUID( const std::string& path )
