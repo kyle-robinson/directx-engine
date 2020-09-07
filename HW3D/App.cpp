@@ -1,5 +1,4 @@
 #include "App.h"
-#include "Math.h"
 
 #include "ModelProbeWindow.h"
 

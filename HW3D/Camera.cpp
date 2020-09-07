@@ -2,7 +2,8 @@
 #include "Math.h"
 #include "imgui/imgui.h"
 
-Camera::Camera() noexcept
+Camera::Camera( DirectX::XMFLOAT3 initialPos, float initialPitch, float initialYaw ) noexcept :
+	initialPos( initialPos ), initialPitch( initialPitch ), initialYaw( initialYaw )
 {
 	Reset();
 }
@@ -55,9 +56,9 @@ void Camera::SpawnControlWindow() noexcept
 
 void Camera::Reset() noexcept
 {
-	pos = { -13.5f, 6.0f, 3.5f };
-	pitch = 0.0f;
-	yaw = PI / 2.0f;
+	pos = initialPos;
+	pitch = initialPitch;
+	yaw = initialYaw;
 }
 
 void Camera::Rotate( float dx, float dy ) noexcept
