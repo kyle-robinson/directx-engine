@@ -20,7 +20,7 @@ SolidSphere::SolidSphere( Graphics& gfx, float radius )
 		Step initial( "lambertian" );
 
 		auto pvs = VertexShader::Resolve( gfx, "SolidVS.cso" );
-		auto pvsbc = pvs->GetByteCode();
+		initial.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), *pvs ) );
 		initial.AddBindable( std::move( pvs ) );
 		initial.AddBindable( PixelShader::Resolve( gfx, "SolidPS.cso" ) );
 
@@ -30,8 +30,6 @@ SolidSphere::SolidSphere( Graphics& gfx, float radius )
 			float padding;
 		} colorConst;
 		initial.AddBindable( PixelConstantBuffer<PSColorConstant>::Resolve( gfx, colorConst, 1u ) );
-
-		initial.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
 		initial.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
 		initial.AddBindable( Rasterizer::Resolve( gfx, false ) );
 

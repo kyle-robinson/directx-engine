@@ -20,7 +20,7 @@ namespace Rgph
 
 		// setup other common fullscreen bindables
 		auto vs = Bind::VertexShader::Resolve(gfx, "FullscreenVS.cso");
-		AddBind(Bind::InputLayout::Resolve(gfx, layout, vs->GetByteCode()));
+		AddBind(Bind::InputLayout::Resolve(gfx, layout, *vs));
 		AddBind(std::move(vs));
 		AddBind(Bind::Topology::Resolve(gfx));
 		AddBind(Bind::Rasterizer::Resolve(gfx, false));

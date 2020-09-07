@@ -29,7 +29,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 			initial.AddBindable( Sampler::Resolve( gfx ) );
 
 			auto pvs = VertexShader::Resolve( gfx, "PhongDifVS.cso" );
-			auto pvsbc = pvs->GetByteCode();
+			initial.AddBindable(InputLayout::Resolve(gfx, model.vertices.GetLayout(), *pvs));
 			initial.AddBindable( std::move( pvs ) );
 			initial.AddBindable( PixelShader::Resolve( gfx, "PhongDifPS.cso" ) );
 
@@ -43,8 +43,6 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 			buf["specularWeight"] = 0.1f;
 			buf["specularGloss"] = 20.0f;
 			initial.AddBindable( std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buf, 1u ) );
-
-			initial.AddBindable( InputLayout::Resolve( gfx, model.vertices.GetLayout(), pvsbc ) );
 			initial.AddBindable( Rasterizer::Resolve( gfx, false ) );
 			initial.AddBindable( tcb );
 
