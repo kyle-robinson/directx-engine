@@ -122,7 +122,7 @@ void App::DoFrame( float dt )
 		static MP modelProbe;
 		camera.SpawnControlWindow();
 		light.SpawnControlWindow();
-		modelProbe.SpawnWindow( sponza );
+		modelProbe.SpawnWindow( sponza, "Sponza" );
 		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
 		ShowRawInputWindow();
