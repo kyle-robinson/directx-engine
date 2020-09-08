@@ -1,11 +1,19 @@
 #include "Camera.h"
 #include "Math.h"
+#include "Graphics.h"
 #include "imgui/imgui.h"
 
 Camera::Camera( std::string name, DirectX::XMFLOAT3 initialPos, float initialPitch, float initialYaw ) noexcept :
-	name( std::move( name ) ), initialPos( initialPos ), initialPitch( initialPitch ), initialYaw( initialYaw )
+	name( std::move( name ) ), initialPos( initialPos ), initialPitch( initialPitch ), initialYaw( initialYaw ),
+	proj( 1.0f, 9.0f / 16.0f, 0.5f, 400.0f )
 {
 	Reset();
+}
+
+void Camera::BindToGraphics( Graphics& gfx ) const
+{
+	gfx.SetCamera( GetMatrix() );
+	gfx.SetProjection( proj.GetMatrix() );
 }
 
 DirectX::XMMATRIX Camera::GetMatrix() const noexcept
@@ -48,6 +56,8 @@ void Camera::SpawnControlWidgets() noexcept
 		
 	if ( ImGui::Button( "Reset" ) )
 		Reset();
+
+	proj.RenderWidgets();
 }
 
 void Camera::Reset() noexcept

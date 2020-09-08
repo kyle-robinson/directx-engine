@@ -232,6 +232,7 @@
     <ClCompile Include="NormalPlane.cpp" />
     <ClCompile Include="NullPixelShader.cpp" />
     <ClCompile Include="Pass.cpp" />
+    <ClCompile Include="Projection.cpp" />
     <ClCompile Include="ScriptCommander.cpp" />
     <ClCompile Include="Sink.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -324,6 +325,7 @@
     <ClInclude Include="OutlineDrawPass.h" />
     <ClInclude Include="OutlineMaskPass.h" />
     <ClInclude Include="Pass.h" />
+    <ClInclude Include="Projection.h" />
     <ClInclude Include="ScriptCommander.h" />
     <ClInclude Include="Sink.h" />
     <ClInclude Include="Source.h" />
@@ -384,10 +386,6 @@
     <None Include="PointLight.hlsli" />
     <None Include="res\cursors\WoW_Normal.ani" />
     <None Include="res\cursors\WoW_Select.ani" />
-    <None Include="res\shaders\hlsli\LightVectorData.hlsli" />
-    <None Include="res\shaders\hlsli\PointLight.hlsli" />
-    <None Include="res\shaders\hlsli\ShaderLighting.hlsli" />
-    <None Include="res\shaders\hlsli\Transform.hlsli" />
     <None Include="ShaderLighting.hlsli" />
     <None Include="Transform.hlsli" />
   </ItemGroup>

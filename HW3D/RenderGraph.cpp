@@ -128,12 +128,12 @@ namespace Rgph
 						bound = true;
 						break;
 					}
-					if ( !bound )
+					/*if ( !bound )
 					{
 						std::ostringstream oss;
 						oss << "Pass [" << inputSourcePassName << "] not found!";
 						throw RGC_EXCEPTION( oss.str() );
-					}
+					}*/
 				}
 			}
 		}

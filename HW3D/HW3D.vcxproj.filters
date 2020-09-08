@@ -336,6 +336,9 @@
     <ClCompile Include="ScriptCommander.cpp">
       <Filter>Source Files\Macros</Filter>
     </ClCompile>
+    <ClCompile Include="Projection.cpp">
+      <Filter>Source Files\Objects\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConstantBuffers.h">
@@ -626,6 +629,9 @@
     <ClInclude Include="process.json">
       <Filter>Resource Files\Resource Items</Filter>
     </ClInclude>
+    <ClInclude Include="Projection.h">
+      <Filter>Header Files\Objects\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -643,20 +649,16 @@
     <None Include="res\cursors\WoW_Select.ani">
       <Filter>Resource Files\Cursors</Filter>
     </None>
-    <None Include="LightVectorData.hlsli" />
-    <None Include="PointLight.hlsli" />
-    <None Include="ShaderLighting.hlsli" />
-    <None Include="Transform.hlsli" />
-    <None Include="res\shaders\hlsli\LightVectorData.hlsli">
+    <None Include="Transform.hlsli">
       <Filter>Resource Files\Shaders\Includes</Filter>
     </None>
-    <None Include="res\shaders\hlsli\PointLight.hlsli">
+    <None Include="LightVectorData.hlsli">
       <Filter>Resource Files\Shaders\Includes</Filter>
     </None>
-    <None Include="res\shaders\hlsli\ShaderLighting.hlsli">
+    <None Include="PointLight.hlsli">
       <Filter>Resource Files\Shaders\Includes</Filter>
     </None>
-    <None Include="res\shaders\hlsli\Transform.hlsli">
+    <None Include="ShaderLighting.hlsli">
       <Filter>Resource Files\Shaders\Includes</Filter>
     </None>
   </ItemGroup>

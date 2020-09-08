@@ -40,8 +40,6 @@ App::App( const std::string& commandLine ) :
 	nanosuit.LinkTechniques( rg );
 	goblin.LinkTechniques( rg );
 	backpack.LinkTechniques( rg );
-
-	wnd.Gfx().SetProjection( DirectX::XMMatrixPerspectiveLH( 1.0f, 3.0f / 4.0f, 0.5f, 400.0f ) );
 }
 
 int App::Init()
@@ -123,7 +121,7 @@ void App::DoFrame( float dt )
 {
 	// setup
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
-	wnd.Gfx().SetCamera( cameras.GetCamera().GetMatrix() );
+	cameras.GetCamera().BindToGraphics( wnd.Gfx() );
 	light.Bind( wnd.Gfx(), cameras.GetCamera().GetMatrix() );
 
 	// objects
