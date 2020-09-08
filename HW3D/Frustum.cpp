@@ -41,23 +41,44 @@ Frustum::Frustum( Graphics& gfx, float width, float height, float nearZ, float f
 
 	{
 		Technique line;
-		Step initial( "wireframe" );
-
-		auto pvs = Bind::VertexShader::Resolve( gfx, "SolidVS.cso" );
-		initial.AddBindable( Bind::InputLayout::Resolve( gfx, pVertices->GetLayout(), *pvs ) );
-		initial.AddBindable( std::move( pvs ) );
-		initial.AddBindable( Bind::PixelShader::Resolve( gfx, "SolidPS.cso" ) );
-
-		struct PSColorConstant
 		{
-			DirectX::XMFLOAT3 color = { 0.6f, 0.2f, 0.2f };
-			float padding;
-		} colorConst;
-		initial.AddBindable( Bind::PixelConstantBuffer<PSColorConstant>::Resolve( gfx, colorConst, 1u ) );
-		initial.AddBindable( std::make_shared<Bind::TransformCbuf>( gfx ) );
-		initial.AddBindable( Bind::Rasterizer::Resolve( gfx, false ) );
+			Step unoccluded( "lambertian" );
 
-		line.AddStep( std::move( initial ) );
+			auto pvs = Bind::VertexShader::Resolve( gfx, "SolidVS.cso" );
+			unoccluded.AddBindable( Bind::InputLayout::Resolve( gfx, pVertices->GetLayout(), *pvs ) );
+			unoccluded.AddBindable( std::move( pvs ) );
+			unoccluded.AddBindable( Bind::PixelShader::Resolve( gfx, "SolidPS.cso" ) );
+
+			struct PSColorConstant
+			{
+				DirectX::XMFLOAT3 color = { 0.6f, 0.2f, 0.2f };
+				float padding;
+			} colorConst;
+			unoccluded.AddBindable( Bind::PixelConstantBuffer<PSColorConstant>::Resolve( gfx, colorConst, 1u ) );
+			unoccluded.AddBindable( std::make_shared<Bind::TransformCbuf>( gfx ) );
+			unoccluded.AddBindable( Bind::Rasterizer::Resolve( gfx, false ) );
+
+			line.AddStep( std::move( unoccluded ) );
+		}
+		{
+			Step occluded( "wireframe" );
+
+			auto pvs = Bind::VertexShader::Resolve( gfx, "SolidVS.cso" );
+			occluded.AddBindable( Bind::InputLayout::Resolve( gfx, pVertices->GetLayout(), *pvs ) );
+			occluded.AddBindable( std::move( pvs ) );
+			occluded.AddBindable( Bind::PixelShader::Resolve( gfx, "SolidPS.cso" ) );
+
+			struct PSColorConstant
+			{
+				DirectX::XMFLOAT3 color = { 0.25f, 0.08f, 0.08f };
+				float padding;
+			} colorConst;
+			occluded.AddBindable( Bind::PixelConstantBuffer<PSColorConstant>::Resolve( gfx, colorConst, 1u ) );
+			occluded.AddBindable( std::make_shared<Bind::TransformCbuf>( gfx ) );
+			occluded.AddBindable( Bind::Rasterizer::Resolve( gfx, false ) );
+
+			line.AddStep( std::move( occluded ) );
+		}
 		AddTechnique( std::move( line ) );
 	}
 }

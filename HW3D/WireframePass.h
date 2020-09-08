@@ -20,7 +20,7 @@ namespace Rgph
 			RegisterSink( DirectBufferSink<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
 			RegisterSource( DirectBufferSource<Bind::RenderTarget>::Make( "renderTarget", renderTarget) );
 			RegisterSource( DirectBufferSource<Bind::DepthStencil>::Make( "depthStencil", depthStencil ) );
-			AddBind( Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::DepthOff ) );
+			AddBind( Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::DepthReversed ) );
 		}
 	};
 }
