@@ -97,24 +97,24 @@ void App::HandleInput( float dt )
 	if (!wnd.CursorEnabled())
 	{
 		if (wnd.kbd.KeyIsPressed('W'))
-			cameras.GetCamera().Translate({ 0.0f, 0.0f, dt });
+			cameras->Translate({ 0.0f, 0.0f, dt });
 		if (wnd.kbd.KeyIsPressed('A'))
-			cameras.GetCamera().Translate({ -dt, 0.0f, 0.0f });
+			cameras->Translate({ -dt, 0.0f, 0.0f });
 		if (wnd.kbd.KeyIsPressed('S'))
-			cameras.GetCamera().Translate({ 0.0f, 0.0f, -dt });
+			cameras->Translate({ 0.0f, 0.0f, -dt });
 		if (wnd.kbd.KeyIsPressed('D'))
-			cameras.GetCamera().Translate({ dt, 0.0f, 0.0f });
+			cameras->Translate({ dt, 0.0f, 0.0f });
 		if (wnd.kbd.KeyIsPressed('R'))
-			cameras.GetCamera().Translate({ 0.0f, dt, 0.0f });
+			cameras->Translate({ 0.0f, dt, 0.0f });
 		if (wnd.kbd.KeyIsPressed('F'))
-			cameras.GetCamera().Translate({ 0.0f, -dt, 0.0f });
+			cameras->Translate({ 0.0f, -dt, 0.0f });
 	}
 
 	// camera rotation
 	while (const auto delta = wnd.mouse.ReadRawDelta())
 	{
 		if (!wnd.CursorEnabled())
-			cameras.GetCamera().Rotate(delta->x, delta->y);
+			cameras->Rotate(delta->x, delta->y);
 	}
 }
 
@@ -122,8 +122,8 @@ void App::DoFrame( float dt )
 {
 	// setup
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
-	cameras.GetCamera().BindToGraphics( wnd.Gfx() );
-	light.Bind( wnd.Gfx(), cameras.GetCamera().GetMatrix() );
+	cameras->BindToGraphics( wnd.Gfx() );
+	light.Bind( wnd.Gfx(), cameras->GetMatrix() );
 
 	// objects
 	light.Submit();

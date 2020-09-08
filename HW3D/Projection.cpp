@@ -7,7 +7,7 @@ Projection::Projection( Graphics& gfx, float initialWidth, float initialHeight, 
 	initialWidth( initialWidth ), initialHeight( initialHeight ), initialNearZ( initialNearZ ), initialFarZ( initialFarZ ),
 	frust( gfx, initialWidth, initialHeight, initialNearZ, initialFarZ )
 {
-	Reset();
+	Reset( gfx );
 }
 
 DirectX::XMMATRIX Projection::GetMatrix() const
@@ -24,16 +24,15 @@ void Projection::RenderWidgets( Graphics& gfx )
 
 		linkCheck( ImGui::SliderFloat( "Width", &width, 0.01f, 4.0f, "%.2f", 1.5f ) );
 		linkCheck( ImGui::SliderFloat( "Height", &height, 0.01f, 4.0f, "%.2f", 1.5f ) );
-		linkCheck( ImGui::SliderFloat( "Near Z", &nearZ, 0.01f, 400.0f, "%.2f", 4.0f ) );
-		linkCheck( ImGui::SliderFloat( "Far Z", &farZ, 0.01f, 400.0f, "%.2f", 4.0f ) );
+		linkCheck( ImGui::SliderFloat( "Near Z", &nearZ, 0.01f, farZ - 0.01f, "%.2f", 4.0f ) );
+		linkCheck( ImGui::SliderFloat( "Far Z", &farZ, nearZ + 0.01f, 400.0f, "%.2f", 4.0f ) );
 
 		if ( ImGui::Button( "Reset Projection" ) )
-			Reset();
+			Reset( gfx );
 
 		if ( bufferSet )
 			frust.SetVertices( gfx, width, height, nearZ, farZ );
 	}
-	ImGui::PopStyleColor();
 }
 
 void Projection::SetPosition( DirectX::XMFLOAT3 pos )
@@ -56,10 +55,11 @@ void Projection::Submit() const
 	frust.Submit();
 }
 
-void Projection::Reset()
+void Projection::Reset( Graphics& gfx )
 {
 	width = initialWidth;
 	height = initialHeight;
 	nearZ = initialNearZ;
 	farZ = initialFarZ;
+	frust.SetVertices( gfx, width, height, nearZ, farZ );
 }

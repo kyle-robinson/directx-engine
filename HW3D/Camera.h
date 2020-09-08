@@ -18,7 +18,7 @@ private:
 		Position,
 		Rotation,
 		Speed,
-		Project
+		Indicator
 	};
 public:
 	Camera( Graphics& gfx,
@@ -31,7 +31,7 @@ public:
 	void BindToGraphics( Graphics& gfx ) const;
 	DirectX::XMMATRIX GetMatrix() const noexcept;
 	void SpawnControlWidgets( Graphics& gfx ) noexcept;
-	void Reset( Param param ) noexcept;
+	void Reset( Graphics& gfx, Param param ) noexcept;
 	void Rotate( float dx, float dy ) noexcept;
 	void Translate( DirectX::XMFLOAT3 translation ) noexcept;
 	const std::string& GetName() const noexcept;
@@ -47,6 +47,9 @@ private:
 
 	float initialTravSpeed, initialRotSpeed;
 	float travelSpeed, rotationSpeed;
+
+	bool enableCameraIndicator = true;
+	bool enableFrustumIndicator = true;
 	
 	Projection proj;
 	CameraIndicator indicator;

@@ -12,7 +12,7 @@ Camera::Camera( Graphics& gfx, std::string name, DirectX::XMFLOAT3 initialPos,
 	proj( gfx, 1.0f, 9.0f / 16.0f, 0.5f, 400.0f ), indicator( gfx )
 {
 	std::array<Param, 3> type = { Param::Position, Param::Rotation, Param::Speed };
-	for( auto& param : type ) Reset( param );
+	for( auto& param : type ) Reset( gfx, param );
 
 	indicator.SetPosition( pos );
 	indicator.SetRotation( { pitch, yaw, 0.0f } );
@@ -46,25 +46,29 @@ DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 
 void Camera::SpawnControlWidgets( Graphics& gfx ) noexcept
 {
+	bool posCheck = false;
+	bool rotCheck = false;
+	const auto linkCheck = []( bool changed, bool& carry ) { carry = carry || changed; };
+	
 	ImGui::PushStyleColor( ImGuiCol_Button, ImVec4( 1.0f, 0.5f, 0.5f, 1.0f ) );
 
 	if ( ImGui::CollapsingHeader( "Position" ) )
 	{
-		ImGui::SliderFloat( "X", &pos.x, -80.0f, 80.0f, "%.1f" );
-		ImGui::SliderFloat( "Y", &pos.y, -80.0f, 80.0f, "%.1f" );
-		ImGui::SliderFloat( "Z", &pos.z, -80.0f, 80.0f, "%.1f" );
+		linkCheck( ImGui::SliderFloat( "X", &pos.x, -80.0f, 80.0f, "%.1f" ), posCheck );
+		linkCheck( ImGui::SliderFloat( "Y", &pos.y, -80.0f, 80.0f, "%.1f" ), posCheck );
+		linkCheck( ImGui::SliderFloat( "Z", &pos.z, -80.0f, 80.0f, "%.1f" ), posCheck );
 		
 		if ( ImGui::Button( "Reset Position" ) )
-			Reset( Param::Position );
+			Reset( gfx, Param::Position );
 	}
 
 	if ( ImGui::CollapsingHeader( "Orientation" ) )
 	{
-		ImGui::SliderAngle( "Pitch", &pitch, 0.995f * -90.0f, 0.995f * 90.0f );
-		ImGui::SliderAngle( "Yaw", &yaw, -180.0f, 180.0f );
+		linkCheck( ImGui::SliderAngle( "Pitch", &pitch, 0.995f * -90.0f, 0.995f * 90.0f ), rotCheck );
+		linkCheck( ImGui::SliderAngle( "Yaw", &yaw, -180.0f, 180.0f ), rotCheck );
 
 		if ( ImGui::Button( "Reset Rotation" ) )
-			Reset( Param::Rotation );
+			Reset( gfx, Param::Rotation );
 	}
 
 	if ( ImGui::CollapsingHeader( "Speed" ) )
@@ -73,30 +77,61 @@ void Camera::SpawnControlWidgets( Graphics& gfx ) noexcept
 		ImGui::SliderFloat( "Sensitivity", &rotationSpeed, 0.0001f, 0.01f );
 
 		if ( ImGui::Button( "Reset Speed" ) )
-			Reset( Param::Speed );
+			Reset( gfx, Param::Speed );
 	}
 
 	proj.RenderWidgets( gfx );
+
+	if ( ImGui::CollapsingHeader( "Indicators" ) )
+	{
+		ImGui::Checkbox( "Camera Indicator", &enableCameraIndicator );
+		ImGui::Checkbox( "Frustum Indicator", &enableFrustumIndicator );
+
+		if ( ImGui::Button( "Reset Indicators" ) )
+			Reset( gfx, Param::Indicator );
+	}
+
+	if ( posCheck )
+	{
+		indicator.SetPosition( pos );
+		proj.SetPosition( pos );
+	}
+
+	if ( rotCheck )
+	{
+		const DirectX::XMFLOAT3 angles = { pitch, yaw, 0.0f };
+		indicator.SetRotation( angles );
+		proj.SetRotation( angles );
+	}
+
+	ImGui::PopStyleColor();
 }
 
-void Camera::Reset( Param param ) noexcept
+void Camera::Reset( Graphics& gfx, Param param ) noexcept
 {
+	const DirectX::XMFLOAT3 angles = { pitch, yaw, 0.0f };
 	switch ( param )
 	{
 	case Param::Position:
 		pos = initialPos;
-		return;
+		indicator.SetPosition( pos );
+		indicator.SetRotation( angles );
+		proj.SetPosition( pos );
+		proj.SetRotation( angles );
+		proj.Reset( gfx );
+		break;
 	case Param::Rotation:
 		pitch = initialPitch;
 		yaw = initialYaw;
-		return;
+		break;
 	case Param::Speed:
 		travelSpeed = initialTravSpeed;
 		rotationSpeed = initialRotSpeed;
-		return;
-	default:
-		assert( "Falied to reset camera parameters!" && false );
-		return;
+		break;
+	case Param::Indicator:
+		enableCameraIndicator = true;
+		enableFrustumIndicator = true;
+		break;
 	}
 }
 
@@ -144,6 +179,8 @@ void Camera::LinkTechniques( Rgph::RenderGraph& rg )
 
 void Camera::Submit() const
 {
-	indicator.Submit();
-	proj.Submit();
+	if ( enableCameraIndicator )
+		indicator.Submit();
+	if ( enableFrustumIndicator )
+		proj.Submit();
 }

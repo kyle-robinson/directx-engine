@@ -19,7 +19,7 @@ public:
 	void SetRotation( DirectX::XMFLOAT3 rot );
 	void LinkTechniques( Rgph::RenderGraph& rg );
 	void Submit() const;
-	void Reset();
+	void Reset( Graphics& gfx );
 private:
 	float width, height, nearZ, farZ;
 	float initialWidth, initialHeight, initialNearZ, initialFarZ;
