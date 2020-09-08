@@ -3,12 +3,13 @@
 #include "LambertianPass.h"
 #include "OutlineDrawPass.h"
 #include "OutlineMaskPass.h"
-#include "Source.h"
+#include "WireframePass.h"
 #include "HorizontalBlurPass.h"
 #include "VerticalBlurPass.h"
 #include "BlurOutlineDrawPass.h"
 #include "RenderTarget.h"
 #include "DynamicConstant.h"
+#include "Source.h"
 #include "Math.h"
 #include "imgui/imgui.h"
 
@@ -80,7 +81,13 @@ namespace Rgph
 			pass->SetSinkLinkage("direction", "$.blurDirection");
 			AppendPass(std::move(pass));
 		}
-		SetSinkTarget("backbuffer", "vertical.renderTarget");
+		{
+			auto pass = std::make_unique<WireframePass>( gfx, "wireframe" );
+			pass->SetSinkLinkage( "renderTarget", "vertical.renderTarget" );
+			pass->SetSinkLinkage( "depthStencil", "vertical.depthStencil" );
+			AppendPass( std::move( pass ) );
+		}
+		SetSinkTarget("backbuffer", "wireframe.renderTarget");
 
 		Finalize();
 	}

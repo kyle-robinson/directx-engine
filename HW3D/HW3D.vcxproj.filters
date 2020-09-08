@@ -644,6 +644,9 @@
     <ClInclude Include="Frustum.h">
       <Filter>Header Files\Objects\Camera</Filter>
     </ClInclude>
+    <ClInclude Include="WireframePass.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">

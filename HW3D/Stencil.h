@@ -12,7 +12,8 @@ namespace Bind
 		{
 			Off,
 			Mask,
-			Write
+			Write,
+			DepthOff
 		};
 		Stencil( Graphics& gfx, Mode mode ) : mode( mode )
 		{
@@ -36,6 +37,11 @@ namespace Bind
 				dsDesc.StencilReadMask = 0xFF;
 				dsDesc.FrontFace.StencilFunc = D3D11_COMPARISON_NOT_EQUAL;
 				dsDesc.FrontFace.StencilPassOp = D3D11_STENCIL_OP_KEEP;
+			}
+			else if ( mode == Mode::DepthOff )
+			{
+				dsDesc.DepthEnable = FALSE;
+				dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 			}
 
 			GFX_THROW_INFO( GetDevice( gfx )->CreateDepthStencilState( &dsDesc, &pStencil ) );

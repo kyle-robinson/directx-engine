@@ -41,7 +41,7 @@ Frustum::Frustum( Graphics& gfx, float width, float height, float nearZ, float f
 
 	{
 		Technique line;
-		Step initial( "lambertian" );
+		Step initial( "wireframe" );
 
 		auto pvs = Bind::VertexShader::Resolve( gfx, "SolidVS.cso" );
 		initial.AddBindable( Bind::InputLayout::Resolve( gfx, pVertices->GetLayout(), *pvs ) );

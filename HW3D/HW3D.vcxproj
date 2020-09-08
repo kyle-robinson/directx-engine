@@ -366,6 +366,7 @@
     <ClInclude Include="Window.h" />
     <ClInclude Include="WindowsInclude.h" />
     <ClInclude Include="WindowsThrowMacros.h" />
+    <ClInclude Include="WireframePass.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="HW3D.rc" />
