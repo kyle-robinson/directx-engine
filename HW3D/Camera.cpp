@@ -2,12 +2,18 @@
 #include "Math.h"
 #include "Graphics.h"
 #include "imgui/imgui.h"
+#include <array>
 
-Camera::Camera( Graphics& gfx, std::string name, DirectX::XMFLOAT3 initialPos, float initialPitch, float initialYaw ) noexcept :
+Camera::Camera( Graphics& gfx, std::string name, DirectX::XMFLOAT3 initialPos,
+	float initialPitch, float initialYaw, float initialTravSpeed, float initialRotSpeed ) noexcept
+	:
 	name( std::move( name ) ), initialPos( initialPos ), initialPitch( initialPitch ), initialYaw( initialYaw ),
+	initialTravSpeed( initialTravSpeed ), initialRotSpeed( initialRotSpeed ),
 	proj( 1.0f, 9.0f / 16.0f, 0.5f, 400.0f ), indicator( gfx )
 {
-	Reset();
+	std::array<Param, 3> type = { Param::Position, Param::Rotation, Param::Speed };
+	for( auto& param : type ) Reset( param );
+
 	indicator.SetPosition( pos );
 	indicator.SetRotation( { pitch, yaw, 0.0f } );
 }
@@ -37,36 +43,58 @@ DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 
 void Camera::SpawnControlWidgets() noexcept
 {
+	ImGui::PushStyleColor( ImGuiCol_Button, ImVec4( 1.0f, 0.5f, 0.5f, 1.0f ) );
+
 	if ( ImGui::CollapsingHeader( "Position" ) )
 	{
 		ImGui::SliderFloat( "X", &pos.x, -80.0f, 80.0f, "%.1f" );
 		ImGui::SliderFloat( "Y", &pos.y, -80.0f, 80.0f, "%.1f" );
 		ImGui::SliderFloat( "Z", &pos.z, -80.0f, 80.0f, "%.1f" );
+		
+		if ( ImGui::Button( "Reset Position" ) )
+			Reset( Param::Position );
 	}
 
 	if ( ImGui::CollapsingHeader( "Orientation" ) )
 	{
 		ImGui::SliderAngle( "Pitch", &pitch, 0.995f * -90.0f, 0.995f * 90.0f );
 		ImGui::SliderAngle( "Yaw", &yaw, -180.0f, 180.0f );
+
+		if ( ImGui::Button( "Reset Rotation" ) )
+			Reset( Param::Rotation );
 	}
 
 	if ( ImGui::CollapsingHeader( "Speed" ) )
 	{
 		ImGui::SliderFloat( "Movement", &travelSpeed, 1.0f, 20.0f, "%.1f" );
-		ImGui::SliderFloat( "Rotation", &rotationSpeed, 0.0001f, 0.01f );
+		ImGui::SliderFloat( "Sensitivity", &rotationSpeed, 0.0001f, 0.01f );
+
+		if ( ImGui::Button( "Reset Speed" ) )
+			Reset( Param::Speed );
 	}
-		
-	if ( ImGui::Button( "Reset" ) )
-		Reset();
 
 	proj.RenderWidgets();
 }
 
-void Camera::Reset() noexcept
+void Camera::Reset( Param param ) noexcept
 {
-	pos = initialPos;
-	pitch = initialPitch;
-	yaw = initialYaw;
+	switch ( param )
+	{
+	case Param::Position:
+		pos = initialPos;
+		return;
+	case Param::Rotation:
+		pitch = initialPitch;
+		yaw = initialYaw;
+		return;
+	case Param::Speed:
+		travelSpeed = initialTravSpeed;
+		rotationSpeed = initialRotSpeed;
+		return;
+	default:
+		assert( "Falied to reset camera parameters!" && false );
+		return;
+	}
 }
 
 void Camera::Rotate( float dx, float dy ) noexcept

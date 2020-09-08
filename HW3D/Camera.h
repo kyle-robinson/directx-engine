@@ -12,12 +12,26 @@ namespace Rgph
 
 class Camera
 {
+private:
+	enum Param
+	{
+		Position,
+		Rotation,
+		Speed,
+		Project
+	};
 public:
-	Camera( Graphics& gfx, std::string name, DirectX::XMFLOAT3 initialPos = { 0.0f, 0.0f, 0.0f }, float initialPitch = 0.0f, float initialYaw = 0.0f ) noexcept;
+	Camera( Graphics& gfx,
+		std::string name,
+		DirectX::XMFLOAT3 initialPos = { 0.0f, 0.0f, 0.0f },
+		float initialPitch = 0.0f,
+		float initialYaw = 0.0f,
+		float initialTravSpeed = 12.0f,
+		float initialRotSpeed = 0.002f ) noexcept;
 	void BindToGraphics( Graphics& gfx ) const;
 	DirectX::XMMATRIX GetMatrix() const noexcept;
 	void SpawnControlWidgets() noexcept;
-	void Reset() noexcept;
+	void Reset( Param param ) noexcept;
 	void Rotate( float dx, float dy ) noexcept;
 	void Translate( DirectX::XMFLOAT3 translation ) noexcept;
 	const std::string& GetName() const noexcept;
@@ -26,10 +40,14 @@ public:
 private:
 	std::string name;
 	DirectX::XMFLOAT3 initialPos;
-	float initialPitch, initialYaw;
 	DirectX::XMFLOAT3 pos;
+
+	float initialPitch, initialYaw;
 	float pitch, yaw;
-	float travelSpeed = 12.0f, rotationSpeed = 0.002f;
+
+	float initialTravSpeed, initialRotSpeed;
+	float travelSpeed, rotationSpeed;
+	
 	Projection proj;
 	CameraIndicator indicator;
 };
