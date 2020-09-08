@@ -339,6 +339,9 @@
     <ClCompile Include="Projection.cpp">
       <Filter>Source Files\Objects\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="CameraIndicator.cpp">
+      <Filter>Source Files\Objects\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConstantBuffers.h">
@@ -630,6 +633,9 @@
       <Filter>Resource Files\Resource Items</Filter>
     </ClInclude>
     <ClInclude Include="Projection.h">
+      <Filter>Header Files\Objects\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraIndicator.h">
       <Filter>Header Files\Objects\Camera</Filter>
     </ClInclude>
   </ItemGroup>

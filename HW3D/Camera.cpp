@@ -3,11 +3,13 @@
 #include "Graphics.h"
 #include "imgui/imgui.h"
 
-Camera::Camera( std::string name, DirectX::XMFLOAT3 initialPos, float initialPitch, float initialYaw ) noexcept :
+Camera::Camera( Graphics& gfx, std::string name, DirectX::XMFLOAT3 initialPos, float initialPitch, float initialYaw ) noexcept :
 	name( std::move( name ) ), initialPos( initialPos ), initialPitch( initialPitch ), initialYaw( initialYaw ),
-	proj( 1.0f, 9.0f / 16.0f, 0.5f, 400.0f )
+	proj( 1.0f, 9.0f / 16.0f, 0.5f, 400.0f ), indicator( gfx )
 {
 	Reset();
+	indicator.SetPosition( pos );
+	indicator.SetRotation( { pitch, yaw, 0.0f } );
 }
 
 void Camera::BindToGraphics( Graphics& gfx ) const
@@ -71,6 +73,7 @@ void Camera::Rotate( float dx, float dy ) noexcept
 {
 	yaw = wrap_angle( yaw + dx * rotationSpeed );
 	pitch = std::clamp( pitch + dy * rotationSpeed, 0.995f * -PI / 2.0f, 0.995f * PI / 2.0f );
+	indicator.SetRotation( { pitch, yaw, 0.0f } );
 }
 
 void Camera::Translate( DirectX::XMFLOAT3 translation ) noexcept
@@ -89,9 +92,21 @@ void Camera::Translate( DirectX::XMFLOAT3 translation ) noexcept
 		pos.y + translation.y,
 		pos.z + translation.z
 	};
+
+	indicator.SetPosition( pos );
 }
 
 const std::string& Camera::GetName() const noexcept
 {
 	return name;
+}
+
+void Camera::LinkTechniques( Rgph::RenderGraph& rg )
+{
+	indicator.LinkTechniques( rg );
+}
+
+void Camera::Submit() const
+{
+	indicator.Submit();
 }

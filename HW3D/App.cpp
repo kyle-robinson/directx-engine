@@ -15,8 +15,8 @@
 App::App( const std::string& commandLine ) :
 	wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() ), scriptCommander( TokenizeQuoted( commandLine ) )
 {
-	cameras.AddCamera( std::make_unique<Camera>( "A", DirectX::XMFLOAT3{ -13.5f, 6.0f, 3.5f }, 0.0f, PI / 2.0f ) );
-	cameras.AddCamera( std::make_unique<Camera>( "B", DirectX::XMFLOAT3{ -13.5f, 28.8f, -6.4f }, PI / 180.0f * 13.0f, PI / 180.0f * 61.0f ) );
+	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "A", DirectX::XMFLOAT3{ -13.5f, 6.0f, 3.5f }, 0.0f, PI / 2.0f ) );
+	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "B", DirectX::XMFLOAT3{ -13.5f, 28.8f, -6.4f }, PI / 180.0f * 13.0f, PI / 180.0f * 61.0f ) );
 	
 	cube.SetPos( { 4.0f, 0.0f, 0.0f } );
 	cube2.SetPos( { -8.0f, 0.0f, 0.0f } );
@@ -40,6 +40,7 @@ App::App( const std::string& commandLine ) :
 	nanosuit.LinkTechniques( rg );
 	goblin.LinkTechniques( rg );
 	backpack.LinkTechniques( rg );
+	cameras.LinkTechniques( rg );
 }
 
 int App::Init()
@@ -132,6 +133,7 @@ void App::DoFrame( float dt )
 	backpack.Submit();
 	cube.Submit();
 	cube2.Submit();
+	cameras.Submit();
 
 	rg.Execute( wnd.Gfx() );
 
