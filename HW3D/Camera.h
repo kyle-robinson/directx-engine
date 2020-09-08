@@ -30,7 +30,7 @@ public:
 		float initialRotSpeed = 0.002f ) noexcept;
 	void BindToGraphics( Graphics& gfx ) const;
 	DirectX::XMMATRIX GetMatrix() const noexcept;
-	void SpawnControlWidgets() noexcept;
+	void SpawnControlWidgets( Graphics& gfx ) noexcept;
 	void Reset( Param param ) noexcept;
 	void Rotate( float dx, float dy ) noexcept;
 	void Translate( DirectX::XMFLOAT3 translation ) noexcept;

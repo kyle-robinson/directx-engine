@@ -13,7 +13,7 @@ namespace Rgph
 class CameraContainer
 {
 public:
-	void SpawnControlWindow();
+	void SpawnControlWindow( Graphics& gfx );
 	void Bind( Graphics& gfx );
 	void AddCamera( std::unique_ptr<Camera> pCam );
 	Camera& GetCamera();

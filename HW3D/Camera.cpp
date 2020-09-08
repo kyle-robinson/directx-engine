@@ -9,13 +9,16 @@ Camera::Camera( Graphics& gfx, std::string name, DirectX::XMFLOAT3 initialPos,
 	:
 	name( std::move( name ) ), initialPos( initialPos ), initialPitch( initialPitch ), initialYaw( initialYaw ),
 	initialTravSpeed( initialTravSpeed ), initialRotSpeed( initialRotSpeed ),
-	proj( 1.0f, 9.0f / 16.0f, 0.5f, 400.0f ), indicator( gfx )
+	proj( gfx, 1.0f, 9.0f / 16.0f, 0.5f, 400.0f ), indicator( gfx )
 {
 	std::array<Param, 3> type = { Param::Position, Param::Rotation, Param::Speed };
 	for( auto& param : type ) Reset( param );
 
 	indicator.SetPosition( pos );
 	indicator.SetRotation( { pitch, yaw, 0.0f } );
+
+	proj.SetPosition( pos );
+	proj.SetRotation( { pitch, yaw, 0.0f } );
 }
 
 void Camera::BindToGraphics( Graphics& gfx ) const
@@ -41,7 +44,7 @@ DirectX::XMMATRIX Camera::GetMatrix() const noexcept
 	return DirectX::XMMatrixLookAtLH( camPosition, camTarget, DirectX::XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ) );
 }
 
-void Camera::SpawnControlWidgets() noexcept
+void Camera::SpawnControlWidgets( Graphics& gfx ) noexcept
 {
 	ImGui::PushStyleColor( ImGuiCol_Button, ImVec4( 1.0f, 0.5f, 0.5f, 1.0f ) );
 
@@ -73,7 +76,7 @@ void Camera::SpawnControlWidgets() noexcept
 			Reset( Param::Speed );
 	}
 
-	proj.RenderWidgets();
+	proj.RenderWidgets( gfx );
 }
 
 void Camera::Reset( Param param ) noexcept
@@ -101,7 +104,10 @@ void Camera::Rotate( float dx, float dy ) noexcept
 {
 	yaw = wrap_angle( yaw + dx * rotationSpeed );
 	pitch = std::clamp( pitch + dy * rotationSpeed, 0.995f * -PI / 2.0f, 0.995f * PI / 2.0f );
-	indicator.SetRotation( { pitch, yaw, 0.0f } );
+	
+	const DirectX::XMFLOAT3 angles = { pitch, yaw, 0.0f };
+	indicator.SetRotation( angles );
+	proj.SetRotation( angles );
 }
 
 void Camera::Translate( DirectX::XMFLOAT3 translation ) noexcept
@@ -122,6 +128,7 @@ void Camera::Translate( DirectX::XMFLOAT3 translation ) noexcept
 	};
 
 	indicator.SetPosition( pos );
+	proj.SetPosition( pos );
 }
 
 const std::string& Camera::GetName() const noexcept
@@ -132,9 +139,11 @@ const std::string& Camera::GetName() const noexcept
 void Camera::LinkTechniques( Rgph::RenderGraph& rg )
 {
 	indicator.LinkTechniques( rg );
+	proj.LinkTechniques( rg );
 }
 
 void Camera::Submit() const
 {
 	indicator.Submit();
+	proj.Submit();
 }

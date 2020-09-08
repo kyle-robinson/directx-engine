@@ -150,7 +150,7 @@ void App::DoFrame( float dt )
 		goblinProbe.SpawnWindow( goblin, "Goblin" );
 		backpackProbe.SpawnWindow( backpack, "Backpack" );
 		
-		cameras.SpawnControlWindow();
+		cameras.SpawnControlWindow( wnd.Gfx() );
 		light.SpawnControlWindow();
 		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );

@@ -342,6 +342,9 @@
     <ClCompile Include="CameraIndicator.cpp">
       <Filter>Source Files\Objects\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>Source Files\Objects\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConstantBuffers.h">
@@ -636,6 +639,9 @@
       <Filter>Header Files\Objects\Camera</Filter>
     </ClInclude>
     <ClInclude Include="CameraIndicator.h">
+      <Filter>Header Files\Objects\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
       <Filter>Header Files\Objects\Camera</Filter>
     </ClInclude>
   </ItemGroup>
