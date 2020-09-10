@@ -1,17 +1,25 @@
 #include "PointLight.h"
+#include "Camera.h"
 #include "imgui/imgui.h"
 
 PointLight::PointLight( Graphics& gfx, float radius ) : mesh( gfx, radius ), cbuf( gfx )
 {
 	Reset();
+	pCamera = std::make_shared<Camera>( gfx, "Light", cbData.lightPos, 0.0f, 0.0f, 12.0f, 0.002f, true );
 }
 
 void PointLight::SpawnControlWindow() noexcept
 {
 	if ( ImGui::Begin( "Light", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
 	{
+		bool bufferSet = false;
+		const auto linkCheck = [&bufferSet]( bool changed ) { bufferSet = bufferSet || changed; };
+		
 		if ( ImGui::CollapsingHeader( "Light" ) )
-			ImGui::SliderFloat3( "Position", &cbData.lightPos.x, -30.0f, 30.0f, "%1.f" );
+			linkCheck( ImGui::SliderFloat3( "Position", &cbData.lightPos.x, -30.0f, 30.0f, "%1.f" ) );
+
+		if ( bufferSet )
+			pCamera->SetPosition( cbData.lightPos );
 
 		if ( ImGui::CollapsingHeader( "Color" ) )
 		{
@@ -63,4 +71,9 @@ void PointLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept
 void PointLight::LinkTechniques( Rgph::RenderGraph& rg )
 {
 	mesh.LinkTechniques( rg );
+}
+
+std::shared_ptr<Camera> PointLight::ShareCamera() const noexcept
+{
+	return pCamera;
 }

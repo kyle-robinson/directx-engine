@@ -96,6 +96,13 @@ namespace Rgph
 		{
 			const auto& inputSourcePassName = si->GetPassName();
 
+			if ( inputSourcePassName.empty() )
+			{
+				std::ostringstream oss;
+				oss << "In pass name [" << pass.GetName() << "] sink named [" << si->GetRegisteredName() << "has no target source set!";
+				throw RGC_EXCEPTION( oss.str() );
+			}
+
 			// check check whether target source is global
 			if (inputSourcePassName == "$")
 			{

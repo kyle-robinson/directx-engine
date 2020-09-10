@@ -5,20 +5,21 @@
 #include <array>
 
 Camera::Camera( Graphics& gfx, std::string name, DirectX::XMFLOAT3 initialPos,
-	float initialPitch, float initialYaw, float initialTravSpeed, float initialRotSpeed ) noexcept
+	float initialPitch, float initialYaw, float initialTravSpeed, float initialRotSpeed, bool tethered ) noexcept
 	:
 	name( std::move( name ) ), initialPos( initialPos ), initialPitch( initialPitch ), initialYaw( initialYaw ),
-	initialTravSpeed( initialTravSpeed ), initialRotSpeed( initialRotSpeed ),
+	initialTravSpeed( initialTravSpeed ), initialRotSpeed( initialRotSpeed ), tethered( tethered ),
 	proj( gfx, 1.0f, 9.0f / 16.0f, 0.5f, 400.0f ), indicator( gfx )
 {
+	if ( tethered )
+	{
+		pos = initialPos;
+		indicator.SetPosition( pos );
+		proj.SetPosition( pos );
+	}
+	
 	std::array<Param, 3> type = { Param::Position, Param::Rotation, Param::Speed };
 	for( auto& param : type ) Reset( gfx, param );
-
-	indicator.SetPosition( pos );
-	indicator.SetRotation( { pitch, yaw, 0.0f } );
-
-	proj.SetPosition( pos );
-	proj.SetRotation( { pitch, yaw, 0.0f } );
 }
 
 void Camera::BindToGraphics( Graphics& gfx ) const
@@ -51,15 +52,18 @@ void Camera::SpawnControlWidgets( Graphics& gfx ) noexcept
 	const auto linkCheck = []( bool changed, bool& carry ) { carry = carry || changed; };
 	
 	ImGui::PushStyleColor( ImGuiCol_Button, ImVec4( 1.0f, 0.5f, 0.5f, 1.0f ) );
-
-	if ( ImGui::CollapsingHeader( "Position" ) )
+	
+	if ( !tethered )
 	{
-		linkCheck( ImGui::SliderFloat( "X", &pos.x, -80.0f, 80.0f, "%.1f" ), posCheck );
-		linkCheck( ImGui::SliderFloat( "Y", &pos.y, -80.0f, 80.0f, "%.1f" ), posCheck );
-		linkCheck( ImGui::SliderFloat( "Z", &pos.z, -80.0f, 80.0f, "%.1f" ), posCheck );
+		if ( ImGui::CollapsingHeader( "Position" ) )
+		{
+			linkCheck( ImGui::SliderFloat( "X", &pos.x, -80.0f, 80.0f, "%.1f" ), posCheck );
+			linkCheck( ImGui::SliderFloat( "Y", &pos.y, -80.0f, 80.0f, "%.1f" ), posCheck );
+			linkCheck( ImGui::SliderFloat( "Z", &pos.z, -80.0f, 80.0f, "%.1f" ), posCheck );
 		
-		if ( ImGui::Button( "Reset Position" ) )
-			Reset( gfx, Param::Position );
+			if ( ImGui::Button( "Reset Position" ) )
+				Reset( gfx, Param::Position );
+		}
 	}
 
 	if ( ImGui::CollapsingHeader( "Orientation" ) )
@@ -113,16 +117,19 @@ void Camera::Reset( Graphics& gfx, Param param ) noexcept
 	switch ( param )
 	{
 	case Param::Position:
-		pos = initialPos;
-		indicator.SetPosition( pos );
-		indicator.SetRotation( angles );
-		proj.SetPosition( pos );
-		proj.SetRotation( angles );
+		if ( !tethered )
+		{
+			pos = initialPos;
+			indicator.SetPosition( pos );
+			proj.SetPosition( pos );
+		}
 		proj.Reset( gfx );
 		break;
 	case Param::Rotation:
 		pitch = initialPitch;
 		yaw = initialYaw;
+		indicator.SetRotation( angles );
+		proj.SetRotation( angles );
 		break;
 	case Param::Speed:
 		travelSpeed = initialTravSpeed;
@@ -132,6 +139,8 @@ void Camera::Reset( Graphics& gfx, Param param ) noexcept
 		enableCameraIndicator = true;
 		enableFrustumIndicator = true;
 		break;
+	default:
+		throw std::exception( "ERROR:: An invalid camera param tried to be reset!" );
 	}
 }
 
@@ -147,21 +156,36 @@ void Camera::Rotate( float dx, float dy ) noexcept
 
 void Camera::Translate( DirectX::XMFLOAT3 translation ) noexcept
 {
-	DirectX::XMStoreFloat3(
-		&translation,
-		DirectX::XMVector3Transform(
-			DirectX::XMLoadFloat3( &translation ),
-			DirectX::XMMatrixRotationRollPitchYaw( pitch, yaw, 0.0f ) *
-			DirectX::XMMatrixScaling( travelSpeed, travelSpeed, travelSpeed )
-		)
-	);
+	if ( !tethered )
+	{
+		DirectX::XMStoreFloat3(
+			&translation,
+			DirectX::XMVector3Transform(
+				DirectX::XMLoadFloat3( &translation ),
+				DirectX::XMMatrixRotationRollPitchYaw( pitch, yaw, 0.0f ) *
+				DirectX::XMMatrixScaling( travelSpeed, travelSpeed, travelSpeed )
+			)
+		);
 
-	pos = {
-		pos.x + translation.x,
-		pos.y + translation.y,
-		pos.z + translation.z
-	};
+		pos = {
+			pos.x + translation.x,
+			pos.y + translation.y,
+			pos.z + translation.z
+		};
 
+		indicator.SetPosition( pos );
+		proj.SetPosition( pos );
+	}
+}
+
+DirectX::XMFLOAT3 Camera::GetPosition() const noexcept
+{
+	return pos;
+}
+
+void Camera::SetPosition( const DirectX::XMFLOAT3& pos ) noexcept
+{
+	this->pos = pos;
 	indicator.SetPosition( pos );
 	proj.SetPosition( pos );
 }

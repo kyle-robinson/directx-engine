@@ -2,8 +2,8 @@
 #include <vector>
 #include <memory>
 
-class Graphics;
 class Camera;
+class Graphics;
 
 namespace Rgph
 {
@@ -15,7 +15,7 @@ class CameraContainer
 public:
 	void SpawnControlWindow( Graphics& gfx );
 	void Bind( Graphics& gfx );
-	void AddCamera( std::unique_ptr<Camera> pCam );
+	void AddCamera( std::shared_ptr<Camera> pCam );
 	Camera* operator->();
 	~CameraContainer();
 	void LinkTechniques( Rgph::RenderGraph& rg );
@@ -23,6 +23,6 @@ public:
 private:
 	Camera& GetControlledCamera();
 private:
-	std::vector<std::unique_ptr<Camera>> cameras;
+	std::vector<std::shared_ptr<Camera>> cameras;
 	int active = 0, controlled = 0;
 };

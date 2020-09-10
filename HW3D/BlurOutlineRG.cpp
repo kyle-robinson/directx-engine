@@ -53,9 +53,9 @@ namespace Rgph
 				AddGlobalSource(DirectBindableSource<Bind::CachingPixelConstantBufferEx>::Make("blurKernel", blurKernel));
 			}
 			{
-				Dcb::RawLayout l;
-				l.Add<Dcb::Bool>("isHorizontal");
-				Dcb::Buffer buf{ std::move(l) };
+				Dcb::RawLayout layout;
+				layout.Add<Dcb::Bool>("isHorizontal");
+				Dcb::Buffer buf{ std::move(layout) };
 				blurDirection = std::make_shared<Bind::CachingPixelConstantBufferEx>(gfx, buf, 1);
 				AddGlobalSource(DirectBindableSource<Bind::CachingPixelConstantBufferEx>::Make("blurDirection", blurDirection));
 			}

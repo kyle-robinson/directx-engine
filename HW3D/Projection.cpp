@@ -2,10 +2,11 @@
 #include "Graphics.h"
 #include "imgui/imgui.h"
 
-Projection::Projection( Graphics& gfx, float initialWidth, float initialHeight, float initialNearZ, float initialFarZ )
+Projection::Projection( Graphics& gfx, float width, float height, float nearZ, float farZ )
 	:
-	initialWidth( initialWidth ), initialHeight( initialHeight ), initialNearZ( initialNearZ ), initialFarZ( initialFarZ ),
-	frust( gfx, initialWidth, initialHeight, initialNearZ, initialFarZ )
+	width( width ), height( height ), nearZ( nearZ ), farZ( farZ ),
+	initialWidth( width ), initialHeight( height ), initialNearZ( nearZ ), initialFarZ( farZ ),
+	frust( gfx, width, height, nearZ, farZ )
 {
 	Reset( gfx );
 }
