@@ -3,6 +3,7 @@
 #include "ConstantBufferEx.h"
 #include <memory>
 
+class Camera;
 class Graphics;
 
 namespace Bind
@@ -18,6 +19,8 @@ namespace Rgph
 	public:
 		BlurOutlineRG( Graphics& gfx );
 		void RenderWidgets( Graphics& gfx );
+		void BindMainCamera( Camera& cam );
+		void BindShadowCamera( Camera& cam );
 	private:
 		void SetKernelGauss( int radius, float sigma ) noexcept(!IS_DEBUG);
 		void SetKernelBox( int radius ) noexcept(!IS_DEBUG);

@@ -127,7 +127,7 @@ void App::DoFrame( float dt )
 {
 	// setup
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
-	cameras->BindToGraphics( wnd.Gfx() );
+	rg.BindMainCamera( cameras.GetActiveCamera() );
 	light.Bind( wnd.Gfx(), cameras->GetMatrix() );
 
 	// objects

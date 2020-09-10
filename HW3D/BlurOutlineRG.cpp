@@ -171,4 +171,9 @@ namespace Rgph
 
 		blurKernel->SetBuffer( kernel );
 	}
+
+	void BlurOutlineRG::BindMainCamera( Camera& cam )
+	{
+		dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindMainCamera( cam );
+	}
 }
