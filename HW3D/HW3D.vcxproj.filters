@@ -124,6 +124,9 @@
     <Filter Include="Source Files\Objects\Camera">
       <UniqueIdentifier>{cddb9a14-9de4-4612-aea6-862687c38b83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Shadows">
+      <UniqueIdentifier>{76be3317-a43a-49bf-aaa6-332dc4cdea5b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -344,6 +347,12 @@
     </ClCompile>
     <ClCompile Include="Frustum.cpp">
       <Filter>Source Files\Objects\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowCameraCbuf.cpp">
+      <Filter>Source Files\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowSampler.cpp">
+      <Filter>Source Files\Bindables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -653,6 +662,12 @@
     <ClInclude Include="ShadowMappingPass.h">
       <Filter>Header Files\Jobs\Passes</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowCameraCbuf.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowSampler.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -670,16 +685,16 @@
     <None Include="res\cursors\WoW_Select.ani">
       <Filter>Resource Files\Cursors</Filter>
     </None>
-    <None Include="Transform.hlsli">
+    <None Include="res\shaders\hlsli\LightVectorData.hlsli">
       <Filter>Resource Files\Shaders\Includes</Filter>
     </None>
-    <None Include="LightVectorData.hlsli">
+    <None Include="res\shaders\hlsli\PointLight.hlsli">
       <Filter>Resource Files\Shaders\Includes</Filter>
     </None>
-    <None Include="PointLight.hlsli">
+    <None Include="res\shaders\hlsli\ShaderLighting.hlsli">
       <Filter>Resource Files\Shaders\Includes</Filter>
     </None>
-    <None Include="ShaderLighting.hlsli">
+    <None Include="res\shaders\hlsli\Transform.hlsli">
       <Filter>Resource Files\Shaders\Includes</Filter>
     </None>
   </ItemGroup>
@@ -748,6 +763,12 @@
     </FxCompile>
     <FxCompile Include="res\shaders\hlsl\BlurPS.hlsl">
       <Filter>Resource Files\Shaders\Framebuffer</Filter>
+    </FxCompile>
+    <FxCompile Include="res\shaders\hlsl\ShadowPS.hlsl">
+      <Filter>Resource Files\Shaders\Shadows</Filter>
+    </FxCompile>
+    <FxCompile Include="res\shaders\hlsl\ShadowVS.hlsl">
+      <Filter>Resource Files\Shaders\Shadows</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

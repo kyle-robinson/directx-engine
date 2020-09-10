@@ -26,7 +26,7 @@ namespace Rgph
 			AddBind( Bind::NullPixelShader::Resolve( gfx ) );
 			AddBind( Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Off ) );
 			AddBind( Bind::Blender::Resolve( gfx, false ) );
-			RegisterSource( DirectBindableSource<Bind::DepthStencil>::Make( "shadowMap", depthStencil ) );
+			RegisterSource( DirectBindableSource<Bind::DepthStencil>::Make( "map", depthStencil ) );
 		}
 		void BindShadowCamera( const Camera& cam ) noexcept
 		{

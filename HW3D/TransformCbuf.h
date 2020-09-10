@@ -14,8 +14,9 @@ namespace Bind
 	protected:
 		struct Transforms
 		{
-			DirectX::XMMATRIX modelViewProj;
+			DirectX::XMMATRIX model;
 			DirectX::XMMATRIX modelView;
+			DirectX::XMMATRIX modelViewProj;
 		};
 		void UpdateBind( Graphics& gfx, const Transforms& tf ) noexcept;
 		Transforms GetTransforms( Graphics& gfx ) noexcept;

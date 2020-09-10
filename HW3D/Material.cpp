@@ -153,7 +153,7 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 		techniques.push_back( std::move( outline ) );
 	}
 	// shadow mapping
-	{
+	/*{
 		Technique shadow{ "Shadow Map", Channel::shadow, true };
 		{
 			Step draw( "shadowMap" );
@@ -164,7 +164,7 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 			shadow.AddStep( std::move( draw ) );
 		}
 		techniques.push_back( std::move( shadow ) );
-	}
+	}*/
 }
 
 VertexMeta::VertexBuffer Material::ExtractVertices( const aiMesh& mesh ) const noexcept

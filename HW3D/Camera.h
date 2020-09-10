@@ -31,6 +31,7 @@ public:
 		bool tethered = false ) noexcept;
 	void BindToGraphics( Graphics& gfx ) const;
 	DirectX::XMMATRIX GetMatrix() const noexcept;
+	DirectX::XMMATRIX GetProjection() const noexcept;
 	void SpawnControlWidgets( Graphics& gfx ) noexcept;
 	void Reset( Graphics& gfx, Param param ) noexcept;
 	void Rotate( float dx, float dy ) noexcept;

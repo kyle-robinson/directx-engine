@@ -14,14 +14,16 @@
 #include <algorithm>
 
 App::App( const std::string& commandLine ) :
-	wnd( 1280, 720, "DirectX 11 Engine Window" ), light( wnd.Gfx() ), scriptCommander( TokenizeQuoted( commandLine ) )
+	wnd( 1280, 720, "DirectX 11 Engine Window" ),
+	light( wnd.Gfx(), { 10.0f, 5.0f, 0.0f } ),
+	scriptCommander( TokenizeQuoted( commandLine ) )
 {
 	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "A", DirectX::XMFLOAT3{ -13.5f, 6.0f, 3.5f }, 0.0f, PI / 2.0f ) );
 	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "B", DirectX::XMFLOAT3{ -13.5f, 28.8f, -6.4f }, PI / 180.0f * 13.0f, PI / 180.0f * 61.0f ) );
 	cameras.AddCamera( light.ShareCamera() );
 	
-	cube.SetPos( { 4.0f, 0.0f, 0.0f } );
-	cube2.SetPos( { -8.0f, 0.0f, 0.0f } );
+	cube.SetPos( { 10.0f, 5.0f, 6.0f } );
+	cube2.SetPos( { 10.0f, 5.0f, 14.0f } );
 	nanosuit.SetRootTransform(
 		DirectX::XMMatrixRotationY( PI / 2.0f ) *
 		DirectX::XMMatrixTranslation( 27.0f, -0.56f, 1.7f )
