@@ -38,4 +38,5 @@ private:
 
 	std::string commandLine;
 	int x = 0, y = 0;
+	bool saveDepth = false;
 };

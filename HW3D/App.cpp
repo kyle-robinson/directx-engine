@@ -91,6 +91,9 @@ void App::HandleInput( float dt )
 				wnd.mouse.DisableRaw();
 			}
 			break;
+		case VK_RETURN:
+			saveDepth = true;
+			break;
 		}
 	}
 
@@ -161,6 +164,12 @@ void App::DoFrame( float dt )
 	
 	wnd.Gfx().EndFrame();
 	rg.Reset();
+
+	if ( saveDepth )
+	{
+		rg.StoreDepth( wnd.Gfx(), "res\\depth\\view-depth.png" );
+		saveDepth = false;
+	}
 }
 
 void App::ShowRawInputWindow()
