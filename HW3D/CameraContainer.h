@@ -19,7 +19,7 @@ public:
 	Camera* operator->();
 	~CameraContainer();
 	void LinkTechniques( Rgph::RenderGraph& rg );
-	void Submit() const;
+	void Submit( size_t channels ) const;
 private:
 	Camera& GetControlledCamera();
 private:

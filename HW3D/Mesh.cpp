@@ -11,7 +11,7 @@
 
 Mesh::Mesh( Graphics& gfx, const Material& mat, const aiMesh& mesh, float scale ) noexcept(!IS_DEBUG) : Drawable( gfx, mat, mesh, scale ) { }
 
-void Mesh::Submit( DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG)
+void Mesh::Submit( size_t channels, DirectX::FXMMATRIX accumulatedTransform ) const noexcept(!IS_DEBUG)
 {
 	DirectX::XMStoreFloat4x4( &transform, accumulatedTransform );
 	Drawable::Submit();

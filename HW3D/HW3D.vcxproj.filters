@@ -647,6 +647,9 @@
     <ClInclude Include="WireframePass.h">
       <Filter>Header Files\Jobs\Passes</Filter>
     </ClInclude>
+    <ClInclude Include="Channels.h">
+      <Filter>Header Files\Jobs\Graphs</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">

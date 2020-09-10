@@ -1,5 +1,6 @@
 #include "App.h"
 #include "Camera.h"
+#include "Channels.h"
 
 #include "ModelProbeWindow.h"
 
@@ -130,14 +131,14 @@ void App::DoFrame( float dt )
 	light.Bind( wnd.Gfx(), cameras->GetMatrix() );
 
 	// objects
-	light.Submit();
-	sponza.Submit();
-	nanosuit.Submit();
-	goblin.Submit();
-	backpack.Submit();
-	cube.Submit();
-	cube2.Submit();
-	cameras.Submit();
+	light.Submit( Channel::main );
+	sponza.Submit( Channel::main );
+	nanosuit.Submit( Channel::main );
+	goblin.Submit( Channel::main );
+	backpack.Submit( Channel::main );
+	cube.Submit( Channel::main );
+	cube2.Submit( Channel::main );
+	cameras.Submit( Channel::main );
 
 	rg.Execute( wnd.Gfx() );
 

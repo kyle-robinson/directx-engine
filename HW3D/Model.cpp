@@ -38,9 +38,9 @@ Model::Model(Graphics& gfx, const std::string& pathString, const float scale)
 	pRoot = ParseNode( nextID, *pScene->mRootNode, scale );
 }
 
-void Model::Submit() const noexcept(!IS_DEBUG)
+void Model::Submit( size_t channels ) const noexcept(!IS_DEBUG)
 {
-	pRoot->Submit(DirectX::XMMatrixIdentity());
+	pRoot->Submit(channels, DirectX::XMMatrixIdentity());
 }
 
 void Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept

@@ -18,7 +18,7 @@ public:
 	void SetPosition( DirectX::XMFLOAT3 pos );
 	void SetRotation( DirectX::XMFLOAT3 rot );
 	void LinkTechniques( Rgph::RenderGraph& rg );
-	void Submit() const;
+	void Submit( size_t channel ) const;
 	void Reset( Graphics& gfx );
 private:
 	float width, height, nearZ, farZ;

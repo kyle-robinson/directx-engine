@@ -1,5 +1,6 @@
 #include "Material.h"
 #include "Stencil.h"
+#include "Channels.h"
 #include "BindableCommon.h"
 #include "DynamicConstant.h"
 #include "ConstantBufferEx.h"
@@ -16,7 +17,7 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 	}
 	// phong
 	{
-		Technique phong{ "Phong" };
+		Technique phong{ "Phong", Channel::main };
 		Step step( "lambertian" );
 		std::string shaderCode = "Phong";
 		aiString texFileName;
@@ -123,7 +124,7 @@ Material::Material( Graphics& gfx, const aiMaterial& material, const std::filesy
 	}
 	// outline
 	{
-		Technique outline( "Outline", false );
+		Technique outline( "Outline", Channel::main, false );
 		{
 			Step mask( "outlineMask" );
 

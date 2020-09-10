@@ -52,10 +52,10 @@ void PointLight::Reset() noexcept
 	};
 }
 
-void PointLight::Submit() const noexcept(!IS_DEBUG)
+void PointLight::Submit( size_t channels ) const noexcept(!IS_DEBUG)
 {
 	mesh.SetPos( cbData.lightPos );
-	mesh.Submit();
+	mesh.Submit( channels );
 }
 
 void PointLight::Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept

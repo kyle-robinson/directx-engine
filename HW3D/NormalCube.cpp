@@ -4,6 +4,7 @@
 #include "ConstantBufferEx.h"
 #include "DynamicConstant.h"
 #include "TechniqueProbe.h"
+#include "Channels.h"
 #include "imgui/imgui.h"
 
 NormalCube::NormalCube( Graphics& gfx, float size )
@@ -21,7 +22,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 
 	auto tcb = std::make_shared<TransformCbuf>( gfx );
 	{
-		Technique shade( "Shading" );
+		Technique shade( "Shading", Channel::main );
 		{
 			Step initial( "lambertian" );
 
@@ -52,7 +53,7 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 	}
 
 	{
-		Technique outline( "Outline" );
+		Technique outline( "Outline", Channel::main );
 		{
 			Step mask( "outlineMask" );
 

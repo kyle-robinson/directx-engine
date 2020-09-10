@@ -51,9 +51,9 @@ void Projection::LinkTechniques( Rgph::RenderGraph& rg )
 	frust.LinkTechniques( rg );
 }
 
-void Projection::Submit() const
+void Projection::Submit( size_t channel ) const
 {
-	frust.Submit();
+	frust.Submit( channel );
 }
 
 void Projection::Reset( Graphics& gfx )

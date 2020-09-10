@@ -2,6 +2,7 @@
 #include "Vertex.h"
 #include "Sphere.h"
 #include "Stencil.h"
+#include "Channels.h"
 #include "BindableCommon.h"
 #include "GraphicsThrowMacros.h"
 
@@ -59,7 +60,7 @@ CameraIndicator::CameraIndicator( Graphics& gfx )
 	pTopology = Bind::Topology::Resolve( gfx, D3D11_PRIMITIVE_TOPOLOGY_LINELIST );
 
 	{
-		Technique line;
+		Technique line{ Channel::main };
 		Step initial( "lambertian" );
 
 		auto pvs = Bind::VertexShader::Resolve( gfx, "SolidVS.cso" );

@@ -17,10 +17,10 @@ Drawable::Drawable( Graphics& gfx, const Material& mat, const aiMesh& mesh, floa
 		AddTechnique( std::move( t ) );
 }
 
-void Drawable::Submit() const noexcept
+void Drawable::Submit( size_t channelFilter ) const noexcept
 {
 	for ( const auto& tech : techniques )
-		tech.Submit( *this );
+		tech.Submit( *this, channelFilter );
 }
 
 void Drawable::AddTechnique( Technique tech_in ) noexcept
