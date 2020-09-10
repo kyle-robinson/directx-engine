@@ -77,7 +77,8 @@ void Camera::SpawnControlWidgets( Graphics& gfx ) noexcept
 
 	if ( ImGui::CollapsingHeader( "Speed" ) )
 	{
-		ImGui::SliderFloat( "Movement", &travelSpeed, 1.0f, 20.0f, "%.1f" );
+		if( !tethered )
+			ImGui::SliderFloat( "Movement", &travelSpeed, 1.0f, 20.0f, "%.1f" );
 		ImGui::SliderFloat( "Sensitivity", &rotationSpeed, 0.0001f, 0.01f );
 
 		if ( ImGui::Button( "Reset Speed" ) )
