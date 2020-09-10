@@ -650,6 +650,9 @@
     <ClInclude Include="Channels.h">
       <Filter>Header Files\Jobs\Graphs</Filter>
     </ClInclude>
+    <ClInclude Include="ShadowMappingPass.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">

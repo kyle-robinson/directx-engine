@@ -7,6 +7,7 @@
 #include "HorizontalBlurPass.h"
 #include "VerticalBlurPass.h"
 #include "BlurOutlineDrawPass.h"
+#include "ShadowMappingPass.h"
 #include "RenderTarget.h"
 #include "DynamicConstant.h"
 #include "Source.h"
@@ -27,6 +28,10 @@ namespace Rgph
 			auto pass = std::make_unique<BufferClearPass>("clearDS");
 			pass->SetSinkLinkage("buffer", "$.masterDepth");
 			AppendPass(std::move(pass));
+		}
+		{
+			auto pass = std::make_unique<ShadowMappingPass>( gfx, "shadowMap" );
+			AppendPass( std::move( pass ) );
 		}
 		{
 			auto pass = std::make_unique<LambertianPass>(gfx, "lambertian");
@@ -172,8 +177,18 @@ namespace Rgph
 		blurKernel->SetBuffer( kernel );
 	}
 
+	void BlurOutlineRG::DumpShadowMap( Graphics& gfx, const std::string& path )
+	{
+		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).DumpShadowMap( gfx, path );
+	}
+
 	void BlurOutlineRG::BindMainCamera( Camera& cam )
 	{
 		dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindMainCamera( cam );
+	}
+
+	void BlurOutlineRG::BindShadowCamera( Camera& cam )
+	{
+		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
 	}
 }

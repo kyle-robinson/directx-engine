@@ -43,6 +43,8 @@ App::App( const std::string& commandLine ) :
 	goblin.LinkTechniques( rg );
 	backpack.LinkTechniques( rg );
 	cameras.LinkTechniques( rg );
+
+	rg.BindShadowCamera( *light.ShareCamera() );
 }
 
 int App::Init()
@@ -92,8 +94,11 @@ void App::HandleInput( float dt )
 				wnd.mouse.DisableRaw();
 			}
 			break;
-		case VK_RETURN:
+		case VK_NUMPAD1:
 			saveDepth = true;
+			break;
+		case VK_NUMPAD2:
+			saveShadow = true;
 			break;
 		}
 	}
@@ -127,8 +132,8 @@ void App::DoFrame( float dt )
 {
 	// setup
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
-	rg.BindMainCamera( cameras.GetActiveCamera() );
 	light.Bind( wnd.Gfx(), cameras->GetMatrix() );
+	rg.BindMainCamera( cameras.GetActiveCamera() );
 
 	// objects
 	light.Submit( Channel::main );
@@ -140,7 +145,27 @@ void App::DoFrame( float dt )
 	cube2.Submit( Channel::main );
 	cameras.Submit( Channel::main );
 
+	light.Submit( Channel::shadow );
+	sponza.Submit( Channel::shadow );
+	nanosuit.Submit( Channel::shadow );
+	goblin.Submit( Channel::shadow );
+	backpack.Submit( Channel::shadow );
+	cube.Submit( Channel::shadow );
+	cube2.Submit( Channel::shadow );
+
 	rg.Execute( wnd.Gfx() );
+
+	if ( saveDepth )
+	{
+		rg.StoreDepth( wnd.Gfx(), "res\\depth\\view-depth.png" );
+		saveDepth = false;
+	}
+
+	if ( saveShadow )
+	{
+		rg.DumpShadowMap( wnd.Gfx(), "res\\depth\\shadow.png" );
+		saveShadow = false;
+	}
 
 	// imgui
 	if ( wnd.Gfx().IsImGuiEnabled() )
@@ -165,12 +190,6 @@ void App::DoFrame( float dt )
 	
 	wnd.Gfx().EndFrame();
 	rg.Reset();
-
-	if ( saveDepth )
-	{
-		rg.StoreDepth( wnd.Gfx(), "res\\depth\\view-depth.png" );
-		saveDepth = false;
-	}
 }
 
 void App::ShowRawInputWindow()

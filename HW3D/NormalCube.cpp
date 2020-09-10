@@ -81,6 +81,19 @@ NormalCube::NormalCube( Graphics& gfx, float size )
 		}
 		AddTechnique( std::move( outline ) );
 	}
+
+	{
+		Technique shadow{ "ShadowMap", Channel::shadow, true };
+		{
+			Step draw( "shadowMap" );
+
+			draw.AddBindable( Bind::InputLayout::Resolve( gfx, model.vertices.GetLayout(), *Bind::VertexShader::Resolve( gfx, "SolidVS.cso" ) ) );
+			draw.AddBindable( std::make_shared<Bind::TransformCbuf>( gfx ) );
+
+			shadow.AddStep( std::move( draw ) );
+		}
+		AddTechnique( std::move( shadow ) );
+	}
 }
 
 void NormalCube::SetPos( DirectX::XMFLOAT3 pos ) noexcept

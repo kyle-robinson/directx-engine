@@ -332,6 +332,7 @@
     <ClInclude Include="Pass.h" />
     <ClInclude Include="Projection.h" />
     <ClInclude Include="ScriptCommander.h" />
+    <ClInclude Include="ShadowMappingPass.h" />
     <ClInclude Include="Sink.h" />
     <ClInclude Include="Source.h" />
     <ClInclude Include="PixelShader.h" />
