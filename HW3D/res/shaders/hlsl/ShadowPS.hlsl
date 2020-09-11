@@ -39,7 +39,7 @@ float4 main( float3 viewFragPos : Position, float3 viewNormal : Normal, float2 t
     }
     else
     {
-        diffuse = specular = float3(0.0f, 0.0f, 0.0f);
+        diffuse = specular = 0.0f;
     }
     
     return float4(saturate((diffuse + ambient) * tex.Sample(smplr, tc).rgb + specular), 1.0f);
