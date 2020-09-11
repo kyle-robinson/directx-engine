@@ -22,7 +22,7 @@ float4 main( float3 viewFragPos : Position, float3 viewNormal : Normal, float2 t
     
     // shadow mapping
     sPos.xyz = sPos.xyz / sPos.w;
-    if (sMap.Sample(sSmplr, sPos.xy).r > sPos.z)
+    if (sMap.Sample(sSmplr, sPos.xy).r > sPos.z - 0.005f)
     {
         // renormalize interpolated normal
         viewNormal = normalize(viewNormal);

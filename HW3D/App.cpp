@@ -33,8 +33,8 @@ App::App( const std::string& commandLine ) :
 		DirectX::XMMatrixTranslation( -8.0f, 10.0f, 0.0f )
 	);
 	backpack.SetRootTransform(
-		DirectX::XMMatrixRotationY( PI / 0.5f ) *
-		DirectX::XMMatrixTranslation( 10.0f, 5.0f, 10.0f )
+		DirectX::XMMatrixRotationY( PI / 1.0f ) *
+		DirectX::XMMatrixTranslation( 10.0f, 5.0f, -8.0f )
 	);
 
 	cube.LinkTechniques( rg );
