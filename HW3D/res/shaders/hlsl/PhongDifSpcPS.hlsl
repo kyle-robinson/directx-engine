@@ -17,7 +17,7 @@ Texture2D spec : register(t1);
 
 SamplerState smplr : register(s0);
 
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord, float3 sPos : ShadowPosition) : SV_Target
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord, float4 sPos : ShadowPosition) : SV_Target
 {
     float3 diffuse;
     float3 specularReflected;

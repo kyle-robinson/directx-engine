@@ -20,7 +20,7 @@ Texture2D norm : register(t2);
 
 SamplerState smplr : register(s0);
 
-float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord, float3 sPos : ShadowPosition) : SV_Target
+float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float3 viewTan : Tangent, float3 viewBitan : Bitangent, float2 tc : Texcoord, float4 sPos : ShadowPosition) : SV_Target
 {
     // sample diffuse texture
     const float4 dtex = tex.Sample(smplr, tc);

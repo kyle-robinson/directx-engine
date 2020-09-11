@@ -11,7 +11,7 @@ struct VSOut
     float3 viewPos : Position;
     float3 viewNormal : Normal;
     float2 tc : Texcoord;
-    float3 shadowCamScreen : ShadowPosition;
+    float4 shadowCamScreen : ShadowPosition;
     float4 pos : SV_Position;
 };
 

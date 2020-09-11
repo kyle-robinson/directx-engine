@@ -8,7 +8,7 @@ struct VSOut
     float3 tan : Tangent;
     float3 bitan : Bitangent;
     float2 tc : Texcoord;
-    float3 shadowCamScreen : ShadowPosition;
+    float4 shadowCamScreen : ShadowPosition;
     float4 pos : SV_Position;
 };
 
