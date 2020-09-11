@@ -191,5 +191,6 @@ namespace Rgph
 	void BlurOutlineRG::BindShadowCamera( Camera& cam )
 	{
 		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).BindShadowCamera( cam );
+		dynamic_cast<LambertianPass&>( FindPassByName( "lambertian" ) ).BindShadowCamera( cam );
 	}
 }
