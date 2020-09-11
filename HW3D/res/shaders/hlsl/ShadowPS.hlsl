@@ -1,28 +1,25 @@
 #include "../hlsli/ShaderLighting.hlsli"
 #include "../hlsli/LightVectorData.hlsli"
 #include "../hlsli/PointLight.hlsli"
+#include "../hlsli/ShadowPixel.hlsli"
 
-cbuffer ObjectCbuf
+cbuffer ObjectCbuf : register(b1)
 {
     float3 specularColor;
     float specularWeight;
     float specularGloss;
 };
 
-Texture2D tex;
-Texture2D sMap : register(t3);
+Texture2D tex : register(t0);
+SamplerState smplr : register(s0);
 
-SamplerState smplr;
-SamplerState sSmplr;
-
-float4 main( float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord, float4 sPos : ShadowPosition ) : SV_Target
+float4 main( float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc : Texcoord, float3 sPos : ShadowPosition ) : SV_Target
 {
     float3 diffuse;
     float3 specular;
     
     // shadow mapping
-    sPos.xyz = sPos.xyz / sPos.w;
-    if (sMap.Sample(sSmplr, sPos.xy).r > sPos.z - 0.005f)
+    if (ShadowUnoccluded(sPos))
     {
         // renormalize interpolated normal
         viewNormal = normalize(viewNormal);

@@ -389,6 +389,8 @@
     <None Include="res\shaders\hlsli\LightVectorData.hlsli" />
     <None Include="res\shaders\hlsli\PointLight.hlsli" />
     <None Include="res\shaders\hlsli\ShaderLighting.hlsli" />
+    <None Include="res\shaders\hlsli\ShadowPixel.hlsli" />
+    <None Include="res\shaders\hlsli\ShadowVertex.hlsli" />
     <None Include="res\shaders\hlsli\Transform.hlsli" />
   </ItemGroup>
   <ItemGroup>
