@@ -119,7 +119,10 @@ void Camera::SpawnControlWidgets( Graphics& gfx ) noexcept
 
 void Camera::Reset( Graphics& gfx, Param param ) noexcept
 {
+	pitch = initialPitch;
+	yaw = initialYaw;
 	const DirectX::XMFLOAT3 angles = { pitch, yaw, 0.0f };
+
 	switch ( param )
 	{
 	case Param::Position:
@@ -132,8 +135,6 @@ void Camera::Reset( Graphics& gfx, Param param ) noexcept
 		proj.Reset( gfx );
 		break;
 	case Param::Rotation:
-		pitch = initialPitch;
-		yaw = initialYaw;
 		indicator.SetRotation( angles );
 		proj.SetRotation( angles );
 		break;
