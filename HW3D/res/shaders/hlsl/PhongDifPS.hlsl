@@ -18,7 +18,9 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     float3 diffuse;
     float3 specular;
     
-    if (ShadowUnoccluded(sPos))
+    // shadow mapping
+    const float shadowLevel = Shadow(sPos);
+    if (shadowLevel != 0.0f)
     {
 	    // renormalize interpolated normal
         viewNormal = normalize(viewNormal);
@@ -33,7 +35,11 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
         diffuse = Diffuse(diffuseColor, diffuseIntensity, att, lvd.dirToL, viewNormal);
 	
 	    // specular
-        specular = Speculate(diffuseColor * diffuseIntensity * specularColor, specularWeight, viewNormal, lvd.vToL, viewFragPos, att, specularGloss);   
+        specular = Speculate(diffuseColor * diffuseIntensity * specularColor, specularWeight, viewNormal, lvd.vToL, viewFragPos, att, specularGloss);
+        
+        // scale by shadow level
+        diffuse *= shadowLevel;
+        specular *= shadowLevel;
     }
     else
     {

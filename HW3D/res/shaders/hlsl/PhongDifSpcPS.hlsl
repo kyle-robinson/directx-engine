@@ -22,7 +22,9 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     float3 diffuse;
     float3 specularReflected;
     
-    if (ShadowUnoccluded(sPos))
+    // shadow mapping
+    const float shadowLevel = Shadow(sPos);
+    if (shadowLevel != 0.0f)
     {
         // sample normal from map
         viewNormal = normalize(viewNormal);
@@ -51,6 +53,10 @@ float4 main(float3 viewFragPos : Position, float3 viewNormal : Normal, float2 tc
     
         // specular reflected
         specularReflected = Speculate(diffuseColor * specularReflectionColor, specularWeight, viewNormal, lvd.vToL, viewFragPos, att, specularPowerLoaded);
+
+        // scale by shadow level
+        diffuse *= shadowLevel;
+        specularReflected *= shadowLevel;
     }
     else
     {
