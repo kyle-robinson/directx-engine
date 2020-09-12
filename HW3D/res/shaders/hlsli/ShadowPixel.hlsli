@@ -1,7 +1,26 @@
 Texture2D sMap : register(t3);
 SamplerComparisonState sSmplr : register(s1);
 
-#define PCF_RANGE 2
+cbuffer ShadowControl : register(b2)
+{
+    int pcfLevel;
+    float depthBias;
+}
+
+float ShadowLoop( const in float3 sPos, uniform int range )
+{
+    float shadowLevel = 0.0f;
+    [unroll]
+    for (int x = -range; x <= range; x++)
+    {
+        [unroll]
+        for (int y = -range; y <= range; y++)
+        {
+            shadowLevel += sMap.SampleCmpLevelZero(sSmplr, sPos.xy, sPos.b - depthBias, int2(x, y));
+        }
+    }
+    return shadowLevel / ((range * 2 + 1) * (range * 2 + 1));
+}
 
 float Shadow( const in float4 shadowScreenPos )
 {
@@ -13,16 +32,14 @@ float Shadow( const in float4 shadowScreenPos )
     }
     else
     {
-       [unroll]
-        for (int x = -PCF_RANGE; x <= PCF_RANGE; x++)
+        [unroll]
+        for (int level = 0; level <= 4; level++)
         {
-            [unroll]
-            for (int y = -PCF_RANGE; y <= PCF_RANGE; y++)
+            if (level == pcfLevel)
             {
-                shadowLevel += sMap.SampleCmpLevelZero(sSmplr, sPos.xy, sPos.b - 0.0005f, int2(x, y));
+                shadowLevel = ShadowLoop(sPos, level);
             }
         }
-        shadowLevel /= ((PCF_RANGE * 2 + 1) * (PCF_RANGE * 2 + 1));
     }
     return shadowLevel;
 }

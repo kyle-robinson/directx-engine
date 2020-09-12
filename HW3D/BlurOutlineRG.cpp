@@ -34,10 +34,23 @@ namespace Rgph
 			AppendPass( std::move( pass ) );
 		}
 		{
+			{
+				Dcb::RawLayout layout;
+				layout.Add<Dcb::Integer>( "pcfLevel" );
+				layout.Add<Dcb::Float>( "depthBias" );
+				Dcb::Buffer buffer{ std::move( layout ) };
+				buffer["pcfLevel"] = 0;
+				buffer["depthBias"] = 0.0005f;
+				shadowControl = std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buffer, 2u );
+				AddGlobalSource( DirectBindableSource<Bind::CachingPixelConstantBufferEx>::Make( "shadowControl", shadowControl ) );
+			}
+		}
+		{
 			auto pass = std::make_unique<LambertianPass>(gfx, "lambertian");
 			pass->SetSinkLinkage("shadowMap", "shadowMap.map");
 			pass->SetSinkLinkage("renderTarget", "clearRT.buffer");
 			pass->SetSinkLinkage("depthStencil", "clearDS.buffer");
+			pass->SetSinkLinkage("shadowControl", "$.shadowControl");
 			AppendPass(std::move(pass));
 		}
 		{
@@ -98,7 +111,13 @@ namespace Rgph
 		Finalize();
 	}
 
-	void BlurOutlineRG::RenderWidgets( Graphics& gfx )
+	void BlurOutlineRG::RenderWindows( Graphics& gfx )
+	{
+		RenderKernelWindow( gfx );
+		RenderShadowWindow( gfx );
+	}
+
+	void BlurOutlineRG::RenderKernelWindow( Graphics& gfx )
 	{
 		if ( ImGui::Begin( "Kernel", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
 		{
@@ -138,6 +157,20 @@ namespace Rgph
 						SetKernelBox( radius );
 				}
 			}
+		}
+		ImGui::End();
+	}
+
+	void BlurOutlineRG::RenderShadowWindow( Graphics& gfx )
+	{
+		if ( ImGui::Begin( "Shadows", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
+		{
+			auto shadowBuf = shadowControl->GetBuffer();
+			bool pcfChange = ImGui::SliderInt( "PCF Level", &shadowBuf["pcfLevel"], 0, 4 );
+			bool biasChange = ImGui::SliderFloat( "Depth Bias", &shadowBuf["depthBias"], 0.0f, 0.1f, "%.6f", 3.6f );
+			
+			if ( pcfChange || biasChange )
+				shadowControl->SetBuffer( shadowBuf );
 		}
 		ImGui::End();
 	}
