@@ -14,6 +14,7 @@ namespace Bind
 			Mask,
 			Write,
 			DepthOff,
+			DepthSkyBox,
 			DepthReversed
 		};
 		Stencil( Graphics& gfx, Mode mode ) : mode( mode )
@@ -42,6 +43,11 @@ namespace Bind
 			else if ( mode == Mode::DepthOff )
 			{
 				dsDesc.DepthEnable = FALSE;
+				dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+			}
+			else if ( mode == Mode::DepthSkyBox )
+			{
+				dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
 				dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
 			}
 			else if ( mode == Mode::DepthReversed )
@@ -74,6 +80,8 @@ namespace Bind
 					return "write"s;
 				case Mode::DepthOff:
 					return "depth-off"s;
+				case Mode::DepthSkyBox:
+					return "depth-skybox"s;
 				case Mode::DepthReversed:
 					return "depth-reversed"s;
 				}

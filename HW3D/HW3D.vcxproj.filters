@@ -127,6 +127,9 @@
     <Filter Include="Resource Files\Shaders\Shadows">
       <UniqueIdentifier>{76be3317-a43a-49bf-aaa6-332dc4cdea5b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Shaders\Cubemaps">
+      <UniqueIdentifier>{46572877-00f0-430d-8ac5-ed456551ac2a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="VertexBuffer.cpp">
@@ -355,6 +358,12 @@
       <Filter>Source Files\Bindables</Filter>
     </ClCompile>
     <ClCompile Include="ShadowRasterizer.cpp">
+      <Filter>Source Files\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="SkyboxTransformCbuf.cpp">
+      <Filter>Source Files\Bindables</Filter>
+    </ClCompile>
+    <ClCompile Include="CubeTexture.cpp">
       <Filter>Source Files\Bindables</Filter>
     </ClCompile>
   </ItemGroup>
@@ -674,6 +683,15 @@
     <ClInclude Include="ShadowRasterizer.h">
       <Filter>Header Files\Bindables</Filter>
     </ClInclude>
+    <ClInclude Include="SkyboxTransformCbuf.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyboxPass.h">
+      <Filter>Header Files\Jobs\Passes</Filter>
+    </ClInclude>
+    <ClInclude Include="CubeTexture.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -781,6 +799,12 @@
     </FxCompile>
     <FxCompile Include="res\shaders\hlsl\ShadowVS.hlsl">
       <Filter>Resource Files\Shaders\Shadows</Filter>
+    </FxCompile>
+    <FxCompile Include="res\shaders\hlsl\SkyboxPS.hlsl">
+      <Filter>Resource Files\Shaders\Cubemaps</Filter>
+    </FxCompile>
+    <FxCompile Include="res\shaders\hlsl\SkyboxVS.hlsl">
+      <Filter>Resource Files\Shaders\Cubemaps</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

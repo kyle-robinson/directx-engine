@@ -206,6 +206,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraContainer.cpp" />
     <ClCompile Include="CameraIndicator.cpp" />
+    <ClCompile Include="CubeTexture.cpp" />
     <ClCompile Include="DepthStencil.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="dxerr.cpp" />
@@ -240,6 +241,7 @@
     <ClCompile Include="ShadowRasterizer.cpp" />
     <ClCompile Include="ShadowSampler.cpp" />
     <ClCompile Include="Sink.cpp" />
+    <ClCompile Include="SkyboxTransformCbuf.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="PixelShader.cpp" />
     <ClCompile Include="PointLight.cpp" />
@@ -296,6 +298,7 @@
     <ClInclude Include="ConstantBufferEx.h" />
     <ClInclude Include="ConstantBuffers.h" />
     <ClInclude Include="Cube.h" />
+    <ClInclude Include="CubeTexture.h" />
     <ClInclude Include="DepthStencil.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="dxerr.h" />
@@ -340,6 +343,8 @@
     <ClInclude Include="ShadowRasterizer.h" />
     <ClInclude Include="ShadowSampler.h" />
     <ClInclude Include="Sink.h" />
+    <ClInclude Include="SkyboxPass.h" />
+    <ClInclude Include="SkyboxTransformCbuf.h" />
     <ClInclude Include="Source.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="Plane.h" />
@@ -598,6 +603,26 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/res/shaders/cso/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/res/shaders/cso/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/res/shaders/cso/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/res/shaders/cso/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="res\shaders\hlsl\SkyboxPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/res/shaders/cso/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/res/shaders/cso/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)/res/shaders/cso/%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)/res/shaders/cso/%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="res\shaders\hlsl\SkyboxVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectDir)/res/shaders/cso/%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectDir)/res/shaders/cso/%(Filename).cso</ObjectFileOutput>

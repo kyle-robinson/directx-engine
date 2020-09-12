@@ -1,5 +1,6 @@
 #include "PointLight.h"
 #include "Camera.h"
+#include "Math.h"
 #include "imgui/imgui.h"
 
 PointLight::PointLight( Graphics& gfx, DirectX::XMFLOAT3 pos, float radius ) :
@@ -15,7 +16,7 @@ PointLight::PointLight( Graphics& gfx, DirectX::XMFLOAT3 pos, float radius ) :
 		0.0075f
 	};
 	Reset();
-	pCamera = std::make_shared<Camera>( gfx, "Light", cbData.lightPos, 0.0f, 0.0f, 12.0f, 0.002f, true );
+	pCamera = std::make_shared<Camera>( gfx, "Light", cbData.lightPos, 0.0f, PI / 2.0f, 12.0f, 0.002f, true );
 }
 
 void PointLight::SpawnControlWindow() noexcept

@@ -47,12 +47,17 @@ Surface::Color Surface::GetPixel( unsigned int x, unsigned int y ) const noexcep
 
 unsigned int Surface::GetWidth() const noexcept
 {
-	return ( unsigned int )scratch.GetMetadata().width;
+	return static_cast<unsigned int>( scratch.GetMetadata().width );
 }
 
 unsigned int Surface::GetHeight() const noexcept
 {
-	return ( unsigned int )scratch.GetMetadata().height;
+	return static_cast<unsigned int>( scratch.GetMetadata().height );
+}
+
+unsigned int Surface::GetBytePitch() const noexcept
+{
+	return static_cast<unsigned int>( scratch.GetImage( 0, 0, 0 )->rowPitch );
 }
 
 Surface::Color* Surface::GetBufferPtr() noexcept

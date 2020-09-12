@@ -3,23 +3,32 @@
 #include "IndexedTriangleList.h"
 #include <DirectXMath.h>
 #include <initializer_list>
+#include <optional>
 
 class Cube
 {
 public:
-	/*static IndexedTriangleList Make()
-	{
+	static IndexedTriangleList Make( std::optional<VertexMeta::VertexLayout> layout = {} )
+	{	
+		using Type = VertexMeta::VertexLayout::ElementType;
+		
+		if ( !layout )
+		{
+			layout = VertexMeta::VertexLayout{};
+			layout->Append( Type::Position3D );
+		}
+		
 		constexpr float side = 1.0f / 2.0f;
 
-		std::vector vertices( 8 );
-		vertices[0].pos = { -side, -side, -side }; // 0
-		vertices[1].pos = { side, -side, -side }; // 1
-		vertices[2].pos = { -side, side, -side }; // 2
-		vertices[3].pos = { side, side, -side }; // 3
-		vertices[4].pos = { -side, -side, side }; // 4
-		vertices[5].pos = { side, -side, side }; // 5
-		vertices[6].pos = { -side, side, side }; // 6
-		vertices[7].pos = { side, side, side }; // 7
+		VertexMeta::VertexBuffer  vertices( std::move( *layout ), 8u );
+		vertices[0].Attr<Type::Position3D>() = { -side, -side, -side }; // 0
+		vertices[1].Attr<Type::Position3D>() = { side, -side, -side }; // 1
+		vertices[2].Attr<Type::Position3D>() = { -side, side, -side }; // 2
+		vertices[3].Attr<Type::Position3D>() = { side, side, -side }; // 3
+		vertices[4].Attr<Type::Position3D>() = { -side, -side, side }; // 4
+		vertices[5].Attr<Type::Position3D>() = { side, -side, side }; // 5
+		vertices[6].Attr<Type::Position3D>() = { -side, side, side }; // 6
+		vertices[7].Attr<Type::Position3D>() = { side, side, side }; // 7
 
 		return{
 			std::move( vertices ),{
@@ -33,7 +42,7 @@ public:
 		};
 	}
 
-	static IndexedTriangleList MakeSkinned()
+	/*static IndexedTriangleList MakeSkinned()
 	{
 		constexpr float side = 1.0f / 2.0f;
 		std::vector<V> vertices( 14 );
