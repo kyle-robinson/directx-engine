@@ -10,6 +10,7 @@
 #include "ShadowMappingPass.h"
 #include "RenderTarget.h"
 #include "DynamicConstant.h"
+#include "ShadowSampler.h"
 #include "Source.h"
 #include "Math.h"
 #include "imgui/imgui.h"
@@ -38,11 +39,17 @@ namespace Rgph
 				Dcb::RawLayout layout;
 				layout.Add<Dcb::Integer>( "pcfLevel" );
 				layout.Add<Dcb::Float>( "depthBias" );
+				layout.Add<Dcb::Bool>( "hwPcf" );
 				Dcb::Buffer buffer{ std::move( layout ) };
 				buffer["pcfLevel"] = 0;
 				buffer["depthBias"] = 0.0005f;
+				buffer["hwPcf"] = true;
 				shadowControl = std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buffer, 2u );
 				AddGlobalSource( DirectBindableSource<Bind::CachingPixelConstantBufferEx>::Make( "shadowControl", shadowControl ) );
+			}
+			{
+				shadowSampler = std::make_shared<Bind::ShadowSampler>( gfx );
+				AddGlobalSource( DirectBindableSource<Bind::ShadowSampler>::Make( "shadowSampler", shadowSampler ) );
 			}
 		}
 		{
@@ -51,6 +58,7 @@ namespace Rgph
 			pass->SetSinkLinkage("renderTarget", "clearRT.buffer");
 			pass->SetSinkLinkage("depthStencil", "clearDS.buffer");
 			pass->SetSinkLinkage("shadowControl", "$.shadowControl");
+			pass->SetSinkLinkage("shadowSampler", "$.shadowSampler");
 			AppendPass(std::move(pass));
 		}
 		{
@@ -166,11 +174,18 @@ namespace Rgph
 		if ( ImGui::Begin( "Shadows", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
 		{
 			auto shadowBuf = shadowControl->GetBuffer();
+			bool bilin = shadowSampler->GetBilinear();
+
 			bool pcfChange = ImGui::SliderInt( "PCF Level", &shadowBuf["pcfLevel"], 0, 4 );
 			bool biasChange = ImGui::SliderFloat( "Depth Bias", &shadowBuf["depthBias"], 0.0f, 0.1f, "%.6f", 3.6f );
+			bool hwPcfChange = ImGui::Checkbox( "HW PCF", &shadowBuf["hwPcf"] ); ImGui::SameLine();
+			ImGui::Checkbox( "Bilinear", &bilin );
 			
-			if ( pcfChange || biasChange )
+			if ( pcfChange || biasChange || hwPcfChange )
 				shadowControl->SetBuffer( shadowBuf );
+
+			shadowSampler->SetHwPcf( shadowBuf["hwPcf"] );
+			shadowSampler->SetBilinear( bilin );
 		}
 		ImGui::End();
 	}
