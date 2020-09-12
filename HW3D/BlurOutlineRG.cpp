@@ -11,6 +11,7 @@
 #include "RenderTarget.h"
 #include "DynamicConstant.h"
 #include "ShadowSampler.h"
+#include "ShadowRasterizer.h"
 #include "Source.h"
 #include "Math.h"
 #include "imgui/imgui.h"
@@ -30,10 +31,20 @@ namespace Rgph
 			pass->SetSinkLinkage("buffer", "$.masterDepth");
 			AppendPass(std::move(pass));
 		}
+
+		// shadow rasterizer
+		{
+			shadowRasterizer = std::make_shared<Bind::ShadowRasterizer>( gfx, 10000, 0.0005f, 1.0f );
+			AddGlobalSource( DirectBindableSource<Bind::ShadowRasterizer>::Make( "shadowRasterizer", shadowRasterizer ) );
+		}
+
 		{
 			auto pass = std::make_unique<ShadowMappingPass>( gfx, "shadowMap" );
+			pass->SetSinkLinkage( "shadowRasterizer", "$.shadowRasterizer" );
 			AppendPass( std::move( pass ) );
 		}
+
+		// shadow control buffer and sampler
 		{
 			{
 				Dcb::RawLayout layout;
@@ -177,7 +188,7 @@ namespace Rgph
 			bool bilin = shadowSampler->GetBilinear();
 
 			bool pcfChange = ImGui::SliderInt( "PCF Level", &shadowBuf["pcfLevel"], 0, 4 );
-			bool biasChange = ImGui::SliderFloat( "Depth Bias", &shadowBuf["depthBias"], 0.0f, 0.1f, "%.6f", 3.6f );
+			bool biasChange = ImGui::SliderFloat( "Depth Bias / Pre", &shadowBuf["depthBias"], 0.0f, 0.1f, "%.6f", 3.6f );
 			bool hwPcfChange = ImGui::Checkbox( "HW PCF", &shadowBuf["hwPcf"] ); ImGui::SameLine();
 			ImGui::Checkbox( "Bilinear", &bilin );
 			
@@ -186,6 +197,19 @@ namespace Rgph
 
 			shadowSampler->SetHwPcf( shadowBuf["hwPcf"] );
 			shadowSampler->SetBilinear( bilin );
+
+			{
+				auto bias = shadowRasterizer->GetDepthBias();
+				auto slope = shadowRasterizer->GetSlopeBias();
+				auto clamp = shadowRasterizer->GetClamp();
+
+				bool biasChange = ImGui::SliderInt( "Depth Bias / Post", &bias, 0, 100000 );
+				bool slopeChange = ImGui::SliderFloat( "Slope Bias", &slope, 0.0f, 100.0f, "%.4f", 4.0f );
+				bool clampChange = ImGui::SliderFloat( "Clamp", &clamp, 0.0001f, 0.5f, "%.4f", 2.5f );
+
+				if ( biasChange || slopeChange || clampChange )
+					shadowRasterizer->ChangeDepthBiasParameters( gfx, bias, slope, clamp );
+			}
 		}
 		ImGui::End();
 	}

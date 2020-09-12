@@ -237,6 +237,7 @@
     <ClCompile Include="Projection.cpp" />
     <ClCompile Include="ScriptCommander.cpp" />
     <ClCompile Include="ShadowCameraCbuf.cpp" />
+    <ClCompile Include="ShadowRasterizer.cpp" />
     <ClCompile Include="ShadowSampler.cpp" />
     <ClCompile Include="Sink.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -336,6 +337,7 @@
     <ClInclude Include="ScriptCommander.h" />
     <ClInclude Include="ShadowCameraCbuf.h" />
     <ClInclude Include="ShadowMappingPass.h" />
+    <ClInclude Include="ShadowRasterizer.h" />
     <ClInclude Include="ShadowSampler.h" />
     <ClInclude Include="Sink.h" />
     <ClInclude Include="Source.h" />
