@@ -10,8 +10,6 @@
 #include "ShadowMappingPass.h"
 #include "RenderTarget.h"
 #include "DynamicConstant.h"
-//#include "ShadowSampler.h"
-//#include "ShadowRasterizer.h"
 #include "SkyboxPass.h"
 #include "Source.h"
 #include "Math.h"
@@ -34,45 +32,16 @@ namespace Rgph
 			AppendPass(std::move(pass));
 		}
 
-		// shadow rasterizer
-		/*{
-			shadowRasterizer = std::make_shared<Bind::ShadowRasterizer>( gfx, 10000, 0.0005f, 1.0f );
-			AddGlobalSource( DirectBindableSource<Bind::ShadowRasterizer>::Make( "shadowRasterizer", shadowRasterizer ) );
-		}*/
-
 		{
 			auto pass = std::make_unique<ShadowMappingPass>( gfx, "shadowMap" );
-			//pass->SetSinkLinkage( "shadowRasterizer", "$.shadowRasterizer" );
 			AppendPass( std::move( pass ) );
 		}
-
-		// shadow control buffer and sampler
-		/*{
-			{
-				Dcb::RawLayout layout;
-				layout.Add<Dcb::Integer>( "pcfLevel" );
-				layout.Add<Dcb::Float>( "depthBias" );
-				layout.Add<Dcb::Bool>( "hwPcf" );
-				Dcb::Buffer buffer{ std::move( layout ) };
-				buffer["pcfLevel"] = 0;
-				buffer["depthBias"] = 0.0005f;
-				buffer["hwPcf"] = true;
-				shadowControl = std::make_shared<Bind::CachingPixelConstantBufferEx>( gfx, buffer, 2u );
-				AddGlobalSource( DirectBindableSource<Bind::CachingPixelConstantBufferEx>::Make( "shadowControl", shadowControl ) );
-			}
-			{
-				shadowSampler = std::make_shared<Bind::ShadowSampler>( gfx );
-				AddGlobalSource( DirectBindableSource<Bind::ShadowSampler>::Make( "shadowSampler", shadowSampler ) );
-			}
-		}*/
 
 		{
 			auto pass = std::make_unique<LambertianPass>(gfx, "lambertian");
 			pass->SetSinkLinkage("shadowMap", "shadowMap.map");
 			pass->SetSinkLinkage("renderTarget", "clearRT.buffer");
 			pass->SetSinkLinkage("depthStencil", "clearDS.buffer");
-			//pass->SetSinkLinkage("shadowControl", "$.shadowControl");
-			//pass->SetSinkLinkage("shadowSampler", "$.shadowSampler");
 			AppendPass(std::move(pass));
 		}
 
@@ -147,7 +116,7 @@ namespace Rgph
 	void BlurOutlineRG::RenderWindows( Graphics& gfx, bool loadShadow, bool loadBlur )
 	{
 		if ( loadBlur ) RenderKernelWindow( gfx );
-		//if ( loadShadow ) RenderShadowWindow( gfx );
+		if ( loadShadow ) RenderShadowWindow( gfx );
 	}
 
 	void BlurOutlineRG::RenderKernelWindow( Graphics& gfx )
@@ -194,39 +163,15 @@ namespace Rgph
 		ImGui::End();
 	}
 
-	/*void BlurOutlineRG::RenderShadowWindow( Graphics& gfx )
+	void BlurOutlineRG::RenderShadowWindow( Graphics& gfx )
 	{
 		if ( ImGui::Begin( "Shadows", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
 		{
-			auto shadowBuf = shadowControl->GetBuffer();
-			bool bilin = shadowSampler->GetBilinear();
-
-			bool pcfChange = ImGui::SliderInt( "PCF Level", &shadowBuf["pcfLevel"], 0, 4 );
-			bool biasChange = ImGui::SliderFloat( "Depth Bias / Pre", &shadowBuf["depthBias"], 0.0f, 0.1f, "%.6f", 3.6f );
-			bool hwPcfChange = ImGui::Checkbox( "HW PCF", &shadowBuf["hwPcf"] ); ImGui::SameLine();
-			ImGui::Checkbox( "Bilinear", &bilin );
-			
-			if ( pcfChange || biasChange || hwPcfChange )
-				shadowControl->SetBuffer( shadowBuf );
-
-			shadowSampler->SetHwPcf( shadowBuf["hwPcf"] );
-			shadowSampler->SetBilinear( bilin );
-
-			{
-				auto bias = shadowRasterizer->GetDepthBias();
-				auto slope = shadowRasterizer->GetSlopeBias();
-				auto clamp = shadowRasterizer->GetClamp();
-
-				bool biasChange = ImGui::SliderInt( "Depth Bias / Post", &bias, 0, 100000 );
-				bool slopeChange = ImGui::SliderFloat( "Slope Bias", &slope, 0.0f, 100.0f, "%.4f", 4.0f );
-				bool clampChange = ImGui::SliderFloat( "Clamp", &clamp, 0.0001f, 0.5f, "%.4f", 2.5f );
-
-				if ( biasChange || slopeChange || clampChange )
-					shadowRasterizer->ChangeDepthBiasParameters( gfx, bias, slope, clamp );
-			}
+			if ( ImGui::Button( "Dump ShadowMap" ) )
+				DumpShadowMap( gfx, "res\\depth\\shadow_" );
 		}
 		ImGui::End();
-	}*/
+	}
 
 	void BlurOutlineRG::SetKernelGauss( int radius, float sigma ) noexcept(!IS_DEBUG)
 	{

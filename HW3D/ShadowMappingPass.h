@@ -72,6 +72,10 @@ namespace Rgph
 			{
 				auto depthBuffer = pDepthCube->GetDepthBuffer( i );
 				depthBuffer->Clear( gfx );
+			}
+			for ( size_t i = 0; i < 1; i++ )
+			{
+				auto depthBuffer = pDepthCube->GetDepthBuffer( i );
 				SetDepthBuffer( std::move( depthBuffer ) );
 
 				const auto lookAt = DirectX::XMVectorAdd( pos, DirectX::XMLoadFloat3( &cameraDirections[i] ) );
@@ -82,7 +86,11 @@ namespace Rgph
 		}
 		void DumpShadowMap( Graphics& gfx, const std::string& path ) const
 		{
-			depthStencil->ToSurface( gfx ).Save( path );
+			for ( size_t i = 0; i < 6; i++ )
+			{
+				auto depthBuffer = pDepthCube->GetDepthBuffer( i );
+				depthBuffer->ToSurface( gfx ).Save( path + std::to_string( i ) + ".png" );
+			}
 		}
 	private:
 		void SetDepthBuffer( std::shared_ptr<Bind::DepthStencil> ds ) const

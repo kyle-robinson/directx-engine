@@ -119,6 +119,10 @@ namespace Bind
 	{
 		INFOMANAGER( gfx );
 
+		// get info on stencil view
+		D3D11_DEPTH_STENCIL_VIEW_DESC srcViewDesc = {};
+		pDepthStencilView->GetDesc( &srcViewDesc );
+
 		// create temp texture compatible with source, with CPU read access
 		Microsoft::WRL::ComPtr<ID3D11Resource> pResSource;
 		pDepthStencilView->GetResource( &pResSource );
@@ -128,15 +132,22 @@ namespace Bind
 
 		D3D11_TEXTURE2D_DESC textureDesc = {};
 		pTexSource->GetDesc( &textureDesc );
-		textureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
-		textureDesc.Usage = D3D11_USAGE_STAGING;
-		textureDesc.BindFlags = 0;
+
+		D3D11_TEXTURE2D_DESC tmpTextureDesc = textureDesc;
+		tmpTextureDesc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+		tmpTextureDesc.Usage = D3D11_USAGE_STAGING;
+		tmpTextureDesc.BindFlags = 0u;
+		tmpTextureDesc.MiscFlags = 0u;
+		tmpTextureDesc.ArraySize = 1u;
 		
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexTemp;
-		GFX_THROW_INFO( GetDevice( gfx )->CreateTexture2D( &textureDesc, nullptr, &pTexTemp ) );
+		GFX_THROW_INFO( GetDevice( gfx )->CreateTexture2D( &tmpTextureDesc, nullptr, &pTexTemp ) );
 
 		// copy contents of texture
-		GFX_THROW_INFO_ONLY( GetContext( gfx )->CopyResource( pTexTemp.Get(), pTexSource.Get() ) );
+		if ( srcViewDesc.ViewDimension == D3D11_DSV_DIMENSION_TEXTURE2DARRAY )
+			GFX_THROW_INFO_ONLY( GetContext( gfx )->CopySubresourceRegion( pTexTemp.Get(), 0, 0, 0, 0, pTexSource.Get(), srcViewDesc.Texture2DArray.FirstArraySlice, nullptr ) );
+		else
+			GFX_THROW_INFO_ONLY( GetContext( gfx )->CopyResource( pTexTemp.Get(), pTexSource.Get() ) );
 
 		// create surface, moving temp texture data into it
 		const auto width = GetWidth();
@@ -195,6 +206,13 @@ namespace Bind
 		}
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->Unmap( pTexTemp.Get(), 0 ) );
 		return surface;
+	}
+
+	void DepthStencil::DumpMap( Graphics& gfx, const std::string& path ) const
+	{
+		INFOMANAGER( gfx );
+
+
 	}
 
 	unsigned int DepthStencil::GetWidth() const

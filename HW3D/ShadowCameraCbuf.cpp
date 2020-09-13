@@ -14,9 +14,10 @@ namespace Bind
 
 	void ShadowCameraCbuf::Update( Graphics& gfx )
 	{
+		const auto pos = pCamera->GetPosition();
 		const Transform transform{
 			DirectX::XMMatrixTranspose(
-				pCamera->GetMatrix() * pCamera->GetProjection()
+				DirectX::XMMatrixTranslation( -pos.x, -pos.y, -pos.z )
 			)
 		};
 		pVcbuf->Update( gfx, transform );

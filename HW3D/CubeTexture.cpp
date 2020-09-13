@@ -93,8 +93,8 @@ namespace Bind
 		GFX_THROW_INFO( GetDevice( gfx )->CreateShaderResourceView( pTexture.Get(), &srvDesc, &pTextureView ) );
 
 		// make depth buffer resources
-		for ( UINT face = 0u; face < 6u; face++ )
-			depthBuffers.push_back( std::make_unique<OutputOnlyDepthStencil>( gfx, pTexture, face ) );
+		for ( UINT face = 0; face < 6; face++ )
+			depthBuffers.push_back( std::make_shared<OutputOnlyDepthStencil>( gfx, pTexture, face ) );
 	}
 
 	void DepthCubeTexture::Bind( Graphics& gfx ) noexcept(!IS_DEBUG)
