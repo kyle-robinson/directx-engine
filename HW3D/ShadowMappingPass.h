@@ -27,8 +27,8 @@ namespace Rgph
 		{
 			pDepthCube = std::make_shared<Bind::DepthCubeTexture>( gfx, size, 3 );
 			AddBind( Bind::VertexShader::Resolve( gfx, "ShadowCubeVS.cso" ) );
-			AddBind( Bind::PixelShader::Resolve( gfx, "ShadowCubePS.cso" ) );
-			//AddBind( Bind::NullPixelShader::Resolve( gfx ) );
+			//AddBind( Bind::PixelShader::Resolve( gfx, "ShadowCubePS.cso" ) );
+			AddBind( Bind::NullPixelShader::Resolve( gfx ) );
 			AddBind( Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Off ) );
 			AddBind( Bind::Blender::Resolve( gfx, false ) );
 			AddBind( std::make_shared<Bind::Viewport>( gfx, static_cast<float>( size ), static_cast<float>( size ) ) );
