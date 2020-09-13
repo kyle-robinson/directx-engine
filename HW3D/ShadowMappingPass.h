@@ -2,6 +2,7 @@
 #include "RenderQueuePass.h"
 #include "Blender.h"
 #include "NullPixelShader.h"
+#include "ShadowRasterizer.h"
 #include "Rasterizer.h"
 #include "Stencil.h"
 #include "PixelShader.h"
@@ -30,7 +31,7 @@ namespace Rgph
 			AddBind( Bind::Stencil::Resolve( gfx, Bind::Stencil::Mode::Off ) );
 			AddBind( Bind::Blender::Resolve( gfx, false ) );
 			AddBind( std::make_shared<Bind::Viewport>( gfx, static_cast<float>( size ), static_cast<float>( size ) ) );
-			AddBindSink<Bind::Bindable>( "shadowRasterizer" );
+			AddBind( std::make_shared<Bind::ShadowRasterizer>( gfx, 50, 2.0f, 0.1f ) );
 			RegisterSource( DirectBindableSource<Bind::DepthCubeTexture>::Make( "map", pDepthCube ) );
 
 			DirectX::XMStoreFloat4x4(

@@ -730,6 +730,12 @@
     <None Include="res\shaders\hlsli\ShadowPixel.hlsli">
       <Filter>Resource Files\Shaders\Includes</Filter>
     </None>
+    <None Include="res\shaders\hlsli\DynamicShadow.hlsli">
+      <Filter>Resource Files\Shaders\Includes</Filter>
+    </None>
+    <None Include="res\shaders\hlsli\StaticShadow.hlsli">
+      <Filter>Resource Files\Shaders\Includes</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Directx.ico">

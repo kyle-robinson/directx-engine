@@ -394,11 +394,13 @@
     <None Include="DXTrace.inl" />
     <None Include="res\cursors\WoW_Normal.ani" />
     <None Include="res\cursors\WoW_Select.ani" />
+    <None Include="res\shaders\hlsli\DynamicShadow.hlsli" />
     <None Include="res\shaders\hlsli\LightVectorData.hlsli" />
     <None Include="res\shaders\hlsli\PointLight.hlsli" />
     <None Include="res\shaders\hlsli\ShaderLighting.hlsli" />
     <None Include="res\shaders\hlsli\ShadowPixel.hlsli" />
     <None Include="res\shaders\hlsli\ShadowVertex.hlsli" />
+    <None Include="res\shaders\hlsli\StaticShadow.hlsli" />
     <None Include="res\shaders\hlsli\Transform.hlsli" />
   </ItemGroup>
   <ItemGroup>

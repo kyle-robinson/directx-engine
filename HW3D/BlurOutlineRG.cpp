@@ -10,8 +10,8 @@
 #include "ShadowMappingPass.h"
 #include "RenderTarget.h"
 #include "DynamicConstant.h"
-#include "ShadowSampler.h"
-#include "ShadowRasterizer.h"
+//#include "ShadowSampler.h"
+//#include "ShadowRasterizer.h"
 #include "SkyboxPass.h"
 #include "Source.h"
 #include "Math.h"
@@ -35,19 +35,19 @@ namespace Rgph
 		}
 
 		// shadow rasterizer
-		{
+		/*{
 			shadowRasterizer = std::make_shared<Bind::ShadowRasterizer>( gfx, 10000, 0.0005f, 1.0f );
 			AddGlobalSource( DirectBindableSource<Bind::ShadowRasterizer>::Make( "shadowRasterizer", shadowRasterizer ) );
-		}
+		}*/
 
 		{
 			auto pass = std::make_unique<ShadowMappingPass>( gfx, "shadowMap" );
-			pass->SetSinkLinkage( "shadowRasterizer", "$.shadowRasterizer" );
+			//pass->SetSinkLinkage( "shadowRasterizer", "$.shadowRasterizer" );
 			AppendPass( std::move( pass ) );
 		}
 
 		// shadow control buffer and sampler
-		{
+		/*{
 			{
 				Dcb::RawLayout layout;
 				layout.Add<Dcb::Integer>( "pcfLevel" );
@@ -64,15 +64,15 @@ namespace Rgph
 				shadowSampler = std::make_shared<Bind::ShadowSampler>( gfx );
 				AddGlobalSource( DirectBindableSource<Bind::ShadowSampler>::Make( "shadowSampler", shadowSampler ) );
 			}
-		}
+		}*/
 
 		{
 			auto pass = std::make_unique<LambertianPass>(gfx, "lambertian");
 			pass->SetSinkLinkage("shadowMap", "shadowMap.map");
 			pass->SetSinkLinkage("renderTarget", "clearRT.buffer");
 			pass->SetSinkLinkage("depthStencil", "clearDS.buffer");
-			pass->SetSinkLinkage("shadowControl", "$.shadowControl");
-			pass->SetSinkLinkage("shadowSampler", "$.shadowSampler");
+			//pass->SetSinkLinkage("shadowControl", "$.shadowControl");
+			//pass->SetSinkLinkage("shadowSampler", "$.shadowSampler");
 			AppendPass(std::move(pass));
 		}
 
@@ -147,7 +147,7 @@ namespace Rgph
 	void BlurOutlineRG::RenderWindows( Graphics& gfx, bool loadShadow, bool loadBlur )
 	{
 		if ( loadBlur ) RenderKernelWindow( gfx );
-		if ( loadShadow ) RenderShadowWindow( gfx );
+		//if ( loadShadow ) RenderShadowWindow( gfx );
 	}
 
 	void BlurOutlineRG::RenderKernelWindow( Graphics& gfx )
@@ -194,7 +194,7 @@ namespace Rgph
 		ImGui::End();
 	}
 
-	void BlurOutlineRG::RenderShadowWindow( Graphics& gfx )
+	/*void BlurOutlineRG::RenderShadowWindow( Graphics& gfx )
 	{
 		if ( ImGui::Begin( "Shadows", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
 		{
@@ -226,7 +226,7 @@ namespace Rgph
 			}
 		}
 		ImGui::End();
-	}
+	}*/
 
 	void BlurOutlineRG::SetKernelGauss( int radius, float sigma ) noexcept(!IS_DEBUG)
 	{
