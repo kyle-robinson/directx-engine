@@ -141,19 +141,19 @@ void App::DoFrame( float dt )
 	light.Submit( Channel::main );
 	sponza.Submit( Channel::main );
 	nanosuit.Submit( Channel::main );
-	goblin.Submit( Channel::main );
-	backpack.Submit( Channel::main );
-	cube.Submit( Channel::main );
-	cube2.Submit( Channel::main );
+	if ( loadGoblin ) goblin.Submit( Channel::main );
+	if ( loadBackpack ) backpack.Submit( Channel::main );
+	if ( loadCube1 ) cube.Submit( Channel::main );
+	if ( loadCube2 ) cube2.Submit( Channel::main );
 	cameras.Submit( Channel::main );
 
 	light.Submit( Channel::shadow );
 	sponza.Submit( Channel::shadow );
 	nanosuit.Submit( Channel::shadow );
-	goblin.Submit( Channel::shadow );
-	backpack.Submit( Channel::shadow );
-	cube.Submit( Channel::shadow );
-	cube2.Submit( Channel::shadow );
+	if ( loadGoblin ) goblin.Submit( Channel::shadow );
+	if ( loadBackpack ) backpack.Submit( Channel::shadow );
+	if ( loadCube1 ) cube.Submit( Channel::shadow );
+	if ( loadCube2 ) cube2.Submit( Channel::shadow );
 
 	rg.Execute( wnd.Gfx() );
 
