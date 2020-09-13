@@ -144,10 +144,10 @@ namespace Rgph
 		Finalize();
 	}
 
-	void BlurOutlineRG::RenderWindows( Graphics& gfx )
+	void BlurOutlineRG::RenderWindows( Graphics& gfx, bool loadShadow, bool loadBlur )
 	{
-		RenderKernelWindow( gfx );
-		RenderShadowWindow( gfx );
+		if ( loadBlur ) RenderKernelWindow( gfx );
+		if ( loadShadow ) RenderShadowWindow( gfx );
 	}
 
 	void BlurOutlineRG::RenderKernelWindow( Graphics& gfx )

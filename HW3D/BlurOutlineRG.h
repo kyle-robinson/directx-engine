@@ -20,7 +20,7 @@ namespace Rgph
 	{
 	public:
 		BlurOutlineRG( Graphics& gfx );
-		void RenderWindows( Graphics& gfx );
+		void RenderWindows( Graphics& gfx, bool loadShadow, bool loadBlur );
 		void DumpShadowMap( Graphics& gfx, const std::string& path );
 		void BindMainCamera( Camera& cam );
 		void BindShadowCamera( Camera& cam );

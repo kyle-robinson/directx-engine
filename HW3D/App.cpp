@@ -177,17 +177,70 @@ void App::DoFrame( float dt )
 		static MP goblinProbe;
 		static MP backpackProbe;
 
-		sponzaProbe.SpawnWindow( sponza, "Sponza" );
-		nanosuitProbe.SpawnWindow( nanosuit, "Nanosuit" );
-		goblinProbe.SpawnWindow( goblin, "Goblin" );
-		backpackProbe.SpawnWindow( backpack, "Backpack" );
-		
-		cameras.SpawnControlWindow( wnd.Gfx() );
-		light.SpawnControlWindow();
-		cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
-		cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
-		rg.RenderWindows( wnd.Gfx() );
-		ShowRawInputWindow();
+		if ( ImGui::Begin( "Master Window", FALSE, ImGuiTreeNodeFlags_DefaultOpen ) )
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 1.0f, 0.0f, 1.0f });
+			if ( ImGui::TreeNode( "Models" ) )
+			{
+				ImGui::PushStyleColor(ImGuiCol_Text, { 1.0f, 1.0f, 1.0f, 1.0f });
+
+				ImGui::Checkbox( "Sponza", &loadSponza );
+				if ( loadSponza ) sponzaProbe.SpawnWindow( sponza, "Sponza" );
+
+				ImGui::Checkbox( "Nanosuit", &loadNanosuit );
+				if ( loadNanosuit ) nanosuitProbe.SpawnWindow( nanosuit, "Nanosuit" );
+
+				ImGui::Checkbox( "Goblin", &loadGoblin );
+				if ( loadGoblin ) goblinProbe.SpawnWindow( goblin, "Goblin" );
+
+				ImGui::Checkbox( "Backpack", &loadBackpack );
+				if ( loadBackpack ) backpackProbe.SpawnWindow( backpack, "Backpack" );
+
+				ImGui::PopStyleColor();
+				ImGui::TreePop();
+			}
+			ImGui::PopStyleColor();
+
+			ImGui::PushStyleColor( ImGuiCol_Text, { 0.0f, 1.0f, 1.0f, 1.0f } );
+			if ( ImGui::TreeNode( "Objects" ) )
+			{
+				ImGui::PushStyleColor( ImGuiCol_Text, { 1.0f, 1.0f, 1.0f, 1.0f } );
+
+				ImGui::Checkbox( "Cameras", &loadCameras );
+				if ( loadCameras ) cameras.SpawnControlWindow( wnd.Gfx() );
+				
+				ImGui::Checkbox( "Light", &loadLight );
+				if ( loadLight ) light.SpawnControlWindow();
+
+				ImGui::Checkbox( "Cube 1", &loadCube1 );
+				if ( loadCube1 ) cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
+
+				ImGui::Checkbox( "Cube 2", &loadCube2 );
+				if ( loadCube2 ) cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
+
+				ImGui::PopStyleColor();
+				ImGui::TreePop();
+			}
+			ImGui::PopStyleColor();
+			
+			ImGui::PushStyleColor( ImGuiCol_Text, { 1.0f, 0.0f, 1.0f, 1.0f } );
+			if ( ImGui::TreeNode( "Render Graph" ) )
+			{
+				ImGui::PushStyleColor( ImGuiCol_Text, { 1.0f, 1.0f, 1.0f, 1.0f } );
+
+				ImGui::Checkbox( "Shadows", &loadShadow );
+				ImGui::Checkbox( "Blurring", &loadBlur );
+				rg.RenderWindows( wnd.Gfx(), loadShadow, loadBlur );
+
+				ImGui::Checkbox( "Raw Input", &loadRaw );
+				if ( loadRaw ) ShowRawInputWindow();
+
+				ImGui::PopStyleColor();
+				ImGui::TreePop();
+			}
+			ImGui::PopStyleColor();
+		}
+		ImGui::End();
 	}
 	
 	wnd.Gfx().EndFrame();

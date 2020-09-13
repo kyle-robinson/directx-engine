@@ -40,4 +40,18 @@ private:
 	int x = 0, y = 0;
 	bool saveDepth = false;
 	bool saveShadow = false;
+
+	bool loadSponza = false;
+	bool loadNanosuit = false;
+	bool loadGoblin = false;
+	bool loadBackpack = false;
+
+	bool loadCameras = false;
+	bool loadLight = false;
+	bool loadCube1 = false;
+	bool loadCube2 = false;
+
+	bool loadShadow = false;
+	bool loadBlur = false;
+	bool loadRaw = false;
 };
