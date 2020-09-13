@@ -692,6 +692,9 @@
     <ClInclude Include="CubeTexture.h">
       <Filter>Header Files\Bindables</Filter>
     </ClInclude>
+    <ClInclude Include="Viewport.h">
+      <Filter>Header Files\Bindables</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXGetErrorDescription.inl">
@@ -805,6 +808,12 @@
     </FxCompile>
     <FxCompile Include="res\shaders\hlsl\SkyboxVS.hlsl">
       <Filter>Resource Files\Shaders\Cubemaps</Filter>
+    </FxCompile>
+    <FxCompile Include="res\shaders\hlsl\ShadowCubeVS.hlsl">
+      <Filter>Resource Files\Shaders\Shadows</Filter>
+    </FxCompile>
+    <FxCompile Include="res\shaders\hlsl\ShadowCubePS.hlsl">
+      <Filter>Resource Files\Shaders\Shadows</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>

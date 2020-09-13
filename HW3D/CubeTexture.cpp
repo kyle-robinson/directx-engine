@@ -103,8 +103,8 @@ namespace Bind
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->PSGetShaderResources( slot, 1u, pTextureView.GetAddressOf() ) );
 	}
 
-	OutputOnlyDepthStencil& DepthCubeTexture::GetDepthBuffer( size_t index ) const
+	std::shared_ptr<OutputOnlyDepthStencil> DepthCubeTexture::GetDepthBuffer( size_t index ) const
 	{
-		return *depthBuffers[index];
+		return depthBuffers[index];
 	}
 }
