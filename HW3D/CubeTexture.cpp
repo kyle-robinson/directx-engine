@@ -2,6 +2,7 @@
 #include "Surface.h"
 #include "BindableCodex.h"
 #include "GraphicsThrowMacros.h"
+#include "DepthStencil.h"
 #include <vector>
 
 namespace Bind
@@ -57,5 +58,53 @@ namespace Bind
 	{
 		INFOMANAGER_NOHR( gfx );
 		GFX_THROW_INFO_ONLY( GetContext( gfx )->PSSetShaderResources( slot, 1u, pTextureView.GetAddressOf() ) );
+	}
+
+	DepthCubeTexture::DepthCubeTexture( Graphics& gfx, UINT size, UINT slot ) :
+		slot( slot )
+	{
+		INFOMANAGER( gfx );
+
+		// initialize texture
+		D3D11_TEXTURE2D_DESC textureDesc = {};
+		textureDesc.Width = size;
+		textureDesc.Height = size;
+		textureDesc.MipLevels = 1u;
+		textureDesc.ArraySize = 6u;
+		textureDesc.Format = DXGI_FORMAT_R32_TYPELESS;
+		textureDesc.SampleDesc.Count = 1u;
+		textureDesc.SampleDesc.Quality = 0u;
+		textureDesc.Usage = D3D11_USAGE_DEFAULT;
+		textureDesc.BindFlags = D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_DEPTH_STENCIL;
+		textureDesc.CPUAccessFlags = 0u;
+		textureDesc.MiscFlags = D3D11_RESOURCE_MISC_TEXTURECUBE;
+
+		// create texture resource
+		Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexture;
+		GFX_THROW_INFO( GetDevice( gfx )->CreateTexture2D( &textureDesc, nullptr, &pTexture ) );
+
+		// create view on the texture
+		D3D11_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+		srvDesc.Format = DXGI_FORMAT_R32_FLOAT;
+		srvDesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURECUBE;
+		srvDesc.Texture2D.MipLevels = 1u;
+		srvDesc.Texture2D.MostDetailedMip = 0u;
+
+		GFX_THROW_INFO( GetDevice( gfx )->CreateShaderResourceView( pTexture.Get(), &srvDesc, &pTextureView ) );
+
+		// make depth buffer resources
+		for ( UINT face = 0u; face < 6u; face++ )
+			depthBuffers.push_back( std::make_unique<OutputOnlyDepthStencil>( gfx, pTexture, face ) );
+	}
+
+	void DepthCubeTexture::Bind( Graphics& gfx ) noexcept(!IS_DEBUG)
+	{
+		INFOMANAGER_NOHR( gfx );
+		GFX_THROW_INFO_ONLY( GetContext( gfx )->PSGetShaderResources( slot, 1u, pTextureView.GetAddressOf() ) );
+	}
+
+	OutputOnlyDepthStencil& DepthCubeTexture::GetDepthBuffer( size_t index ) const
+	{
+		return *depthBuffers[index];
 	}
 }
