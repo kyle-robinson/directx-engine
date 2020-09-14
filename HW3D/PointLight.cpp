@@ -36,6 +36,7 @@ void PointLight::SpawnControlWindow() noexcept
 		{
 			ImGui::SliderFloat( "Intensity", &cbData.diffuseIntensity, 0.0f, 2.0f, "%.2f" );
 			ImGui::ColorEdit3( "Diffuse", &cbData.diffuseColor.x );
+			mesh.SpawnControls();
 			ImGui::ColorEdit3( "Ambient", &cbData.ambient.x );
 
 			ImGui::Text( "Attenuation" );
@@ -43,7 +44,7 @@ void PointLight::SpawnControlWindow() noexcept
 			ImGui::SliderFloat( "Linear", &cbData.attLin, 0.0001f, 4.0f, "%.4f", 8 );
 			ImGui::SliderFloat( "Quadratic", &cbData.attQuad, 0.0000001f, 1.0f, "%.7f", 10 );
 		}
-		
+				
 		if ( ImGui::Button( "Reset" ) )
 			Reset();
 	}
@@ -58,7 +59,6 @@ void PointLight::Reset() noexcept
 void PointLight::Submit( size_t channels ) const noexcept(!IS_DEBUG)
 {
 	mesh.SetPosition( cbData.lightPos );
-	mesh.SetColor( cbData.diffuseColor );
 	mesh.Submit( channels );
 }
 
