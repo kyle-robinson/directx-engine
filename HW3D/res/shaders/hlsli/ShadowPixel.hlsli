@@ -1,1 +1,1 @@
-#include "../hlsli/StaticShadow.hlsli"
+#include "StaticShadow.hlsli"
