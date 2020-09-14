@@ -20,13 +20,10 @@ namespace Rgph
 	{
 	public:
 		BlurOutlineRG( Graphics& gfx );
-		void RenderWindows( Graphics& gfx, bool loadShadow, bool loadBlur );
-		void DumpShadowMap( Graphics& gfx, const std::string& path );
+		void RenderKernelWindow( Graphics& gfx );
 		void BindMainCamera( Camera& cam );
 		void BindShadowCamera( Camera& cam );
 	private:
-		void RenderKernelWindow( Graphics& gfx );
-		void RenderShadowWindow( Graphics& gfx );
 		void SetKernelGauss( int radius, float sigma ) noexcept(!IS_DEBUG);
 		void SetKernelBox( int radius ) noexcept(!IS_DEBUG);
 		enum class KernelType

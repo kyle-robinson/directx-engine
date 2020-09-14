@@ -25,12 +25,8 @@ SolidSphere::SolidSphere( Graphics& gfx, float radius )
 		initial.AddBindable( std::move( pvs ) );
 		initial.AddBindable( PixelShader::Resolve( gfx, "SolidPS.cso" ) );
 
-		struct PSColorConstant
-		{
-			DirectX::XMFLOAT3 color = { 1.0f, 1.0f, 1.0f };
-			float padding;
-		} colorConst;
-		initial.AddBindable( PixelConstantBuffer<PSColorConstant>::Resolve( gfx, colorConst, 1u ) );
+		colorConst.color = { 1.0f, 1.0f, 1.0f };
+		initial.AddBindable( std::make_shared<PixelConstantBuffer<PSColorConstant>>( gfx, colorConst, 1u ) );
 		initial.AddBindable( std::make_shared<TransformCbuf>( gfx ) );
 		initial.AddBindable( Rasterizer::Resolve( gfx, false ) );
 
@@ -39,9 +35,14 @@ SolidSphere::SolidSphere( Graphics& gfx, float radius )
 	}
 }
 
-void SolidSphere::SetPos( DirectX::XMFLOAT3 pos ) noexcept
+void SolidSphere::SetPosition( DirectX::XMFLOAT3 pos ) noexcept
 {
 	this->pos = pos;
+}
+
+void SolidSphere::SetColor( DirectX::XMFLOAT3 color ) noexcept
+{
+	this->colorConst.color = color;
 }
 
 DirectX::XMMATRIX SolidSphere::GetTransformXM() const noexcept

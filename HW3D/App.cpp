@@ -99,9 +99,6 @@ void App::HandleInput( float dt )
 		case VK_NUMPAD1:
 			saveDepth = true;
 			break;
-		case VK_NUMPAD2:
-			saveShadow = true;
-			break;
 		}
 	}
 
@@ -163,12 +160,6 @@ void App::DoFrame( float dt )
 		saveDepth = false;
 	}
 
-	if ( saveShadow )
-	{
-		rg.DumpShadowMap( wnd.Gfx(), "res\\depth\\shadow.png" );
-		saveShadow = false;
-	}
-
 	// imgui
 	if ( wnd.Gfx().IsImGuiEnabled() )
 	{
@@ -228,9 +219,8 @@ void App::DoFrame( float dt )
 			{
 				ImGui::PushStyleColor( ImGuiCol_Text, { 1.0f, 1.0f, 1.0f, 1.0f } );
 
-				ImGui::Checkbox( "Shadows", &loadShadow );
 				ImGui::Checkbox( "Blurring", &loadBlur );
-				rg.RenderWindows( wnd.Gfx(), loadShadow, loadBlur );
+				if ( loadBlur ) rg.RenderKernelWindow( wnd.Gfx() );
 
 				ImGui::Checkbox( "Raw Input", &loadRaw );
 				if ( loadRaw ) ShowRawInputWindow();

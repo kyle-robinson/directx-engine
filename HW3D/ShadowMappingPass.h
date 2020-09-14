@@ -81,14 +81,6 @@ namespace Rgph
 				RenderQueuePass::Execute( gfx );
 			}
 		}
-		void DumpShadowMap( Graphics& gfx, const std::string& path ) const
-		{
-			/*for ( size_t i = 0; i < 6; i++ )
-			{
-				auto depthBuffer = pDepthCube->GetDepthBuffer( i );
-				depthBuffer->ToSurface( gfx ).Save( path + std::to_string( i ) + ".png" );
-			}*/
-		}
 	private:
 		void SetRenderTarget( std::shared_ptr<Bind::RenderTarget> rt ) const
 		{

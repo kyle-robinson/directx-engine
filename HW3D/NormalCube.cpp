@@ -143,7 +143,6 @@ void NormalCube::SpawnControlWindow( Graphics& gfx, const char* name ) noexcept
 					using namespace std::string_literals;
 					ImGui::TextColored( { 0.4f, 1.0f, 0.6f, 1.0f }, pTech->GetName().c_str() );
 					bool active = pTech->IsActive();
-					//ImGui::Checkbox( ( "Tech Active##"s + std::to_string( techIdx ) ).c_str(), &active );
 					ImGui::Checkbox( ( pTech->GetName() + std::string( " Enable" ) ).c_str(), &active );
 					pTech->SetActiveState( active );
 				}

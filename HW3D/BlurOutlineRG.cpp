@@ -113,12 +113,6 @@ namespace Rgph
 		Finalize();
 	}
 
-	void BlurOutlineRG::RenderWindows( Graphics& gfx, bool loadShadow, bool loadBlur )
-	{
-		if ( loadBlur ) RenderKernelWindow( gfx );
-		if ( loadShadow ) RenderShadowWindow( gfx );
-	}
-
 	void BlurOutlineRG::RenderKernelWindow( Graphics& gfx )
 	{
 		if ( ImGui::Begin( "Kernel", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
@@ -163,16 +157,6 @@ namespace Rgph
 		ImGui::End();
 	}
 
-	void BlurOutlineRG::RenderShadowWindow( Graphics& gfx )
-	{
-		if ( ImGui::Begin( "Shadows", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
-		{
-			if ( ImGui::Button( "Dump ShadowMap" ) )
-				DumpShadowMap( gfx, "res\\depth\\shadow_" );
-		}
-		ImGui::End();
-	}
-
 	void BlurOutlineRG::SetKernelGauss( int radius, float sigma ) noexcept(!IS_DEBUG)
 	{
 		assert( radius <= maxRadius );
@@ -207,11 +191,6 @@ namespace Rgph
 			kernel["coefficients"][i] = coefficients;
 
 		blurKernel->SetBuffer( kernel );
-	}
-
-	void BlurOutlineRG::DumpShadowMap( Graphics& gfx, const std::string& path )
-	{
-		dynamic_cast<ShadowMappingPass&>( FindPassByName( "shadowMap" ) ).DumpShadowMap( gfx, path );
 	}
 
 	void BlurOutlineRG::BindMainCamera( Camera& cam )

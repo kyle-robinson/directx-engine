@@ -57,7 +57,8 @@ void PointLight::Reset() noexcept
 
 void PointLight::Submit( size_t channels ) const noexcept(!IS_DEBUG)
 {
-	mesh.SetPos( cbData.lightPos );
+	mesh.SetPosition( cbData.lightPos );
+	mesh.SetColor( cbData.diffuseColor );
 	mesh.Submit( channels );
 }
 
