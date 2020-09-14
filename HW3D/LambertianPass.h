@@ -5,6 +5,7 @@
 #include "Source.h"
 #include "Camera.h"
 #include "Stencil.h"
+#include "Sampler.h"
 #include "DepthStencil.h"
 #include "ShadowCameraCbuf.h"
 #include "ShadowSampler.h"
@@ -26,6 +27,7 @@ namespace Rgph
 			RegisterSink(DirectBufferSink<Bind::DepthStencil>::Make("depthStencil", depthStencil));
 			AddBindSink<Bind::Bindable>( "shadowMap" );
 			AddBind( std::make_shared<Bind::ShadowSampler>( gfx ) );
+			AddBind( std::make_shared<Bind::Sampler>( gfx, Bind::Sampler::Type::Anisotropic, false, 2 ) );
 			RegisterSource(DirectBufferSource<Bind::RenderTarget>::Make("renderTarget", renderTarget));
 			RegisterSource(DirectBufferSource<Bind::DepthStencil>::Make("depthStencil", depthStencil));
 			AddBind(Bind::Stencil::Resolve(gfx, Bind::Stencil::Mode::Off));

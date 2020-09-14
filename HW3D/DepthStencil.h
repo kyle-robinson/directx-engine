@@ -23,7 +23,6 @@ namespace Bind
 		void BindAsBuffer( Graphics& gfx, RenderTarget* rt ) noexcept(!IS_DEBUG);
 		void Clear( Graphics& gfx ) noexcept(!IS_DEBUG) override;
 		Surface ToSurface( Graphics& gfx, bool linearize = true ) const;
-		void DumpMap( Graphics& gfx, const std::string& path ) const;
 		unsigned int GetWidth() const;
 		unsigned int GetHeight() const;
 	protected:

@@ -54,8 +54,8 @@ private:
 	float initialTravSpeed, initialRotSpeed;
 	float travelSpeed, rotationSpeed;
 
-	bool enableCameraIndicator = true;
-	bool enableFrustumIndicator = true;
+	bool enableCameraIndicator = false;
+	bool enableFrustumIndicator = false;
 	
 	Projection proj;
 	CameraIndicator indicator;

@@ -33,7 +33,7 @@ private:
 	Model nanosuit{ wnd.Gfx(), "res\\models\\nanosuit\\nanosuit.obj", 2.0f };
 	Model goblin{ wnd.Gfx(), "res\\models\\goblin\\GoblinX.obj", 4.0f };
 	Model backpack{ wnd.Gfx(), "res\\models\\backpack\\backpack.obj", 4.0f };
-	NormalCube cube{ wnd.Gfx(), 4.0f };
+	NormalCube cube{ wnd.Gfx(), 14.0f };
 	NormalCube cube2{ wnd.Gfx(), 4.0f };
 
 	std::string commandLine;

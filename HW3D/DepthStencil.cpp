@@ -208,13 +208,6 @@ namespace Bind
 		return surface;
 	}
 
-	void DepthStencil::DumpMap( Graphics& gfx, const std::string& path ) const
-	{
-		INFOMANAGER( gfx );
-
-
-	}
-
 	unsigned int DepthStencil::GetWidth() const
 	{
 		return width;

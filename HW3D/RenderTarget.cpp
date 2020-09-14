@@ -36,21 +36,31 @@ namespace Bind
 		GFX_THROW_INFO( GetDevice( gfx )->CreateRenderTargetView( pTexture.Get(), &rtvDesc, &pTargetView ) );
 	}
 
-	RenderTarget::RenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture)
+	RenderTarget::RenderTarget( Graphics& gfx, ID3D11Texture2D* pTexture, std::optional<UINT> face )
 	{
-		INFOMANAGER(gfx);
+		INFOMANAGER( gfx );
 
 		// get information from texture about dimensions
 		D3D11_TEXTURE2D_DESC textureDesc;
-		pTexture->GetDesc(&textureDesc);
+		pTexture->GetDesc( &textureDesc );
 		width = textureDesc.Width;
 		height = textureDesc.Height;
 
 		// create the target view on the texture
 		D3D11_RENDER_TARGET_VIEW_DESC rtvDesc = {};
-		rtvDesc.Format = textureDesc.Format;
-		rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
-		rtvDesc.Texture2D = D3D11_TEX2D_RTV{ 0 };
+		if ( face.has_value() )
+		{
+			rtvDesc.Format = textureDesc.Format;
+			rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2DARRAY;
+			rtvDesc.Texture2DArray.ArraySize = 1u;
+			rtvDesc.Texture2DArray.FirstArraySlice = *face;
+			rtvDesc.Texture2DArray.MipSlice = 0u;
+		}
+		else
+		{
+			rtvDesc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
+			rtvDesc.Texture2D = D3D11_TEX2D_RTV{ 0 };
+		}
 
 		GFX_THROW_INFO( GetDevice( gfx )->CreateRenderTargetView( pTexture, &rtvDesc, &pTargetView ) );
 	}
@@ -130,19 +140,19 @@ namespace Bind
 		));
 	}
 
-	void ShaderInputRenderTarget::Bind(Graphics& gfx) noexcept(!IS_DEBUG)
+	void ShaderInputRenderTarget::Bind( Graphics& gfx ) noexcept(!IS_DEBUG)
 	{
 		INFOMANAGER_NOHR( gfx );
 		GFX_THROW_INFO_ONLY( GetContext(gfx)->PSSetShaderResources(slot, 1, pShaderResourceView.GetAddressOf()) );
 	}
 
-	void OutputOnlyRenderTarget::Bind(Graphics& gfx) noexcept(!IS_DEBUG)
+	void OutputOnlyRenderTarget::Bind( Graphics& gfx ) noexcept(!IS_DEBUG)
 	{
 		assert("Cannot bind OuputOnlyRenderTarget as shader input" && false);
 	}
 
-	OutputOnlyRenderTarget::OutputOnlyRenderTarget(Graphics& gfx, ID3D11Texture2D* pTexture)
+	OutputOnlyRenderTarget::OutputOnlyRenderTarget( Graphics& gfx, ID3D11Texture2D* pTexture, std::optional<UINT> face )
 		:
-		RenderTarget(gfx, pTexture)
+		RenderTarget( gfx, pTexture, face )
 	{}
 }
