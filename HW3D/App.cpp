@@ -232,17 +232,17 @@ void App::DoFrame( float dt )
 				ImGui::Checkbox( "Main Light", &loadLight );
 				if ( loadLight ) light.SpawnControlWindow( "Main Light" );
 
-				ImGui::Checkbox( "Sub Light1", &loadLight1 );
-				if ( loadLight1 ) light1.SpawnControlWindow( "Sub Light1" );
+				ImGui::Checkbox( "Light Sphere 1", &loadLight1 );
+				if ( loadLight1 ) light1.SpawnControlWindow( "Light Sphere 1" );
 
-				ImGui::Checkbox( "Sub Light2", &loadLight2 );
-				if ( loadLight2 ) light2.SpawnControlWindow( "Sub Light2" );
+				ImGui::Checkbox( "Light Sphere 2", &loadLight2 );
+				if ( loadLight2 ) light2.SpawnControlWindow( "Light Sphere 2" );
 
-				ImGui::Checkbox( "Sub Light3", &loadLight3 );
-				if ( loadLight3 ) light3.SpawnControlWindow( "Sub Light3" );
+				ImGui::Checkbox( "Light Sphere 3", &loadLight3 );
+				if ( loadLight3 ) light3.SpawnControlWindow( "Light Sphere 3" );
 
-				ImGui::Checkbox( "Sub Light4", &loadLight4 );
-				if ( loadLight4 ) light4.SpawnControlWindow( "Sub Light4" );
+				ImGui::Checkbox( "Light Sphere 4", &loadLight4 );
+				if ( loadLight4 ) light4.SpawnControlWindow( "Light Sphere 4" );
 
 				ImGui::PopStyleColor();
 				ImGui::TreePop();
