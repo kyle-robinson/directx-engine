@@ -27,6 +27,7 @@ private:
 	Timer timer;
 	CameraContainer cameras;
 	PointLight light;
+	PointLight light2;
 	Rgph::BlurOutlineRG rg{ wnd.Gfx() };
 
 	Model sponza{ wnd.Gfx(), "res\\models\\sponza\\sponza.obj", 1.0f / 20.0f };
@@ -47,6 +48,7 @@ private:
 
 	bool loadCameras = false;
 	bool loadLight = false;
+	bool loadLight2 = false;
 	bool loadCube1 = false;
 	bool loadCube2 = false;
 

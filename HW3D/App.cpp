@@ -16,11 +16,13 @@
 App::App( const std::string& commandLine ) :
 	wnd( 1280, 720, "DirectX 11 Engine Window" ),
 	light( wnd.Gfx(), { 10.0f, 5.0f, 0.0f } ),
+	light2( wnd.Gfx(), { 10.0f, 5.0, 10.0f } ),
 	scriptCommander( TokenizeQuoted( commandLine ) )
 {
 	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "A", DirectX::XMFLOAT3{ -13.5f, 6.0f, 3.5f }, 0.0f, PI / 2.0f ) );
 	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "B", DirectX::XMFLOAT3{ -13.5f, 28.8f, -6.4f }, PI / 180.0f * 13.0f, PI / 180.0f * 61.0f ) );
 	cameras.AddCamera( light.ShareCamera() );
+	cameras.AddCamera( light2.ShareCamera() );
 	
 	cube.SetPos( { 10.0f, 5.0f, 6.0f } );
 	cube2.SetPos( { 10.0f, 5.0f, 14.0f } );
@@ -40,6 +42,7 @@ App::App( const std::string& commandLine ) :
 	cube.LinkTechniques( rg );
 	cube2.LinkTechniques( rg );
 	light.LinkTechniques( rg );
+	light2.LinkTechniques( rg );
 	sponza.LinkTechniques( rg );
 	nanosuit.LinkTechniques( rg );
 	goblin.LinkTechniques( rg );
@@ -47,6 +50,7 @@ App::App( const std::string& commandLine ) :
 	cameras.LinkTechniques( rg );
 
 	rg.BindShadowCamera( *light.ShareCamera() );
+	rg.BindShadowCamera( *light2.ShareCamera() );
 }
 
 int App::Init()
@@ -132,10 +136,12 @@ void App::DoFrame( float dt )
 	// setup
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
 	light.Bind( wnd.Gfx(), cameras->GetMatrix() );
+	light2.Bind( wnd.Gfx(), cameras->GetMatrix() );
 	rg.BindMainCamera( cameras.GetActiveCamera() );
 
 	// objects
 	light.Submit( Channel::main );
+	light2.Submit( Channel::main );
 	sponza.Submit( Channel::main );
 	nanosuit.Submit( Channel::main );
 	if ( loadGoblin ) goblin.Submit( Channel::main );
@@ -145,6 +151,7 @@ void App::DoFrame( float dt )
 	cameras.Submit( Channel::main );
 
 	light.Submit( Channel::shadow );
+	light2.Submit( Channel::shadow );
 	sponza.Submit( Channel::shadow );
 	nanosuit.Submit( Channel::shadow );
 	if ( loadGoblin ) goblin.Submit( Channel::shadow );
@@ -199,15 +206,28 @@ void App::DoFrame( float dt )
 
 				ImGui::Checkbox( "Cameras", &loadCameras );
 				if ( loadCameras ) cameras.SpawnControlWindow( wnd.Gfx() );
-				
-				ImGui::Checkbox( "Light", &loadLight );
-				if ( loadLight ) light.SpawnControlWindow();
 
 				ImGui::Checkbox( "Cube 1", &loadCube1 );
 				if ( loadCube1 ) cube.SpawnControlWindow( wnd.Gfx(), "Cube 1" );
 
 				ImGui::Checkbox( "Cube 2", &loadCube2 );
 				if ( loadCube2 ) cube2.SpawnControlWindow( wnd.Gfx(), "Cube 2" );
+
+				ImGui::PopStyleColor();
+				ImGui::TreePop();
+			}
+			ImGui::PopStyleColor();
+
+			ImGui::PushStyleColor( ImGuiCol_Text, { 0.5f, 1.0f, 0.5f, 1.0f } );
+			if ( ImGui::TreeNode( "Lights" ) )
+			{
+				ImGui::PushStyleColor( ImGuiCol_Text, { 1.0f, 1.0f, 1.0f, 1.0f } );
+
+				ImGui::Checkbox( "Main Light", &loadLight );
+				if ( loadLight ) light.SpawnControlWindow( "Main Light" );
+
+				ImGui::Checkbox( "Sub Light", &loadLight2 );
+				if ( loadLight2 ) light2.SpawnControlWindow( "Sub Light" );
 
 				ImGui::PopStyleColor();
 				ImGui::TreePop();

@@ -19,15 +19,15 @@ PointLight::PointLight( Graphics& gfx, DirectX::XMFLOAT3 pos, float radius ) :
 	pCamera = std::make_shared<Camera>( gfx, "Light", cbData.lightPos, 0.0f, PI / 2.0f, 12.0f, 0.002f, true );
 }
 
-void PointLight::SpawnControlWindow() noexcept
+void PointLight::SpawnControlWindow( const char* name ) noexcept
 {
-	if ( ImGui::Begin( "Light", FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
+	name = name ? name : "Light";
+	if ( ImGui::Begin( name, FALSE, ImGuiWindowFlags_AlwaysAutoResize ) )
 	{
 		bool bufferSet = false;
 		const auto linkCheck = [&bufferSet]( bool changed ) { bufferSet = bufferSet || changed; };
 		
-		if ( ImGui::CollapsingHeader( "Light" ) )
-			linkCheck( ImGui::SliderFloat3( "Position", &cbData.lightPos.x, -30.0f, 30.0f, "%1.f" ) );
+		linkCheck( ImGui::SliderFloat3( "Position", &cbData.lightPos.x, -50.0f, 50.0f, "%1.f" ) );
 
 		if ( bufferSet )
 			pCamera->SetPosition( cbData.lightPos );
