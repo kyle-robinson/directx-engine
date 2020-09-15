@@ -55,11 +55,14 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 		&pContext
 	) );
 
+	if ( FAILED( pSwap->SetFullscreenState( true, nullptr ) ) )
+		throw GFX_EXCEPT( hr );
+
 	// gain access to back buffer (sub-resource)
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> pBackBuffer;
 	GFX_THROW_INFO(pSwap->GetBuffer(0, __uuidof(ID3D11Texture2D), &pBackBuffer));
 	pTarget = std::shared_ptr<Bind::RenderTarget>{ new Bind::OutputOnlyRenderTarget( *this, pBackBuffer.Get() ) };
-
+	
 	// viewport always fullscreen
 	D3D11_VIEWPORT vp;
 	vp.Width = (float)width;

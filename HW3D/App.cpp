@@ -14,7 +14,7 @@
 #include <algorithm>
 
 App::App( const std::string& commandLine ) :
-	wnd( 1280, 720, "DirectX 11 Engine Window" ),
+	wnd( 1920, 1080, "DirectX 11 Engine Window" ),
 	light( wnd.Gfx(), { 10.0f, 5.0f, 0.0f } ),
 	light1( wnd.Gfx(), { 24.25f, 6.5f, 11.0f } ),
 	light2( wnd.Gfx(), { 24.25f, 6.5f, -7.0f } ),
