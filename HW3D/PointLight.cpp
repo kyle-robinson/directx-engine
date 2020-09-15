@@ -32,17 +32,21 @@ void PointLight::SpawnControlWindow( const char* name ) noexcept
 		if ( bufferSet )
 			pCamera->SetPosition( cbData.lightPos );
 
-		if ( ImGui::CollapsingHeader( "Color" ) )
-		{
-			ImGui::SliderFloat( "Intensity", &cbData.diffuseIntensity, 0.0f, 2.0f, "%.2f" );
-			ImGui::ColorEdit3( "Diffuse", &cbData.diffuseColor.x );
-			mesh.SpawnControls();
-			ImGui::ColorEdit3( "Ambient", &cbData.ambient.x );
+		mesh.SpawnControls();
 
-			ImGui::Text( "Attenuation" );
-			ImGui::SliderFloat( "Constant", &cbData.attConst, 0.05f, 10.0f, "%.2f", 4 );
-			ImGui::SliderFloat( "Linear", &cbData.attLin, 0.0001f, 4.0f, "%.4f", 8 );
-			ImGui::SliderFloat( "Quadratic", &cbData.attQuad, 0.0000001f, 1.0f, "%.7f", 10 );
+		if ( name == "Main Light" )
+		{
+			if ( ImGui::CollapsingHeader( "Color" ) )
+			{
+				ImGui::SliderFloat( "Intensity", &cbData.diffuseIntensity, 0.0f, 2.0f, "%.2f" );
+				ImGui::ColorEdit3( "Ambient", &cbData.ambient.x );
+				ImGui::ColorEdit3( "Diffuse", &cbData.diffuseColor.x );
+
+				ImGui::Text( "Attenuation" );
+				ImGui::SliderFloat( "Constant", &cbData.attConst, 0.05f, 10.0f, "%.2f", 4 );
+				ImGui::SliderFloat( "Linear", &cbData.attLin, 0.0001f, 4.0f, "%.4f", 8 );
+				ImGui::SliderFloat( "Quadratic", &cbData.attQuad, 0.0000001f, 1.0f, "%.7f", 10 );
+			}
 		}
 				
 		if ( ImGui::Button( "Reset" ) )

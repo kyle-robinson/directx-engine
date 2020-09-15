@@ -80,29 +80,40 @@ void SolidSphere::SetPosition( DirectX::XMFLOAT3 pos ) noexcept
 
 void SolidSphere::SpawnControls() noexcept
 {
-	class Probe : public TechniqueProbe
+	if ( ImGui::CollapsingHeader( "Mesh" ) )
 	{
-	public:
-		bool OnVisitBuffer( Dcb::Buffer& buf ) override
+		class Probe : public TechniqueProbe
 		{
-			float bufferSet = false;
-			const auto linkCheck = [&bufferSet]( bool changed ) { bufferSet = bufferSet || changed; };
-			auto tag = [tagScratch = std::string{}, tagString = "##" + std::to_string( bufIdx )]
-			( const char* label ) mutable
+		public:
+			void OnSetTechnique() override
 			{
-				tagScratch = label + tagString;
-				return tagScratch.c_str();
-			};
+				using namespace std::string_literals;
+				ImGui::TextColored( { 0.4f, 1.0f, 0.6f, 1.0f }, pTech->GetName().c_str() );
+				bool active = pTech->IsActive();
+				ImGui::Checkbox( ( pTech->GetName() + std::string( " Enable" ) ).c_str(), &active );
+				pTech->SetActiveState( active );
+			}
+			bool OnVisitBuffer( Dcb::Buffer& buf ) override
+			{
+				float bufferSet = false;
+				const auto linkCheck = [&bufferSet]( bool changed ) { bufferSet = bufferSet || changed; };
+				auto tag = [tagScratch = std::string{}, tagString = "##" + std::to_string( bufIdx )]
+				( const char* label ) mutable
+				{
+					tagScratch = label + tagString;
+					return tagScratch.c_str();
+				};
 
-			if ( auto v = buf["color"]; v.Exists() )
-				linkCheck( ImGui::ColorEdit3( tag( "Sphere" ), reinterpret_cast<float*>( &static_cast<DirectX::XMFLOAT3&>( v ) ) ) );
-			if ( auto v = buf["blurColor"]; v.Exists() )
-				linkCheck( ImGui::ColorEdit4( tag( "Outline" ), reinterpret_cast<float*>( &static_cast<DirectX::XMFLOAT4&>( v ) ) ) );
+				if ( auto v = buf["color"]; v.Exists() )
+					linkCheck( ImGui::ColorEdit3( tag( "Sphere" ), reinterpret_cast<float*>( &static_cast<DirectX::XMFLOAT3&>( v ) ) ) );
+				if ( auto v = buf["blurColor"]; v.Exists() )
+					linkCheck( ImGui::ColorEdit4( tag( "Outline" ), reinterpret_cast<float*>( &static_cast<DirectX::XMFLOAT4&>( v ) ) ) );
 
-			return bufferSet;
-		}
-	} probe;
-	Accept( probe );
+				return bufferSet;
+			}
+		} probe;
+		Accept( probe );
+	}
 }
 
 DirectX::XMMATRIX SolidSphere::GetTransformXM() const noexcept

@@ -16,13 +16,15 @@
 App::App( const std::string& commandLine ) :
 	wnd( 1280, 720, "DirectX 11 Engine Window" ),
 	light( wnd.Gfx(), { 10.0f, 5.0f, 0.0f } ),
-	light2( wnd.Gfx(), { 10.0f, 5.0, 10.0f } ),
+	light1( wnd.Gfx(), { 24.25f, 6.5f, 11.0f } ),
+	light2( wnd.Gfx(), { 24.25f, 6.5f, -7.0f } ),
+	light3( wnd.Gfx(), { -31.0f, 6.5f, 11.0f } ),
+	light4( wnd.Gfx(), { -31.0f, 6.5f, -7.0f } ),
 	scriptCommander( TokenizeQuoted( commandLine ) )
 {
 	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "A", DirectX::XMFLOAT3{ -13.5f, 6.0f, 3.5f }, 0.0f, PI / 2.0f ) );
 	cameras.AddCamera( std::make_unique<Camera>( wnd.Gfx(), "B", DirectX::XMFLOAT3{ -13.5f, 28.8f, -6.4f }, PI / 180.0f * 13.0f, PI / 180.0f * 61.0f ) );
 	cameras.AddCamera( light.ShareCamera() );
-	cameras.AddCamera( light2.ShareCamera() );
 	
 	cube.SetPos( { 10.0f, 5.0f, 6.0f } );
 	cube2.SetPos( { 10.0f, 5.0f, 14.0f } );
@@ -42,15 +44,18 @@ App::App( const std::string& commandLine ) :
 	cube.LinkTechniques( rg );
 	cube2.LinkTechniques( rg );
 	light.LinkTechniques( rg );
-	light2.LinkTechniques( rg );
 	sponza.LinkTechniques( rg );
 	nanosuit.LinkTechniques( rg );
 	goblin.LinkTechniques( rg );
 	backpack.LinkTechniques( rg );
 	cameras.LinkTechniques( rg );
+	
+	light1.LinkTechniques( rg );
+	light2.LinkTechniques( rg );
+	light3.LinkTechniques( rg );
+	light4.LinkTechniques( rg );
 
 	rg.BindShadowCamera( *light.ShareCamera() );
-	rg.BindShadowCamera( *light2.ShareCamera() );
 }
 
 int App::Init()
@@ -71,25 +76,25 @@ App::~App() { }
 
 void App::HandleInput( float dt )
 {
-	if (wnd.kbd.KeyIsPressed(VK_ESCAPE))
+	if ( wnd.kbd.KeyIsPressed( VK_ESCAPE ) )
 		wnd.EndWindow();
 
 	// imgui setup
-	if (wnd.kbd.KeyIsPressed(VK_F1))
+	if ( wnd.kbd.KeyIsPressed( VK_F1 ) )
 		wnd.Gfx().DisableImGui();
 	else
 		wnd.Gfx().EnableImGui();
 	
 	// raw mouse input
-	while (const auto& e = wnd.kbd.ReadKey())
+	while ( const auto& e = wnd.kbd.ReadKey() )
 	{
-		if (!e->IsPress())
+		if ( !e->IsPress() )
 			continue;
 
-		switch (e->GetCode())
+		switch ( e->GetCode() )
 		{
 		case VK_INSERT:
-			if (wnd.CursorEnabled())
+			if ( wnd.CursorEnabled() )
 			{
 				wnd.DisableCursor();
 				wnd.mouse.EnableRaw();
@@ -107,20 +112,20 @@ void App::HandleInput( float dt )
 	}
 
 	// camera movement
-	if (!wnd.CursorEnabled())
+	if ( !wnd.CursorEnabled() )
 	{
-		if (wnd.kbd.KeyIsPressed('W'))
-			cameras->Translate({ 0.0f, 0.0f, dt });
-		if (wnd.kbd.KeyIsPressed('A'))
-			cameras->Translate({ -dt, 0.0f, 0.0f });
-		if (wnd.kbd.KeyIsPressed('S'))
-			cameras->Translate({ 0.0f, 0.0f, -dt });
-		if (wnd.kbd.KeyIsPressed('D'))
-			cameras->Translate({ dt, 0.0f, 0.0f });
-		if (wnd.kbd.KeyIsPressed('R'))
-			cameras->Translate({ 0.0f, dt, 0.0f });
-		if (wnd.kbd.KeyIsPressed('F'))
-			cameras->Translate({ 0.0f, -dt, 0.0f });
+		if ( wnd.kbd.KeyIsPressed( 'W' ) )
+			cameras->Translate( { 0.0f, 0.0f, dt } );
+		if ( wnd.kbd.KeyIsPressed( 'A' ) )
+			cameras->Translate( { -dt, 0.0f, 0.0f } );
+		if ( wnd.kbd.KeyIsPressed( 'S' ) )
+			cameras->Translate( { 0.0f, 0.0f, -dt } );
+		if ( wnd.kbd.KeyIsPressed( 'D' ) )
+			cameras->Translate( { dt, 0.0f, 0.0f } );
+		if ( wnd.kbd.KeyIsPressed( 'R' ) )
+			cameras->Translate( { 0.0f, dt, 0.0f } );
+		if ( wnd.kbd.KeyIsPressed( 'F' ) )
+			cameras->Translate( { 0.0f, -dt, 0.0f } );
 	}
 
 	// camera rotation
@@ -136,28 +141,29 @@ void App::DoFrame( float dt )
 	// setup
 	wnd.Gfx().BeginFrame( 0.07f, 0.0f, 0.12f );
 	light.Bind( wnd.Gfx(), cameras->GetMatrix() );
-	light2.Bind( wnd.Gfx(), cameras->GetMatrix() );
 	rg.BindMainCamera( cameras.GetActiveCamera() );
 
 	// objects
 	light.Submit( Channel::main );
-	light2.Submit( Channel::main );
 	sponza.Submit( Channel::main );
-	nanosuit.Submit( Channel::main );
-	if ( loadGoblin ) goblin.Submit( Channel::main );
-	if ( loadBackpack ) backpack.Submit( Channel::main );
-	if ( loadCube1 ) cube.Submit( Channel::main );
-	if ( loadCube2 ) cube2.Submit( Channel::main );
 	cameras.Submit( Channel::main );
+	if ( loadLight1 )	light1.Submit( Channel::main );
+	if ( loadLight2 )	light2.Submit( Channel::main );
+	if ( loadLight3 )	light3.Submit( Channel::main );
+	if ( loadLight4 )	light4.Submit( Channel::main );
+	if ( loadNanosuit ) nanosuit.Submit( Channel::main );
+	if ( loadGoblin )	goblin.Submit( Channel::main );
+	if ( loadBackpack ) backpack.Submit( Channel::main );
+	if ( loadCube1 )	cube.Submit( Channel::main );
+	if ( loadCube2 )	cube2.Submit( Channel::main );
 
 	light.Submit( Channel::shadow );
-	light2.Submit( Channel::shadow );
 	sponza.Submit( Channel::shadow );
-	nanosuit.Submit( Channel::shadow );
-	if ( loadGoblin ) goblin.Submit( Channel::shadow );
+	if ( loadNanosuit ) nanosuit.Submit( Channel::shadow );
+	if ( loadGoblin )	goblin.Submit( Channel::shadow );
 	if ( loadBackpack ) backpack.Submit( Channel::shadow );
-	if ( loadCube1 ) cube.Submit( Channel::shadow );
-	if ( loadCube2 ) cube2.Submit( Channel::shadow );
+	if ( loadCube1 )	cube.Submit( Channel::shadow );
+	if ( loadCube2 )	cube2.Submit( Channel::shadow );
 
 	rg.Execute( wnd.Gfx() );
 
@@ -226,8 +232,17 @@ void App::DoFrame( float dt )
 				ImGui::Checkbox( "Main Light", &loadLight );
 				if ( loadLight ) light.SpawnControlWindow( "Main Light" );
 
-				ImGui::Checkbox( "Sub Light", &loadLight2 );
-				if ( loadLight2 ) light2.SpawnControlWindow( "Sub Light" );
+				ImGui::Checkbox( "Sub Light1", &loadLight1 );
+				if ( loadLight1 ) light1.SpawnControlWindow( "Sub Light1" );
+
+				ImGui::Checkbox( "Sub Light2", &loadLight2 );
+				if ( loadLight2 ) light2.SpawnControlWindow( "Sub Light2" );
+
+				ImGui::Checkbox( "Sub Light3", &loadLight3 );
+				if ( loadLight3 ) light3.SpawnControlWindow( "Sub Light3" );
+
+				ImGui::Checkbox( "Sub Light4", &loadLight4 );
+				if ( loadLight4 ) light4.SpawnControlWindow( "Sub Light4" );
 
 				ImGui::PopStyleColor();
 				ImGui::TreePop();

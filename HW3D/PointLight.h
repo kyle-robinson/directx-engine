@@ -20,6 +20,7 @@ public:
 	void Bind( Graphics& gfx, DirectX::FXMMATRIX view ) const noexcept;
 	void LinkTechniques( Rgph::RenderGraph& );
 	std::shared_ptr<Camera> ShareCamera() const noexcept;
+	mutable SolidSphere mesh;
 private:
 	struct PointLightCBuf
 	{
@@ -34,7 +35,6 @@ private:
 private:
 	PointLightCBuf initial;
 	PointLightCBuf cbData;
-	mutable SolidSphere mesh;
 	std::shared_ptr<Camera> pCamera;
 	mutable Bind::PixelConstantBuffer<PointLightCBuf> cbuf;
 };
