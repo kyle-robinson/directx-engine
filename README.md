@@ -4,7 +4,7 @@ A graphics engine created using DirectX 11 that implements a number of advanced 
 
 
 *Click image to view on YouTube*
-<a href="https://www.youtube.com/watch?feature=player_embedded&v=K1eCgV0rLbk" target="_blank">
+<a href="https://youtu.be/kBCMbxa0S98" target="_blank">
         <img src="directx-engine.jpg" alt="DirectX Engine Thumbnail" border="10" />
 </a>
 
