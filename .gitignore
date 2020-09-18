@@ -4,7 +4,7 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # Folders
-*DX11.*
+DX11/
 
 # User-specific files
 *.rsuser
