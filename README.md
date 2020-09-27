@@ -1,6 +1,7 @@
 # DirectX 11 Graphics Engine
 
-A graphics engine created using DirectX 11 that implements a number of advanced C++ programming techniques.
+A graphics engine created using DirectX 11 that implements a number of advanced C++ programming techniques.<br/>
+*Created according to <a href="https://planetchili.net/">PlanetChili</a>'s DirectX Programming Tutorials*
 
 
 *Click image to view on YouTube*
