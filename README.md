@@ -24,7 +24,7 @@ A graphics engine created using DirectX 11 that implements a number of advanced 
 
 ### Credits
         
-        Source Code:
+        Code Reference:
                     https://planetchili.net/
                     https://github.com/planetchili/hw3d
                     
