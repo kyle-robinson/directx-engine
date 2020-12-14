@@ -11,7 +11,7 @@ A graphics engine created using DirectX 11 that implements a number of advanced 
 
 ---
 
-Credits:
+### Credits
         
         Source Code:
                     https://planetchili.net/
