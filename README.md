@@ -9,6 +9,17 @@ A graphics engine created using DirectX 11 that implements a number of advanced 
         <img src="directx-engine.jpg" alt="DirectX Engine Thumbnail" border="10" />
 </a>
 
+## List of Features
+
+- [x] Dynamic Point Lighting
+- [x] Camera System
+- [x] Stencil Masking
+- [x] Blur Outlining
+- [x] Shadow Mapping
+- [x] Cubemapping
+- [x] Alpha Blending
+- [x] Model Selection/Manipulation
+
 ---
 
 ### Credits
