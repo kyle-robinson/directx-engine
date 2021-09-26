@@ -4,10 +4,11 @@ A graphics engine created using DirectX 11 that implements a number of advanced 
 *Created according to <a href="https://planetchili.net/">PlanetChili</a>'s DirectX Programming Tutorials*
 
 
-*- Click image to view on YouTube -*
-<a href="https://youtu.be/kBCMbxa0S98" target="_blank">
-        <img src="directx-engine.jpg" alt="DirectX Engine Thumbnail" border="10" />
-</a>
+*- Click <a href="https://youtu.be/kBCMbxa0S98" target="_blank">here</a> to view on YouTube -*
+
+<img src="directx-engine.jpg" alt="DirectX Engine Thumbnail" border="10" />
+
+https://user-images.githubusercontent.com/39779606/134823917-61c08f7e-28ea-46e2-9a0f-1d9308dbd5e4.mp4
 
 ## List of Features
 
