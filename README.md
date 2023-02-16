@@ -1,8 +1,13 @@
 # DirectX 11 Engine
 
+[![MSBuild-Debug](https://github.com/kyle-robinson/directx-engine/actions/workflows/msbuild-debug.yml/badge.svg)](https://github.com/kyle-robinson/directx-engine/actions/workflows/msbuild-debug.yml)
+&nbsp;
+[![MSBuild-Release](https://github.com/kyle-robinson/directx-engine/actions/workflows/msbuild-release.yml/badge.svg)](https://github.com/kyle-robinson/directx-engine/actions/workflows/msbuild-release.yml)
+&nbsp;
+[![CodeQL](https://github.com/kyle-robinson/directx-engine/actions/workflows/codeql.yml/badge.svg)](https://github.com/kyle-robinson/directx-engine/actions/workflows/codeql.yml)
+
 A graphics engine created using DirectX 11 that implements a number of advanced C++ programming techniques.<br/>
 *Created according to <a href="https://planetchili.net/">PlanetChili</a>'s DirectX Programming Tutorials*
-
 
 *- Click <a href="https://youtu.be/kBCMbxa0S98" target="_blank">here</a> to view on YouTube -*
 
