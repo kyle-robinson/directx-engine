@@ -79,7 +79,7 @@ namespace Bind
 		depthDesc.SampleDesc.Quality = 0u;
 		depthDesc.Usage = D3D11_USAGE_DEFAULT;
 		depthDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL | ( canBindShaderInput ? D3D11_BIND_SHADER_RESOURCE : 0 );
-		
+
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pDepthStencil;
 		GFX_THROW_INFO( GetDevice( gfx )->CreateTexture2D( &depthDesc, nullptr, &pDepthStencil ) );
 
@@ -113,8 +113,8 @@ namespace Bind
 	{
 		GetContext( gfx )->ClearDepthStencilView( pDepthStencilView.Get(),D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL,1.0f,0u );
 	}
-	
-	
+
+
 	Surface DepthStencil::ToSurface( Graphics& gfx, bool linearize ) const
 	{
 		INFOMANAGER( gfx );
@@ -139,7 +139,7 @@ namespace Bind
 		tmpTextureDesc.BindFlags = 0u;
 		tmpTextureDesc.MiscFlags = 0u;
 		tmpTextureDesc.ArraySize = 1u;
-		
+
 		Microsoft::WRL::ComPtr<ID3D11Texture2D> pTexTemp;
 		GFX_THROW_INFO( GetDevice( gfx )->CreateTexture2D( &tmpTextureDesc, nullptr, &pTexTemp ) );
 

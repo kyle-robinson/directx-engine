@@ -41,7 +41,7 @@ namespace Bind
 		INFOMANAGER( gfx );
 
 		// get information from texture about dimensions
-		D3D11_TEXTURE2D_DESC textureDesc;
+		D3D11_TEXTURE2D_DESC textureDesc{};
 		pTexture->GetDesc( &textureDesc );
 		width = textureDesc.Width;
 		height = textureDesc.Height;

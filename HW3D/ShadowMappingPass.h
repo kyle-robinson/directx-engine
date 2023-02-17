@@ -64,7 +64,8 @@ namespace Rgph
 		}
 		void Execute( Graphics& gfx ) const noexcept(!IS_DEBUG) override
 		{
-			const auto pos = DirectX::XMLoadFloat3( &pShadowCamera->GetPosition() );
+			DirectX::XMFLOAT3 shadowCamPos = pShadowCamera->GetPosition();
+			const auto pos = DirectX::XMLoadFloat3( &shadowCamPos );
 			gfx.SetProjection( DirectX::XMLoadFloat4x4( &projection ) );
 
 			for ( size_t i = 0; i < 6; i++ )

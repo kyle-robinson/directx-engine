@@ -18,11 +18,11 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 	DXGI_SWAP_CHAIN_DESC sd = { 0 };
 	sd.BufferDesc.Width = width;
 	sd.BufferDesc.Height = height;
-	sd.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-	sd.BufferDesc.RefreshRate.Numerator = 0;
-	sd.BufferDesc.RefreshRate.Denominator = 0;
-	sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
-	sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
+	sd.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	sd.BufferDesc.RefreshRate.Numerator = 60u;
+	sd.BufferDesc.RefreshRate.Denominator = 1u;
+	//sd.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
+	//sd.BufferDesc.ScanlineOrdering = DXGI_MODE_SCANLINE_ORDER_UNSPECIFIED;
 	sd.SampleDesc.Count = 1;
 	sd.SampleDesc.Quality = 0;
 	sd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
@@ -30,9 +30,9 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 	sd.OutputWindow = hWnd;
 	sd.Windowed = TRUE;
 	sd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-	sd.Flags = 0;
+	sd.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
-	UINT swapCreateFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+	UINT swapCreateFlags = 0;//D3D11_CREATE_DEVICE_BGRA_SUPPORT;
 #ifndef NDEBUG
 	swapCreateFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
@@ -40,7 +40,7 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 	HRESULT hr;
 
 	// create device, front/back buffers, swap chain and rendering context
-	GFX_THROW_INFO( D3D11CreateDeviceAndSwapChain(
+	D3D11CreateDeviceAndSwapChain(
 		nullptr,
 		D3D_DRIVER_TYPE_HARDWARE,
 		nullptr,
@@ -49,11 +49,11 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 		0,
 		D3D11_SDK_VERSION,
 		&sd,
-		&pSwap,
-		&pDevice,
+		pSwap.GetAddressOf(),
+		pDevice.GetAddressOf(),
 		nullptr,
-		&pContext
-	) );
+		pContext.GetAddressOf()
+	);
 
 	if ( FAILED( pSwap->SetFullscreenState( true, nullptr ) ) )
 		throw GFX_EXCEPT( hr );
@@ -62,7 +62,7 @@ Graphics::Graphics( HWND hWnd, int width, int height ) : width( width ), height(
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> pBackBuffer;
 	GFX_THROW_INFO(pSwap->GetBuffer(0, __uuidof(ID3D11Texture2D), &pBackBuffer));
 	pTarget = std::shared_ptr<Bind::RenderTarget>{ new Bind::OutputOnlyRenderTarget( *this, pBackBuffer.Get() ) };
-	
+
 	// viewport always fullscreen
 	D3D11_VIEWPORT vp;
 	vp.Width = (float)width;
@@ -97,7 +97,7 @@ void Graphics::EndFrame()
 		ImGui::Render();
 		ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
 	}
-	
+
 	HRESULT hr;
 #ifndef NDEBUG
 	infoManager.Set();
@@ -209,7 +209,7 @@ HRESULT Graphics::HrException::GetErrorCode() const noexcept
 }
 
 std::string Graphics::HrException::GetErrorString() const noexcept
-{	
+{
 	return DXGetErrorStringA( hr );
 }
 

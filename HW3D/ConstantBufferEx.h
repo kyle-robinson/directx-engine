@@ -14,7 +14,7 @@ namespace Bind
 			INFOMANAGER( gfx );
 			assert( &buf.GetRootLayoutElement() == &GetRootLayoutElement() );
 
-			D3D11_MAPPED_SUBRESOURCE msr;
+			D3D11_MAPPED_SUBRESOURCE msr{};
 			GFX_THROW_INFO( GetContext( gfx )->Map(
 				pConstantBuffer.Get(),
 				0u,

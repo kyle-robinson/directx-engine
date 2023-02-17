@@ -10,8 +10,8 @@
 // https://github.com/ocornut/imgui
 
 #pragma once
-#include "../../WindowsInclude.h"
-#include "../../Graphics.h"
+#include "../../HW3D/WindowsInclude.h"
+#include "../../HW3D/Graphics.h"
 #include "imgui.h"      // IMGUI_IMPL_API
 
 struct ID3D11Device;
