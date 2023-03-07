@@ -9,7 +9,7 @@
 A graphics engine created using DirectX 11 that implements a number of advanced C++ programming techniques.<br/>
 *Created according to <a href="https://planetchili.net/">PlanetChili</a>'s DirectX Programming Tutorials*
 
-*- Click <a href="https://youtu.be/kBCMbxa0S98" target="_blank">here</a> to view on YouTube -*
+*- Click <a href="https://kyle-robinson.github.io/html/directx-engine" target="_blank">here</a> to view project on website -*
 
 <img src="directx-engine.jpg" alt="DirectX Engine Thumbnail" border="10" />
 
